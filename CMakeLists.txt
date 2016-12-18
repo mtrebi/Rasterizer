@@ -8,7 +8,11 @@ include_directories (
 )
 
 
-set(SOURCES src/main.cpp)
+set(SOURCES src/Point2D.cpp
+            src/Point3D.cpp
+            src/Vector3D.cpp
+            src/Matrix.cpp
+            src/main.cpp)
 
 add_compile_options(
 	-std=c++11
