@@ -1,5 +1,5 @@
 build/
-
+nbproject/
 # Compiled Object files
 *.slo
 *.lo
