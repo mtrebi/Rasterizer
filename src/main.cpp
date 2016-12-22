@@ -8,11 +8,11 @@
 
 int main (){
     
-    std::vector<GeometryObject> objects = std::vector<GeometryObject>() {
+    std::vector<GeometryObject*> objects = std::vector<GeometryObject*>() {
         
     };
     
-    std::vector<GeometryObject> lights = std::vector<GeometryObject>() {
+    std::vector<Light*> lights = std::vector<Light*>() {
         
     };
     
