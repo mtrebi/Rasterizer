@@ -14,6 +14,7 @@ Renderer::Renderer(const World* world)
 
 
 Renderer::~Renderer(){
+    m_world = nullptr;
     m_pixels.clear();
 }
 
