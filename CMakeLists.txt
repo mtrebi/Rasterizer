@@ -13,6 +13,7 @@ set(SOURCES src/Point2D.cpp
             src/Vector3D.cpp
 			src/Matrix.cpp
 			src/Renderer.cpp
+			src/Rasterizer.cpp
 			src/main.cpp)
 
 add_compile_options(
