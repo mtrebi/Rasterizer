@@ -14,6 +14,7 @@ set(SOURCES src/Point2D.cpp
 			src/Matrix.cpp
 			src/Renderer.cpp
 			src/Rasterizer.cpp
+            src/World.cpp
 			src/main.cpp)
 
 add_compile_options(
