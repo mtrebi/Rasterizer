@@ -12,6 +12,7 @@ set(SOURCES src/Point2D.cpp
             src/Point3D.cpp
             src/Vector3D.cpp
 			src/Matrix.cpp
+			src/Camera.cpp
 			src/Renderer.cpp
 			src/Rasterizer.cpp
             src/World.cpp
