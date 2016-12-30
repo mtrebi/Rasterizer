@@ -5,6 +5,8 @@
 #include "Renderer.h"
 #include "Rasterizer.h"
 #include "Camera.h"
+#include "Light.h"
+
 
 int main (){
     
