@@ -15,10 +15,10 @@ private:
 
 public:
     GeometryObject();
-    GeometryObject(const std::vector<Point3D>& vertices, const std::vector<uint8_t>& m_indices = std::vector<uint8_t>());
+    GeometryObject(const std::vector<Point3D>& vertices, const std::vector<uint8_t>& indices = std::vector<uint8_t>());
     
     // TODO: Some kind of projection
-	const std::vector<Point2D> Project();
+	//const std::vector<Point2D> Project();
     
     ~GeometryObject();
 };
