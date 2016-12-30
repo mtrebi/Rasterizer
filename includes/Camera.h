@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "Point3D.h"
+#include "Vector3D.h"
 
 class Camera {
 private:
