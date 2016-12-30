@@ -1,4 +1,7 @@
+# CMake build file
 build/
+# Ide files
+.vs/
 nbproject/
 # Compiled Object files
 *.slo
