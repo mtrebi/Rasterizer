@@ -11,17 +11,17 @@ include_directories (
 set(SOURCES src/Point2D.cpp
             src/Point3D.cpp
             src/Vector3D.cpp
-			src/Matrix.cpp
-			src/GeometryObject.cpp
-			src/Camera.cpp
-			src/Renderer.cpp
-			src/Rasterizer.cpp
+            src/Matrix.cpp
+            src/GeometryObject.cpp
+            src/Camera.cpp
+            src/Renderer.cpp
+            src/Rasterizer.cpp
             src/World.cpp
-			src/main.cpp)
+            src/main.cpp)
 
 add_compile_options(
-	-std=c++11
-    -g
+  -std=c++11
+  -G
 ) 
 
 # main.cpp
