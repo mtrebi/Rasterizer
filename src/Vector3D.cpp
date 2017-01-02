@@ -9,7 +9,7 @@
 #include <math.h>    // for sqrt
 
 #include "Vector3D.h"
-#include "Normal.h"
+//#include "Normal.h"
 #include "Point3D.h"
 
 // ---------------------------------------------------------- default constructor
@@ -39,11 +39,11 @@ Vector3D::Vector3D(const Vector3D& vector)
 
 // ---------------------------------------------------------- constructor
 // constructs a vector from a normal
-
+/*
 Vector3D::Vector3D(const Normal& n)	 
 	: x(n.x), y(n.y), z(n.z)
 {}
-
+*/
 // ---------------------------------------------------------- constructor
 // constructs a vector from a point
 // this is used in the ConcaveHemisphere hit functions
@@ -74,13 +74,13 @@ Vector3D::operator= (const Vector3D& rhs) {
 
 // ----------------------------------------------------------- assignment operator
 // assign a Normal to a vector
-
+/*
 Vector3D& 
 Vector3D::operator= (const Normal& rhs) {
 	x = rhs.x; y = rhs.y; z = rhs.z;
 	return (*this);
 }
-
+*/
 
 // ---------------------------------------------------------- assignment operator 
 // assign a point to a vector

@@ -17,7 +17,7 @@ private:
 
 public:
     World();
-    World(const std::vector<GeometryObject*>& objects, std::vector<Light*>& lights, Camera& camera);
+    World(const std::vector<GeometryObject*>& objects, const std::vector<Light*>& lights, const Camera& camera);
     ~World();
 };
 

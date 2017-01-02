@@ -4,6 +4,7 @@
 #include <cstdint>
 
 class RGBColor  {
+public:
   uint8_t r, g, b;
 
 public:

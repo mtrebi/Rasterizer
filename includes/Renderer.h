@@ -10,16 +10,16 @@
 
 class Renderer {
 protected:
-    std::vector<RGBColor> m_pixels;
-    World * m_world;
+  World* m_world;
+  std::vector<RGBColor> m_pixels;
 public:
-    Renderer();
-    Renderer(const World* world);
-    ~Renderer();
+  Renderer();
+  Renderer(World* world);
+  ~Renderer();
     
-    void render(const uint16_t image_width, const uint16_t image_height, const string& output_path) const = 0;
+  virtual void render(const uint16_t image_width, const uint16_t image_height, const std::string output_path) const = 0;
 protected:
-    void export(const uint16_t image_width, const uint16_t image_height, const string& export_path) const;
+  void exportImage(const uint16_t image_width, const uint16_t image_height, const std::string export_path) const;
 };
 
 

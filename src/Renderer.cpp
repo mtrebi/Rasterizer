@@ -2,12 +2,12 @@
 #include <fstream>
 
 Renderer::Renderer()
-    : m_world(nullptr),m_pixels(std::vector<RGBColor>() {
+    : m_world(nullptr),m_pixels(std::vector<RGBColor>()) {
     
 }
 
-Renderer::Renderer(const World* world)
-    : m_world(world), m_pixels(std::vector<RGBColor>() {
+Renderer::Renderer(World* world)
+    : m_world(world), m_pixels(std::vector<RGBColor>()) {
     
 }
 
@@ -18,7 +18,7 @@ Renderer::~Renderer(){
     m_pixels.clear();
 }
 
-void Renderer::exportImage(const uint16_t image_width, const uint16_t image_height, const string& export_path) const {
+void Renderer::exportImage(const uint16_t image_width, const uint16_t image_height, const std::string export_path) const {
     const int image_size = image_height * image_width * 4;
     const int headers_size = 14 + 40;
     const int filesize = image_size + headers_size;
