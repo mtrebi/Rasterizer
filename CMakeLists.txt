@@ -23,7 +23,7 @@ set(SOURCES src/RGBColor.cpp
 
 add_compile_options(
   -std=c++11
-  -G
+  -g
 ) 
 
 # main.cpp
