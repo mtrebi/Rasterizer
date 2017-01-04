@@ -15,6 +15,7 @@ set(SOURCES src/RGBColor.cpp
             src/Matrix.cpp
             src/GeometryObject.cpp
             src/Camera.cpp
+            src/OrthographicCamera.cpp
             src/Light.cpp
             src/Renderer.cpp
             src/Rasterizer.cpp
