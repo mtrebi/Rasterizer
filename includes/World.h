@@ -7,16 +7,15 @@
 #include "GeometryObject.h"
 #include "Camera.h"
 
-
 class World {
 private:
     std::vector<GeometryObject*> m_objects;
     std::vector<Light*> m_lights;
-    Camera m_camera;
+    Camera* m_camera;
 
 public:
     World();
-    World(const std::vector<GeometryObject*>& objects, const std::vector<Light*>& lights, const Camera& camera);
+    World(const std::vector<GeometryObject*>& objects, const std::vector<Light*>& lights, Camera* camera);
     ~World();
 };
 
