@@ -26,10 +26,8 @@ const std::vector<Light*> LIGHTS {
 
 int main (){
     Camera * camera = new OrthographicCamera(CAMERA_POS, CAMERA_FWD, CAMERA_UP);
-    
     World * world = new World(OBJECTS, LIGHTS, camera);
     Renderer * renderer = new Rasterizer(world);
-    //TODO IMAGE SIZES INSIDE CAMERA???
     renderer->render(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_NAME);
     
     return 0;
