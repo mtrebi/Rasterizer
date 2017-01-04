@@ -6,10 +6,9 @@
 #include "Light.h"
 #include "GeometryObject.h"
 #include "Camera.h"
-#include "Renderer.h"
+
 
 class World {
-    friend class Renderer;
 private:
     std::vector<GeometryObject*> m_objects;
     std::vector<Light*> m_lights;
