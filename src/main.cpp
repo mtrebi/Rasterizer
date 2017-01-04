@@ -6,23 +6,31 @@
 #include "Rasterizer.h"
 #include "Camera.h"
 #include "Light.h"
+#include "OrthographicCamera.h"
 
+const Point3D   CAMERA_POS  = Point3D(.0f, .0f, -10.0f);
+const Vector3D  CAMERA_FWD  = Vector3D(.0f, .0f, 1.0f); // Points into the screen
+const Vector3D  CAMERA_UP   = Vector3D(.0f, 1.0f, .0f);
+
+const int IMAGE_WIDTH         = 640;
+const int IMAGE_HEIGHT        = 480;
+const std::string IMAGE_NAME  = "output.bmp";
+
+const std::vector<GeometryObject*> OBJECTS {
+
+};
+
+const std::vector<Light*> LIGHTS {
+
+};
 
 int main (){
+    Camera * camera = new OrthographicCamera(CAMERA_POS, CAMERA_FWD, CAMERA_UP);
     
-    std::vector<GeometryObject*> objects = std::vector<GeometryObject*>() {
-        
-    };
-    
-    std::vector<Light*> lights = std::vector<Light*>() {
-        
-    };
-    
-    Camera camera = Camera(Point3D(.0f, .0f, -10.0f), Vector3D(.0f, .0f, 1.0f));
-    
-    World * world = new World(objects, lights, camera);
+    World * world = new World(OBJECTS, LIGHTS, camera);
     Renderer * renderer = new Rasterizer(world);
-    renderer->render(640, 480, "output.bmp");
-
+    //TODO IMAGE SIZES INSIDE CAMERA???
+    renderer->render(IMAGE_WIDTH, IMAGE_HEIGHT, IMAGE_NAME);
+    
     return 0;
 }
