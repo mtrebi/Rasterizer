@@ -15,5 +15,11 @@ OrthographicCamera::~OrthographicCamera() {
 }
 
 const Triangle2D OrthographicCamera::projectToScreen(const Triangle3D& triangle3D) const {
+  //TODO: actual projection
   return Triangle2D();
+}
+
+const float OrthographicCamera::getDepth(const Point3D& pixel_world) const {
+  // Create line from camera position in camera_fwd direction
+  // Calculate intersection between this line and 
 }

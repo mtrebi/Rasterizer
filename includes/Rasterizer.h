@@ -6,8 +6,6 @@
 #include "Renderer.h"
 
 class Rasterizer : public Renderer {
-private:
-  std::vector<double> m_depth;
 public:
   Rasterizer();
   Rasterizer(World* world, const uint16_t image_width, const uint16_t image_height);

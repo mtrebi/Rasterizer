@@ -10,7 +10,7 @@ public:
   ~OrthographicCamera();
 
   virtual const Triangle2D projectToScreen(const Triangle3D& triangle3D) const override;
-
+  virtual const float getDepth(const Point3D& pixel_world) const override;
 };
 
 #endif // !ORTHOGRAPHICCAMERA_H

@@ -3,39 +3,37 @@
 #include "Utils.h"  //
 
 Rasterizer::Rasterizer()
-    : Renderer(), m_depth(std::vector<double>(m_image_height * m_image_width, std::numeric_limits<double>::max())) {
+  : Renderer() {
 
 }
 
 Rasterizer::Rasterizer(World* world, const uint16_t image_width, const uint16_t image_height)
-    : Renderer(world, image_width, image_height), m_depth(std::vector<double>(m_image_height * m_image_width, std::numeric_limits<double>::max())) {
+  : Renderer(world, image_width, image_height) {
 
 }
 
 Rasterizer::~Rasterizer(){
-  m_depth.clear();
 }
 
-//TODO: render to m_pixels
 void Rasterizer::render(const std::string output_path) const {
-  
-  //TODO: object tessellation, object has color --> tessellation in triangles
-  const RGBColor obj_color = RGBColor(255, 0, 0); 
-  for (auto& triangle3D : m_world->m_objects) {
-    const Triangle2D triangle2D = m_world->m_camera->projectToScreen(triangle3D);
+  std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, std::numeric_limits<double>::max());
 
-    for (uint16_t i = 0; i < m_image_width * m_image_height; ++i) {
-      RGBColor pixel = m_pixels[i];
-      uint16_t pixel_x, pixel_y;
-      Utils::convert1DIndexto2DIndex(pixel_x, pixel_y, i, m_image_width, m_image_height);
+  for (auto& geometry_object : m_world->m_objects) {
+    const std::vector<Triangle3D> triangles_of_object = geometry_object->tessellate();
+    for (auto& object_triangle : triangles_of_object) {
+      const Triangle2D object_triangle_in_screen = m_world->m_camera->projectToScreen(object_triangle);
+      //TODO: Bounding box optimization
+      for (uint16_t i = 0; i < m_image_width * m_image_height; ++i) {
+        RGBColor pixel = m_pixels[i];
+        const Point3D pixel_world = m_world->m_camera->getPixelPosition(i);
+        const Point2D pixel_screen = Point2D(pixel_world.x, pixel_world.y);
 
-      const Point2D pixel_position = Point2D(pixel_x, pixel_y);
-
-      if (triangle2D.hasInside(pixel_position) {
-        const uint16_t pixel_depth = //DISTANCE TO CAMERA? z axis?
-        if (pixel_depth < m_depth[i]){
-          pixel.color = obj_color;
-          m_depth = pixel_depth;
+        if (object_triangle_in_screen.contains(pixel_screen)) {
+          const double distance_to_camera = m_world->m_camera->getDepth(pixel_world);
+          if (distance_to_camera < depth[i]) {
+            pixel = geometry_object->m_color;
+            depth[i] = distance_to_camera;
+          }
         }
       }
     }
