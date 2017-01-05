@@ -1,15 +1,13 @@
 #ifndef RGBCOLOR_H
 #define RGBCOLOR_H
 
-#include <cstdint>
-
 class RGBColor  {
 public:
-  uint8_t r, g, b;
+  float r, g, b;
 
 public:
   RGBColor();
-  RGBColor(const uint8_t red, const uint8_t green, const uint8_t blue);
+  RGBColor(const float red, const float green, const float blue);
 
   //TODO: COlor operations (add, substract...)
   ~RGBColor();

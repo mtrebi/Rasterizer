@@ -1,17 +1,17 @@
 #include "RGBColor.h"
 
 RGBColor::RGBColor()
-  : r(0), g(0), b(0) {
+  : r(.0f), g(.0f), b(.0f) {
 
 }
 
-RGBColor::RGBColor(const uint8_t red, const uint8_t green, const uint8_t blue)
+RGBColor::RGBColor(const float red, const float green, const float blue)
   : r(red), g(green), b(blue) {
 
 }
 
 RGBColor::~RGBColor() {
-  r = 0;
-  g = 0;
-  b = 0;
+  r = .0f;
+  g = .0f;
+  b = .0f;
 }
