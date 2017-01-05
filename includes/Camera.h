@@ -21,9 +21,7 @@ public:
     ~Camera();
     
     virtual const Triangle2D projectToScreen(const Triangle3D& triangle3D) const = 0;
-    virtual const float getDepth(const Point3D& pixel_world) const = 0;
-    virtual const Point3D getPixelPosition(const Point3D& pixel_world) const = 0;
-
+    virtual const float getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const = 0;
 };
 
 #endif /* CAMERA_H */
