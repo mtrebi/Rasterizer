@@ -8,7 +8,7 @@
 #include "Camera.h"
 
 class World {
-private:
+public:
     std::vector<GeometryObject*> m_objects;
     std::vector<Light*> m_lights;
     Camera* m_camera;
