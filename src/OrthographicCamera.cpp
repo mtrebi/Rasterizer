@@ -1,5 +1,5 @@
 #include "OrthographicCamera.h"
-
+#include <limits>
 OrthographicCamera::OrthographicCamera()
   : Camera() {
 
@@ -20,10 +20,11 @@ const Triangle2D OrthographicCamera::projectToScreen(const Triangle3D& triangle3
 }
 
 const float OrthographicCamera::getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const {
-  // Create line from camera position in camera_fwd direction
-    // return line
-  // Calculate intersection between this line and triangle/object
-    // return intersection point
-  // Calculate distance between two points
-    // return distance
+  bool out_hit;
+  const Point3D intersection_point = triangle.intersect(out_hit, pixel_world, this->m_forward);
+  if (!out_hit) {
+    return std::numeric_limits<float>::max();
+  }
+
+  return pixel_world.distance(intersection_point);
 }
