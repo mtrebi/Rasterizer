@@ -24,9 +24,11 @@ void Rasterizer::render(const std::string output_path) const {
       const Triangle2D object_triangle_in_screen = m_world->m_camera->getScreenCoordinates(object_triangle);
       //TODO: Bounding box optimization
       for (uint16_t i = 0; i < m_image_width * m_image_height; ++i) {
+        uint16_t pixel_image_x, pixel_image_y;
+        Utils::convert1DIndexto2DIndex(pixel_image_x, pixel_image_y, i, m_image_width, m_image_height);
         RGBColor pixel = m_pixels[i];
-        //TODO: Needs height and width of the image to set a view plane
-        const Point3D pixel_world = m_world->m_camera->getPixelPosition(i);
+
+        const Point3D pixel_world = m_world->m_camera->getWorldCoordinates(pixel_image_x, pixel_image_y);
         const Point2D pixel_screen = Point2D(pixel_world.x, pixel_world.y);
 
         if (object_triangle_in_screen.contains(pixel_screen)) {

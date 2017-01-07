@@ -21,8 +21,8 @@ public:
     ~Camera();
       
     virtual const Triangle2D getScreenCoordinates(const Triangle3D& triangle3D) const = 0;
+    virtual const Point3D getWorldCoordinates(const uint16_t pixel_image_x, const uint16_t pixel_image_y) const = 0;
     virtual const float getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const = 0;
-    virtual const Point3D getPixelPosition(const Point3D& pixel_world) const = 0;
 
 };
 

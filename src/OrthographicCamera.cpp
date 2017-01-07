@@ -14,6 +14,12 @@ OrthographicCamera::~OrthographicCamera() {
 
 }
 
+const Point3D OrthographicCamera::getWorldCoordinates(const uint16_t pixel_image_x, const uint16_t pixel_image_y) const {
+  //TODO: anctual conversion
+  return Point3D();
+}
+
+
 const Triangle2D OrthographicCamera::getScreenCoordinates(const Triangle3D& triangle3D) const {
   //TODO: actual projection
   return Triangle2D();
