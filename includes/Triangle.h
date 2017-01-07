@@ -32,13 +32,21 @@ public:
     return (u > 0 && v > 0 && u + v <= 0);
   }
 
-  const Point3D intersect(bool& hit, const Point3D& origin, const Vector3D& direction) const {
-    // Calculate the plane (normal + point) in which triangle lies
+  const Point3D intersect(bool& hit, const Point3D& ray_origin, const Vector3D& ray_direction) const {
     Vector3D normal_triangle = ((this->v2 - this->v1) ^ (this->v3 - this->v1));
     normal_triangle.normalize();
 
+    Vector3D ray_direction_norm = ray_direction;
+    ray_direction_norm.normalize();
 
+    const double t = (this->v1 - ray_origin) * normal_triangle / (ray_direction_norm * normal_triangle);
+    const Point3D intersecion_ray_plane = ray_origin + t * ray_direction_norm;
+    if (this->contains(intersecion_ray_plane)) {
+      hit = true;
+      return intersecion_ray_plane;
+    }
 
+    hit = false;
     return Point3D();
   }
 
