@@ -18,8 +18,42 @@ struct Triangle2D {
 
 };
 
-struct Triangle3D {
+class Triangle3D {
+public:
   Point3D v1, v2, v3;
+public:
+  Triangle3D() { }
+  Triangle3D(const Point3D& p1, const Point3D& p2, const Point3D& p3) : v1(p1), v2(p2), v3(p3) { }
+  ~Triangle3D() { }
+
+  const bool contains(const Point3D& point) const {
+    float u, v, w;
+    calculateBarycentricCoords(u, v, w, point);
+    return (u > 0 && v > 0 && u + v <= 0);
+  }
+
+  const Point3D intersect(bool& hit, const Point3D& origin, const Vector3D& direction) const {
+    // Calculate the plane (normal + point) in which triangle lies
+    Vector3D normal_triangle = ((this->v2 - this->v1) ^ (this->v3 - this->v1));
+    normal_triangle.normalize();
+
+
+
+    return Point3D();
+  }
+
+private:
+  void calculateBarycentricCoords(float& u, float& v, float& w, const Point3D& point) const {
+    const float area_triangle = ((this->v2 - this->v1) ^ (this->v3 - this->v1)).length() / 2;
+
+    const float area_u = ((point - this->v1) ^ (this->v2 - this->v1)).length() / 2;
+    const float area_v = ((point - this->v1) ^ (this->v3 - this->v1)).length() / 2;
+    const float area_w = ((point - this->v3) ^ (this->v3 - this->v2)).length() / 2;
+
+    u = area_u / area_triangle;
+    v = area_v / area_triangle;
+    w = area_w / area_triangle;
+  }
 };
 
 #endif // !TRIANGLE_H
