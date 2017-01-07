@@ -14,7 +14,7 @@ OrthographicCamera::~OrthographicCamera() {
 
 }
 
-const Triangle2D OrthographicCamera::projectToScreen(const Triangle3D& triangle3D) const {
+const Triangle2D OrthographicCamera::getScreenCoordinates(const Triangle3D& triangle3D) const {
   //TODO: actual projection
   return Triangle2D();
 }
