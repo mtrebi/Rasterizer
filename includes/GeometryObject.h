@@ -4,6 +4,7 @@
 #include "Point3D.h"
 #include "Point2D.h"
 #include "Triangle.h"
+#include "RGBColor.h"
 #include <vector>
 #include <cstdint>
 
