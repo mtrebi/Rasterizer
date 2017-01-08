@@ -14,7 +14,13 @@ GeometryObject::~GeometryObject() {
 }
 
 const std::vector<Triangle3D> GeometryObject::tessellate() const {
-  //TODO: actual tessellation
+  //TODO: actual tessellation using vertices and indices
 
-  return std::vector<Triangle3D>();
+  return std::vector<Triangle3D> {
+    Triangle3D(
+      Point3D(-5.0f, 0.0f, 0.0f),
+      Point3D(0.0f, 5.0f, 0.0f),
+      Point3D(5.0f, 0.0f, 0.0f)
+    )
+  };
 }
