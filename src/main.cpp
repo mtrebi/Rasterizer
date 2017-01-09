@@ -17,7 +17,7 @@ const int IMAGE_HEIGHT        = 480;
 const std::string IMAGE_NAME  = "output.bmp";
 
 const std::vector<GeometryObject*> OBJECTS {
-
+  new GeometryObject()
 };
 
 const std::vector<Light*> LIGHTS {
