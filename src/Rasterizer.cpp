@@ -42,5 +42,7 @@ void Rasterizer::render(const std::string output_path) const {
     }
   }
 
+  //TODO Calculate illumination (fragment shader)
+
   exportImage(output_path);
 };
