@@ -15,9 +15,10 @@ protected:
 			m_up,
 			m_left;
   uint32_t m_near, m_far;
+  float m_zoom;
 public:
     Camera();
-    Camera(const Point3D& position, const Vector3D& forward = Vector3D(.0f, .0f, 1.0f), const Vector3D& up = Vector3D(.0f, 1.0f, .0f), const uint32_t near = 10, const uint32_t far = 1000);
+    Camera(const Point3D& position, const Vector3D& forward = Vector3D(.0f, .0f, 1.0f), const Vector3D& up = Vector3D(.0f, 1.0f, .0f), const uint32_t near = 10, const uint32_t far = 1000, const float zoom = 1.0f);
     ~Camera();
       
     virtual const Triangle2D worldSpaceToScreenSpace(const Triangle3D& triangle3D) const = 0;
