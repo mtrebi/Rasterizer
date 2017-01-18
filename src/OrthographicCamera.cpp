@@ -29,14 +29,11 @@ const Triangle2D OrthographicCamera::worldSpaceToScreenSpace(const Triangle3D& t
   };
 }
 
-const float OrthographicCamera::getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const {
-  //TODO: Get Z coordinate
-  
-  bool out_hit;
-  const Point3D intersection_point = triangle.intersect(out_hit, pixel_world, this->m_forward);
-  if (!out_hit) {
-    return std::numeric_limits<float>::max();
-  }
+const float OrthographicCamera::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
+  // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
+  float u, v, w; 
+  triangle_screen.calculateBarycentricCoords(u, v, w, pixel_screen);
+  const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
 
-  return pixel_world.distance(intersection_point);
+  return point_interpolated.z;
 }

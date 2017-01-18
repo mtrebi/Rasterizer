@@ -11,7 +11,8 @@ public:
 
   virtual const Triangle2D worldSpaceToScreenSpace(const Triangle3D& triangle3D) const override;
   virtual const Point3D imageSpaceToWorldSpace(const uint16_t pixel_image_x, const uint16_t pixel_image_y) const override;
-  virtual const float getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const override;
+  virtual const float getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const override;
+
 };
 
 #endif // !ORTHOGRAPHICCAMERA_H
