@@ -10,6 +10,8 @@ include_directories (
 
 set(SOURCES src/RGBColor.cpp
             src/Point2D.cpp
+            src/Vector2D.cpp
+            src/Vector3D.cpp
             src/Point3D.cpp
             src/Vector3D.cpp
             src/Matrix.cpp
