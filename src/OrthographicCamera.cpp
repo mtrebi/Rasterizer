@@ -5,8 +5,8 @@ OrthographicCamera::OrthographicCamera()
 
 }
 
-OrthographicCamera::OrthographicCamera(const Point3D& position, const Vector3D& forward, const Vector3D& up, const uint32_t near, const uint32_t far)
-  : Camera(position, forward, up, near, far) {
+OrthographicCamera::OrthographicCamera(const Point3D& position, const Vector3D& forward, const Vector3D& up, const uint32_t near, const uint32_t far, const float zoom)
+  : Camera(position, forward, up, near, far, zoom) {
 
 }
 
