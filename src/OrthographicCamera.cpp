@@ -21,11 +21,17 @@ const Point3D OrthographicCamera::imageSpaceToWorldSpace(const uint16_t pixel_im
 
 
 const Triangle2D OrthographicCamera::worldSpaceToScreenSpace(const Triangle3D& triangle3D) const {
-  //TODO: actual projection
-  return Triangle2D();
+  //Because is an orthographic projection, we just get x and y 
+  return Triangle2D{
+    Point2D(triangle3D.v1.x, triangle3D.v1.y),
+    Point2D(triangle3D.v2.x, triangle3D.v2.y),
+    Point2D(triangle3D.v3.x, triangle3D.v3.y)
+  };
 }
 
 const float OrthographicCamera::getDepth(const Point3D& pixel_world, const Triangle3D& triangle) const {
+  //TODO: Get Z coordinate
+  
   bool out_hit;
   const Point3D intersection_point = triangle.intersect(out_hit, pixel_world, this->m_forward);
   if (!out_hit) {
