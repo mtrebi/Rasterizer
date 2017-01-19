@@ -22,9 +22,8 @@ public:
     ~Camera();
       
     virtual const Triangle2D worldSpaceToScreenSpace(const Triangle3D& triangle3D) const = 0;
-    virtual const Point3D imageSpaceToWorldSpace(const uint16_t pixel_image_x, const uint16_t pixel_image_y) const = 0;
+    virtual const Point3D imageSpaceToWorldSpace(const uint16_t image_width, const uint16_t image_height, const uint16_t pixel_image_x, const uint16_t pixel_image_y) const = 0;
     virtual const float getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const = 0;
-
 };
 
 #endif /* CAMERA_H */
