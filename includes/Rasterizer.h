@@ -11,7 +11,7 @@ public:
   Rasterizer(World* world, const uint16_t image_width, const uint16_t image_height);
   ~Rasterizer();
     
-  void render(const std::string output_path) const override;
+  void render(const std::string output_path) override;
 };
 
 #endif /* RASTERIZER_H */
