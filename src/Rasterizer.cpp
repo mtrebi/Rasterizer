@@ -22,8 +22,6 @@ void Rasterizer::render(const std::string output_path) {
       const Triangle2D triangle_projected = m_world->m_camera->worldSpaceToScreenSpace(triangle_world);
       //TODO: Bounding box optimization
       for (uint32_t i = 0; i < (m_image_width * m_image_height); ++i) {
-        uint16_t c = m_image_width * m_image_height;
-
         uint16_t pixel_image_x, pixel_image_y;
         Utils::convert1DIndexto2DIndex(pixel_image_x, pixel_image_y, i, m_image_width, m_image_height);
 
