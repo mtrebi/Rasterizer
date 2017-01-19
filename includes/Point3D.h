@@ -9,6 +9,7 @@
 
 
 #include "Matrix.h"
+#include "Point2D.h"
 #include "Vector3D.h"
 
 class Point3D {
@@ -39,6 +40,10 @@ class Point3D {
 				
 		Point3D 													// multiplication by a double on the right
 		operator* (const double a) const;
+
+    operator Point2D() const {
+      return Point2D(x, y);
+    }
 		
 		double														// square of distance bertween two points
 		d_squared(const Point3D& p) const;
