@@ -26,6 +26,12 @@ const Point3D OrthographicCamera::imageSpaceToWorldSpace(const uint16_t image_wi
   
 }
 
+const Point2D OrthographicCamera::cameraToScreen(const uint16_t image_width, const uint16_t image_height, const Point2D& point_camera) const {
+  const float x = point_camera.x + image_width / 2;
+  const float y = point_camera.y + image_height / 2;
+
+  return Point2D(x, y);
+}
 
 const Triangle2D OrthographicCamera::worldSpaceToScreenSpace(const Triangle3D& triangle3D) const {
   // Because is an orthographic projection, we just get x and y 
@@ -35,6 +41,9 @@ const Triangle2D OrthographicCamera::worldSpaceToScreenSpace(const Triangle3D& t
     Point2D(triangle3D.v3.x, triangle3D.v3.y)
   };
 }
+
+
+
 
 const float OrthographicCamera::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
   // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
