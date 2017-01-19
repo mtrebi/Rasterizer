@@ -7,7 +7,7 @@ Renderer::Renderer()
 }
 
 Renderer::Renderer(World* world, const uint16_t image_width, const uint16_t image_height)
-  : m_world(world), m_image_width(image_width), m_image_height(image_height), m_pixels(std::vector<RGBColor>(image_width * image_height, RGBColor(BACKGROUND_COLOR))) {
+  : m_world(world), m_image_width(image_width), m_image_height(image_height), m_pixels(std::vector<RGBColor>(image_width * image_height, BACKGROUND_COLOR)) {
 
 }
 
