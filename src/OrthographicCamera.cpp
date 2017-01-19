@@ -22,16 +22,6 @@ const Point3D OrthographicCamera::imageSpaceToWorldSpace(const uint16_t image_wi
   const float x = image_width * x_norm - image_width / 2.0;
   const float y = image_height * y_norm - image_height / 2.0;
 
-  /*
-  // Normalize image coordinates between [0,1]
-  const float x_norm = (pixel_image_x + image_width / 2.0) / image_width;
-  const float y_norm = (pixel_image_y + image_height / 2.0) / image_height;
-
-  // Map from [0,1] to [0, image_width] 
-  const float x = x_norm * image_width;
-  // Map from [0,1] to [0, image_height] and move y from bottom pointing up to up point down
-  const float y = (1 - y_norm) * image_height;
-  */
   return Point3D(x, y, m_near);
   
 }
