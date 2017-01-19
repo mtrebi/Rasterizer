@@ -18,7 +18,7 @@ class Point2D;
 class Vector2D {
 	public:
 	
-		double	x, y, z;
+		double	x, y;
 
 	public:
 	
