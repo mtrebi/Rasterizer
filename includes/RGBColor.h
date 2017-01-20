@@ -17,6 +17,8 @@ public:
     new_color.r = std::min(this->r + color.r, 1.0f);
     new_color.g = std::min(this->g + color.g, 1.0f);
     new_color.b = std::min(this->b + color.b, 1.0f);
+
+    return new_color;
   }
 
   RGBColor operator*(const RGBColor& color) const {
@@ -24,6 +26,8 @@ public:
     new_color.r = this->r * color.r;
     new_color.g = this->g * color.g;
     new_color.b = this->b * color.b;
+
+    return new_color;
   }
 
   RGBColor operator*(const double factor) const {
@@ -31,6 +35,7 @@ public:
     new_color.r = std::min(this->r * factor, 1.0);
     new_color.g = std::min(this->g * factor, 1.0);
     new_color.b = std::min(this->b * factor, 1.0);
+    return new_color;
   }
 
   RGBColor& operator=(const RGBColor& color) {
@@ -41,6 +46,8 @@ public:
     r = color.r;
     g = color.g;
     b = color.b;
+
+    return *this;
   }
 
   RGBColor& operator+=(const RGBColor& color) {
