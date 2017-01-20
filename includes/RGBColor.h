@@ -9,6 +9,7 @@ public:
 
 public:
   RGBColor();
+  RGBColor(const float rgb);
   RGBColor(const float red, const float green, const float blue);
 
   RGBColor operator+(const RGBColor& color) const {
@@ -30,6 +31,26 @@ public:
     new_color.r = std::min(this->r * factor, 1.0);
     new_color.g = std::min(this->g * factor, 1.0);
     new_color.b = std::min(this->b * factor, 1.0);
+  }
+
+  RGBColor& operator=(const RGBColor& color) {
+    if (this == &color) {
+      return *this;
+    }
+
+    r = color.r;
+    g = color.g;
+    b = color.b;
+  }
+
+  RGBColor& operator+=(const RGBColor& color) {
+    if (this == &color) {
+      return *this;
+    }
+
+    r += color.r;
+    g += color.g;
+    b += color.b;
   }
 
   ~RGBColor();
