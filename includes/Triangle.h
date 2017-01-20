@@ -63,9 +63,17 @@ public:
 class Triangle3D {
 public:
   Point3D v1, v2, v3;
+  Vector3D normal;
+
 public:
-  Triangle3D() { }
-  Triangle3D(const Point3D& p1, const Point3D& p2, const Point3D& p3) : v1(p1), v2(p2), v3(p3) { }
+  Triangle3D() { 
+  }
+
+  Triangle3D(const Point3D& p1, const Point3D& p2, const Point3D& p3) : v1(p1), v2(p2), v3(p3) { 
+    normal = (v2 - v1) ^ (v3 - v2);
+    normal.normalize();
+  }
+
   ~Triangle3D() { }
 
   const bool contains(const Point3D& point) const {
