@@ -20,6 +20,7 @@ set(SOURCES src/RGBColor.cpp
             src/OrthographicCamera.cpp
             src/Light.cpp
             src/DirectionalLight.cpp
+            src/PointLight.cpp
             src/Renderer.cpp
             src/Rasterizer.cpp
             src/World.cpp
