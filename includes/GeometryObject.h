@@ -5,6 +5,7 @@
 #include "Point2D.h"
 #include "Triangle.h"
 #include "RGBColor.h"
+#include "Material.h"
 #include <vector>
 #include <cstdint>
 
@@ -12,13 +13,14 @@ class GeometryObject {
 public:
 	std::vector<Point3D> m_vertices;
 	std::vector<uint8_t> m_indices;
+  Material m_material;
   RGBColor m_color;
 	// TODO: Normals
 	// TODO: Textures
 
 public:
   GeometryObject();
-  GeometryObject(const std::vector<Point3D>& vertices, const std::vector<uint8_t>& indices = std::vector<uint8_t>());
+  GeometryObject(const RGBColor& color, const Material& material, const std::vector<Point3D>& vertices, const std::vector<uint8_t>& indices = std::vector<uint8_t>());
     
   // TODO: Some kind of projection
   // TODO: local coordinate space ? (Model matrix?)
