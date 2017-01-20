@@ -5,6 +5,11 @@ RGBColor::RGBColor()
 
 }
 
+RGBColor::RGBColor(const float rgb)
+  : r(rgb), g(rgb), b (rgb) {
+
+}
+
 RGBColor::RGBColor(const float red, const float green, const float blue)
   : r(red), g(green), b(blue) {
 
