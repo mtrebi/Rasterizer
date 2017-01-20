@@ -18,6 +18,7 @@ set(SOURCES src/RGBColor.cpp
             src/Camera.cpp
             src/OrthographicCamera.cpp
             src/Light.cpp
+            src/DirectionalLight.cpp
             src/Renderer.cpp
             src/Rasterizer.cpp
             src/World.cpp
