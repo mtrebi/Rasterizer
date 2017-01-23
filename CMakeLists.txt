@@ -31,6 +31,8 @@ add_compile_options(
   -g
 ) 
 
+add_definitions(-D_PHONG=1)
+
 # main.cpp
 add_executable(main ${SOURCES})
 target_link_libraries(main)
