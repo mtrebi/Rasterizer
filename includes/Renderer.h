@@ -22,6 +22,7 @@ public:
   Renderer(World* world, const uint16_t image_width, const uint16_t image_height);
   ~Renderer();
     
+  virtual const RGBColor shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const = 0;
   virtual void render(const std::string output_path) = 0;
 protected:
   void exportImage(const std::string export_path) const;
