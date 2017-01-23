@@ -18,6 +18,8 @@ public:
   void render(const std::string output_path) override;
 private:
   const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
+  const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
+
 };
 
 #endif /* RASTERIZER_H */

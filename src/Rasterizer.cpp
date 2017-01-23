@@ -52,7 +52,11 @@ void Rasterizer::render(const std::string output_path) {
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
 #ifdef _PHONG
   return phongShading(object.m_material, object.m_color, triangle, point_in_triangle);
-#endif
+#endif // _PHONG
+
+#ifdef _BLINN_PHONG
+  return blinnPhongShading(object.m_material, object.m_color, triangle, point_in_triangle);
+#endif // _BLINN-PHONG
 }
 
 const RGBColor Rasterizer::phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const {
@@ -72,4 +76,21 @@ const RGBColor Rasterizer::phongShading(const Material& material, const RGBColor
   return phong_result;
 }
 
+const RGBColor Rasterizer::blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const {
+  const RGBColor ambient = AMBIENT_COLOR * k_a;
+
+  RGBColor diffuse, specular;
+  for (auto& light : m_world->m_lights) {
+    const Vector3D L = -(light->getDirectionToPoint(point_in_triangle));
+    const Vector3D N = triangle.normal;
+    const Vector3D V = m_world->m_camera->viewDirection(point_in_triangle);
+    Vector3D H = L + V;
+    H.normalize();
+
+    diffuse += material.k_d * light->getColor() * std::max((L * N), 0.0);
+    specular += material.k_s * light->getColor() * pow(std::max((H * -V), 0.0), material.k_shininess);
+  }
+  const RGBColor phong_result = (ambient + diffuse + specular) * base_color;
+  return phong_result;
+}
 
