@@ -33,6 +33,7 @@ add_compile_options(
 ) 
 
 add_definitions(-D_BLINN_PHONG=1)
+add_definitions(-D_PERSPECTIVE=1)
 
 # main.cpp
 add_executable(main ${SOURCES})
