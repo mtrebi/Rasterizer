@@ -50,7 +50,9 @@ void Rasterizer::render(const std::string output_path) {
 };
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
+#ifdef _PHONG
   return phongShading(object.m_material, object.m_color, triangle, point_in_triangle);
+#endif
 }
 
 const RGBColor Rasterizer::phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const {
@@ -61,10 +63,13 @@ const RGBColor Rasterizer::phongShading(const Material& material, const RGBColor
     const Vector3D L = -(light->getDirectionToPoint(point_in_triangle));
     const Vector3D N = triangle.normal;
     const Vector3D R = 2 * (N * L) * N - L;
+    const Vector3D V = m_world->m_camera->viewDirection(point_in_triangle);
 
     diffuse += material.k_d * light->getColor() * std::max((L * N), 0.0);
-    specular += material.k_s * light->getColor() * pow(std::max((L * R),0.0), material.k_shininess);
+    specular += material.k_s * light->getColor() * pow(std::max((R * -V),0.0), material.k_shininess);
   }
   const RGBColor phong_result = (ambient + diffuse + specular) * base_color;
   return phong_result;
 }
+
+
