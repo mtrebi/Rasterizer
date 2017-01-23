@@ -14,6 +14,11 @@ OrthographicCamera::~OrthographicCamera() {
 
 }
 
+const Vector3D OrthographicCamera::viewDirection(const Point3D point) const {
+  return m_forward;
+}
+
+
 const Point3D OrthographicCamera::imageSpaceToWorldSpace(const uint16_t image_width, const uint16_t image_height, const uint16_t pixel_image_x, const uint16_t pixel_image_y) const {
   const float x_norm = (float) pixel_image_x / image_width;
   const float y_norm = (float) pixel_image_y / image_height;
