@@ -18,6 +18,7 @@ set(SOURCES src/RGBColor.cpp
             src/GeometryObject.cpp
             src/Camera.cpp
             src/OrthographicCamera.cpp
+            src/PerspectiveCamera.cpp
             src/Light.cpp
             src/DirectionalLight.cpp
             src/PointLight.cpp
