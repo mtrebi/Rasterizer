@@ -83,12 +83,12 @@ const RGBColor Rasterizer::blinnPhongShading(const Material& material, const RGB
   for (auto& light : m_world->m_lights) {
     const Vector3D L = -(light->getDirectionToPoint(point_in_triangle));
     const Vector3D N = triangle.normal;
-    const Vector3D V = m_world->m_camera->viewDirection(point_in_triangle);
+    const Vector3D V = -(m_world->m_camera->viewDirection(point_in_triangle));
     Vector3D H = L + V;
     H.normalize();
 
     diffuse += material.k_d * light->getColor() * std::max((L * N), 0.0);
-    specular += material.k_s * light->getColor() * pow(std::max((H * -V), 0.0), material.k_shininess);
+    specular += material.k_s * light->getColor() * pow(std::max((H * V), 0.0), material.k_shininess);
   }
   const RGBColor phong_result = (ambient + diffuse + specular) * base_color;
   return phong_result;
