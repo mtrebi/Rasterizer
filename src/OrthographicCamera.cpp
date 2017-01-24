@@ -14,10 +14,21 @@ OrthographicCamera::~OrthographicCamera() {
 
 }
 
+const Point3D OrthographicCamera::viewTransform(const Point3D& point_world) const {
+  const Point3D point_camera = {
+    point_world.x * m_left.x + point_world.y * m_up.x + point_world.z * m_forward.x + m_position.x,
+    point_world.x * m_left.y + point_world.y * m_up.y + point_world.z * m_forward.y + m_position.y,
+    point_world.x * m_left.z + point_world.y * m_up.z + point_world.z * m_forward.z + m_position.z
+  };
+  return point_camera;
+}
+
+
+
 const Vector3D OrthographicCamera::viewDirection(const Point3D point) const {
   return m_forward;
 }
-
+/*
 
 const Point3D OrthographicCamera::imageSpaceToWorldSpace(const uint16_t image_width, const uint16_t image_height, const uint16_t pixel_image_x, const uint16_t pixel_image_y) const {
   const float x_norm = (float) pixel_image_x / image_width;
@@ -45,16 +56,4 @@ const Triangle2D OrthographicCamera::worldSpaceToScreenSpace(const Triangle3D& t
     Point2D(triangle3D.v2.x, triangle3D.v2.y),
     Point2D(triangle3D.v3.x, triangle3D.v3.y)
   };
-}
-
-
-
-
-const float OrthographicCamera::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
-  // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
-  float u, v, w; 
-  triangle_screen.calculateBarycentricCoords(u, v, w, pixel_screen);
-  const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
-
-  return point_interpolated.z;
-}
+}*/
