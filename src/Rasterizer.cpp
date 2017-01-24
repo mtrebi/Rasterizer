@@ -15,30 +15,24 @@ Rasterizer::Rasterizer(World* world, const uint16_t image_width, const uint16_t 
 Rasterizer::~Rasterizer(){
 }
 
-//TODO: Move image dimensions to camera
+
 void Rasterizer::render(const std::string output_path) {
   std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, std::numeric_limits<double>::max());
+  
   for (auto& object : m_world->m_objects) {
-    const std::vector<Triangle3D> triangles_of_object = object->tessellate();
-    for (auto& object_surface : triangles_of_object) {
-      const Triangle2D triangle_projected = m_world->m_camera->worldSpaceToScreenSpace(object_surface);
-
-      Point2D bbox_min, bbox_max;
-      triangle_projected.calculateBBox(bbox_min, bbox_max);
-      const Point2D bbox_min_screen = m_world->m_camera->cameraToScreen(m_image_width, m_image_height, bbox_min);
-      const Point2D bbox_max_screen = m_world->m_camera->cameraToScreen(m_image_width, m_image_height, bbox_max);
-
-      for (uint16_t pixel_image_x = bbox_min_screen.x; pixel_image_x < bbox_max_screen.x; ++pixel_image_x) {
-        for (uint16_t pixel_image_y = bbox_min_screen.y; pixel_image_y < bbox_max_screen.y; ++pixel_image_y) {
-          const Point3D surface_point = m_world->m_camera->imageSpaceToWorldSpace(m_image_width, m_image_height, pixel_image_x, pixel_image_y);
-          const Point2D pixel_screen = (Point2D) surface_point;
-          
-          if (triangle_projected.contains(pixel_screen)) {
-            const uint32_t i = Utils::convert2DIndexto1DIndex(pixel_image_x, pixel_image_y, m_image_width, m_image_height);
-            const double pixel_depth = m_world->m_camera->getDepth(object_surface, triangle_projected, pixel_screen);
+    const std::vector<Triangle3D> triangles = object->tessellate();
+    for (auto& triangle : triangles) {
+      const Triangle2D triangle_raster = this->toRaster(triangle);
+      const BoundingBox2D bbox_raster = triangle_raster.calculateBBox();
+      for (uint16_t pixel_x = bbox_raster.min.x; pixel_x < bbox_raster.max.x; ++pixel_x) {
+        for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
+          const Point2D pixel = { (float) pixel_x, (float) pixel_y };
+          if (triangle_raster.contains(pixel)) {
+            const float pixel_depth = this->getDepth(triangle, triangle_raster, pixel);
+            const uint32_t i = pixel_y * m_image_width + pixel_x;
             if (pixel_depth < depth[i]) {
               depth[i] = pixel_depth;
-              m_pixels[i] = shade(*object, object_surface, surface_point);
+              m_pixels[i] = RGBColor(0.0f); //TODO: SHADE
             }
           }
         }
@@ -47,7 +41,58 @@ void Rasterizer::render(const std::string output_path) {
   }
 
   exportImage(output_path);
-};
+}
+
+// TODO: generic
+const Point2D Rasterizer::projectTransform(const Point3D& point_camera) const {
+  // Perspective divide and clipping
+  const Point2D point_projected = {
+    (float) point_camera.x,
+    (float) point_camera.y
+  };
+
+  const double slopeX = 1.0 / (m_image_width);
+  const double slopeY = 1.0 / (m_image_height);
+
+  const Point2D point_ndc = {
+    (float) (slopeX * (point_projected.x + m_image_width / 2.0)),
+    (float) (slopeY * (point_projected.y + m_image_height / 2.0))
+  };
+  return point_ndc;
+}
+
+const Point2D Rasterizer::viewportTransform(const Point2D& point_ndc) const {
+  const Point2D point_raster = {
+    point_ndc.x * m_image_width,
+    point_ndc.y * m_image_height,
+  };
+
+  return point_raster;
+}
+
+const Point2D Rasterizer::toRaster(const Point3D& point_world) const {
+  const Point3D point_camera = m_world->m_camera->viewTransform(point_world);
+  const Point2D point_ndc = projectTransform(point_camera);
+  const Point2D point_raster = viewportTransform(point_ndc);
+  return point_raster;
+}
+
+const Triangle2D Rasterizer::toRaster(const Triangle3D& triangle_world) const {
+  return Triangle2D(
+    toRaster(triangle_world.v1),
+    toRaster(triangle_world.v2),
+    toRaster(triangle_world.v3)
+  );
+}
+
+const float Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
+  // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
+  float u, v, w;
+  triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
+  const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
+
+  return point_interpolated.z;
+}
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
 #ifdef _PHONG
