@@ -5,6 +5,10 @@
 #include "Point3D.h"
 #include <array>
 
+struct BoundingBox2D {
+  Point2D max, min;
+};
+
 class Triangle2D {
 public:
   Point2D v1, v2, v3;
@@ -32,32 +36,34 @@ public:
     u = 1.0f - v - w;
   }
 
-  void calculateBBox(Point2D& bbox_min, Point2D& bbox_max) const {
-    bbox_min.x = std::numeric_limits<float>::max();
-    bbox_min.y = std::numeric_limits<float>::max();
+  const BoundingBox2D calculateBBox() const {
+    BoundingBox2D bbox;
 
-    bbox_max.x = std::numeric_limits<float>::min();
-    bbox_max.y = std::numeric_limits<float>::min();
+    bbox.min.x = std::numeric_limits<float>::max();
+    bbox.min.y = std::numeric_limits<float>::max();
+
+    bbox.max.x = std::numeric_limits<float>::min();
+    bbox.max.y = std::numeric_limits<float>::min();
 
     std::array<Point2D, 3> vertices{ this->v1, this->v2, this->v3 };
 
     for (auto& vertex : vertices) {
-      if (vertex.x < bbox_min.x) {
-        bbox_min.x = vertex.x;
+      if (vertex.x < bbox.min.x) {
+        bbox.min.x = vertex.x;
       }
-      if (vertex.y < bbox_min.y) {
-        bbox_min.y = vertex.y;
+      if (vertex.y < bbox.min.y) {
+        bbox.min.y = vertex.y;
       }
 
-      if (vertex.x > bbox_max.x) {
-        bbox_max.x = vertex.x;
+      if (vertex.x > bbox.max.x) {
+        bbox.max.x = vertex.x;
       }
-      if (vertex.y > bbox_max.y) {
-        bbox_max.y = vertex.y;
+      if (vertex.y > bbox.max.y) {
+        bbox.max.y = vertex.y;
       }
     }
   }
-
+  return bbox;
 };
 
 class Triangle3D {
