@@ -17,6 +17,8 @@ public:
   const RGBColor shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
   void render(const std::string output_path) override;
 private:
+  const Triangle2D toRaster(const Triangle3D& triangle_world) const;
+  const float getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const;
   const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
   const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
 
