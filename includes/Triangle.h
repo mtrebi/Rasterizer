@@ -62,8 +62,8 @@ public:
         bbox.max.y = vertex.y;
       }
     }
+    return bbox;
   }
-  return bbox;
 };
 
 class Triangle3D {
