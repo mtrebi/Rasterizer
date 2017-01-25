@@ -32,7 +32,7 @@ void Rasterizer::render(const std::string output_path) {
             const uint32_t i = pixel_y * m_image_width + pixel_x;
             if (pixel_depth < depth[i]) {
               depth[i] = pixel_depth;
-              m_pixels[i] = RGBColor(0.0f); //TODO: SHADE
+              m_pixels[i] = object->m_color; //TODO: SHADE
             }
           }
         }
@@ -41,24 +41,6 @@ void Rasterizer::render(const std::string output_path) {
   }
 
   exportImage(output_path);
-}
-
-// TODO: generic
-const Point2D Rasterizer::projectTransform(const Point3D& point_camera) const {
-  // Perspective divide and clipping
-  const Point2D point_projected = {
-    (float) point_camera.x,
-    (float) point_camera.y
-  };
-
-  const double slopeX = 1.0 / (m_image_width);
-  const double slopeY = 1.0 / (m_image_height);
-
-  const Point2D point_ndc = {
-    (float) (slopeX * (point_projected.x + m_image_width / 2.0)),
-    (float) (slopeY * (point_projected.y + m_image_height / 2.0))
-  };
-  return point_ndc;
 }
 
 const Point2D Rasterizer::viewportTransform(const Point2D& point_ndc) const {
@@ -72,7 +54,7 @@ const Point2D Rasterizer::viewportTransform(const Point2D& point_ndc) const {
 
 const Point2D Rasterizer::toRaster(const Point3D& point_world) const {
   const Point3D point_camera = m_world->m_camera->viewTransform(point_world);
-  const Point2D point_ndc = projectTransform(point_camera);
+  const Point2D point_ndc = m_world->m_camera->projectTransform(point_camera);
   const Point2D point_raster = viewportTransform(point_ndc);
   return point_raster;
 }
