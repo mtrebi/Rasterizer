@@ -23,15 +23,33 @@ const Material M_PLASTIC = Material(0.4, 0.4, 2);
 const RGBColor C_RED = RGBColor(1.0, 0.0, 0.0);
 
 const std::vector<Point3D> vertices = {
-  Point3D(50, 0, 1),
+  Point3D(50, -50, 1),
   Point3D(50, 50, 1),
   Point3D(100, 50, 1),
-  Point3D(100, 0, 1)
+  Point3D(100, -50, 1),
+
+  Point3D(50, -50, 20),
+  Point3D(50, 50, 20),
+  Point3D(100, 50, 20),
+  Point3D(100, -50, 20),
+
 };
 
 const std::vector<uint32_t> indices = {
   0, 1, 2,
-  2, 3, 0
+  2, 3, 0,
+
+  3, 2, 6,
+  6, 7, 3,
+
+  //6, 5, 4,
+  //4, 7, 6,
+
+  1, 5, 4,
+  4, 0, 1,
+
+  //1, 2, 6,
+  //6, 5, 1
 };
 
 const std::vector<GeometryObject*> OBJECTS {
