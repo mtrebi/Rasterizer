@@ -8,8 +8,6 @@
 //	See the file COPYING.txt for the full license.
 
 
-#include "Matrix.h"
-
 class Normal;
 class Point2D;
 
