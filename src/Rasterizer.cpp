@@ -28,12 +28,12 @@ void Rasterizer::render(const std::string output_path) {
         for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
           const Point2D pixel = { (double) pixel_x, (double) pixel_y };
           if(triangle_raster.contains(pixel)) {
-            const float pixel_depth = this->getDepth(triangle, triangle_raster, pixel);
-            if (m_world->m_camera->insideFrustrum(pixel, pixel_depth)) {
+            const Point3D  point_surface_triangle = this->interpolate3DPoint(triangle, triangle_raster, pixel);
+            if (m_world->m_camera->insideFrustrum(pixel, point_surface_triangle.z)) {
               const uint32_t i = pixel_y * m_image_width + pixel_x;
-              if (pixel_depth < depth[i]) {
-                depth[i] = pixel_depth;
-                m_pixels[i] = object->m_color; //TODO: SHADE
+              if (point_surface_triangle.z < depth[i]) {
+                depth[i] = point_surface_triangle.z;
+                m_pixels[i] = shade(*object, triangle, point_surface_triangle);
               }
             }
           }
@@ -69,13 +69,13 @@ const Triangle2D Rasterizer::toRaster(const Triangle3D& triangle_world) const {
   );
 }
 
-const float Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
+const Point3D Rasterizer::interpolate3DPoint(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
   // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
   double u, v, w;
   triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
   const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
   const Point3D point_interpolated_camera = m_world->m_camera->viewTransform(point_interpolated);
-  return point_interpolated_camera.z;
+  return point_interpolated_camera;
 }
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
