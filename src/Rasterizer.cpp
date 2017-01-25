@@ -20,7 +20,7 @@ void Rasterizer::render(const std::string output_path) {
   std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, 1000);
   
   for (auto& object : m_world->m_objects) {
-    const std::vector<Triangle3D> triangles = object->tessellate();
+    const std::vector<Triangle3D> triangles = object->triangulate();
     for (auto& triangle : triangles) {
       const Triangle2D triangle_raster = this->toRaster(triangle);
       const BoundingBox2D bbox_raster = triangle_raster.calculateBBox();

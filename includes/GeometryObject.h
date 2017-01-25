@@ -12,7 +12,7 @@
 class GeometryObject {
 public:
 	std::vector<Point3D> m_vertices;
-	std::vector<uint8_t> m_indices;
+	std::vector<uint32_t> m_indices;
   Material m_material;
   RGBColor m_color;
 	// TODO: Normals
@@ -20,15 +20,10 @@ public:
 
 public:
   GeometryObject();
-  GeometryObject(const RGBColor& color, const Material& material, const std::vector<Point3D>& vertices, const std::vector<uint8_t>& indices = std::vector<uint8_t>());
-    
-  // TODO: Some kind of projection
-  // TODO: local coordinate space ? (Model matrix?)
-//const std::vector<Point2D> Project();
-    
+  GeometryObject(const RGBColor& color, const Material& material, const std::vector<Point3D>& vertices, const std::vector<uint32_t>& indices = std::vector<uint32_t>());
   ~GeometryObject();
 
-  const std::vector<Triangle3D> tessellate() const;
+  const std::vector<Triangle3D> triangulate() const;
 
 };
 

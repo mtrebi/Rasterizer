@@ -11,7 +11,7 @@
 #include "OrthographicCamera.h"
 #include "PerspectiveCamera.h"
 
-const Point3D   CAMERA_POS  = Point3D(.0f, .0f, -10.0f);
+const Point3D   CAMERA_POS  = Point3D(.0f, .0f, -1.0f);
 const Vector3D  CAMERA_FWD  = Vector3D(.0f, .0f, 1.0f); // Points into the screen
 const Vector3D  CAMERA_UP   = Vector3D(.0f, 1.0f, .0f);
 
@@ -19,10 +19,23 @@ const int IMAGE_WIDTH         = 500;
 const int IMAGE_HEIGHT        = 500;
 const std::string IMAGE_NAME  = "output.bmp";
 
-//const Material plastic = Material(0.4, 0.4, 2);
+const Material M_PLASTIC = Material(0.4, 0.4, 2);
+const RGBColor C_RED = RGBColor(1.0, 0.0, 0.0);
+
+const std::vector<Point3D> vertices = {
+  Point3D(50, 0, 1),
+  Point3D(50, 50, 1),
+  Point3D(100, 50, 1),
+  Point3D(100, 0, 1)
+};
+
+const std::vector<uint32_t> indices = {
+  0, 1, 2,
+  2, 3, 0
+};
 
 const std::vector<GeometryObject*> OBJECTS {
-  new GeometryObject()
+  new GeometryObject(C_RED, M_PLASTIC, vertices, indices)
 };
 
 const std::vector<Light*> LIGHTS {
