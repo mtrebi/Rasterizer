@@ -26,7 +26,7 @@ void Rasterizer::render(const std::string output_path) {
       const BoundingBox2D bbox_raster = triangle_raster.calculateBBox();
       for (uint16_t pixel_x = bbox_raster.min.x; pixel_x < bbox_raster.max.x; ++pixel_x) {
         for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
-          const Point2D pixel = { (float) pixel_x, (float) pixel_y };
+          const Point2D pixel = { (double) pixel_x, (double) pixel_y };
           if(triangle_raster.contains(pixel)) {
             const float pixel_depth = this->getDepth(triangle, triangle_raster, pixel);
             if (m_world->m_camera->insideFrustrum(pixel, pixel_depth)) {
@@ -71,7 +71,7 @@ const Triangle2D Rasterizer::toRaster(const Triangle3D& triangle_world) const {
 
 const float Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
   // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
-  float u, v, w;
+  double u, v, w;
   triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
   const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
   const Point3D point_interpolated_camera = m_world->m_camera->viewTransform(point_interpolated);

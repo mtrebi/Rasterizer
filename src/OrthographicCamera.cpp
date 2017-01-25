@@ -16,8 +16,8 @@ OrthographicCamera::~OrthographicCamera() {
 
 const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) const {
   const Point2D point_projected = {
-    (float)((point_camera.x )),
-    (float)((point_camera.y ))
+    ((point_camera.x )),
+    ((point_camera.y ))
   };
 
   const double slopeX = 1.0 / (m_image_width);

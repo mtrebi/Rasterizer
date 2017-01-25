@@ -15,14 +15,14 @@ Point2D::Point2D(void)
 
 // ------------------------------------------------ constructor
 
-Point2D::Point2D(const float arg)
+Point2D::Point2D(const double arg)
 	: x(arg), y(arg)
 {}
 
 
 // ------------------------------------------------ constructor
 
-Point2D::Point2D(const float x1, const float y1)
+Point2D::Point2D(const double x1, const double y1)
 	: x(x1), y(y1)
 {}
 

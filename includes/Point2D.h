@@ -15,13 +15,13 @@
 class Point2D {	
 	public:
 	
-		float x, y;
+		double x, y;
 				
 	public:
 	
 		Point2D(void);										
-		Point2D(const float arg);							
-		Point2D(const float x1, const float y1);			
+		Point2D(const double arg);							
+		Point2D(const double x1, const double y1);			
 		Point2D(const Point2D& p); 						
 		~Point2D(void);									
 
