@@ -17,7 +17,7 @@ Rasterizer::~Rasterizer(){
 
 
 void Rasterizer::render(const std::string output_path) {
-  std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, std::numeric_limits<double>::max());
+  std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, 1000);
   
   for (auto& object : m_world->m_objects) {
     const std::vector<Triangle3D> triangles = object->tessellate();
@@ -27,12 +27,14 @@ void Rasterizer::render(const std::string output_path) {
       for (uint16_t pixel_x = bbox_raster.min.x; pixel_x < bbox_raster.max.x; ++pixel_x) {
         for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
           const Point2D pixel = { (float) pixel_x, (float) pixel_y };
-          if (triangle_raster.contains(pixel)) {
+          if(triangle_raster.contains(pixel)) {
             const float pixel_depth = this->getDepth(triangle, triangle_raster, pixel);
-            const uint32_t i = pixel_y * m_image_width + pixel_x;
-            if (pixel_depth < depth[i]) {
-              depth[i] = pixel_depth;
-              m_pixels[i] = object->m_color; //TODO: SHADE
+            if (m_world->m_camera->insideFrustrum(pixel, pixel_depth)) {
+              const uint32_t i = pixel_y * m_image_width + pixel_x;
+              if (pixel_depth < depth[i]) {
+                depth[i] = pixel_depth;
+                m_pixels[i] = object->m_color; //TODO: SHADE
+              }
             }
           }
         }

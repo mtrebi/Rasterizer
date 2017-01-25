@@ -23,7 +23,6 @@ const Point3D OrthographicCamera::viewTransform(const Point3D& point_world) cons
   return point_camera;
 }
 
-// TODO: generic
 const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) const {
   const Point2D point_projected = {
     (float)((point_camera.x )),
@@ -34,12 +33,11 @@ const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) 
   const double slopeY = 1.0 / (m_image_height);
 
   const Point2D point_ndc = {
-    (float)(slopeX * (point_projected.x + m_image_width / 2.0)),
-    (float)(slopeY * (point_projected.y + m_image_height / 2.0))
+    (float) (slopeX * (point_projected.x + m_image_width / 2.0)),
+    (float) (slopeY * (point_projected.y + m_image_height / 2.0))
   };
   return point_ndc;
 }
-
 
 const Vector3D OrthographicCamera::viewDirection(const Point3D point) const {
   return m_forward;
