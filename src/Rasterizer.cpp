@@ -74,8 +74,8 @@ const float Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangl
   float u, v, w;
   triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
   const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
-
-  return point_interpolated.z;
+  const Point3D point_interpolated_camera = m_world->m_camera->viewTransform(point_interpolated);
+  return point_interpolated_camera.z;
 }
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
