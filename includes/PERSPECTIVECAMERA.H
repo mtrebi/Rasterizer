@@ -2,7 +2,7 @@
 #include "CAMERA.H"
 class PerspectiveCamera : public Camera {
 public:
-  float m_fov;
+  float m_fov, m_zoom;
 public:
 
   PerspectiveCamera();

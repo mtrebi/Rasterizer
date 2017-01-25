@@ -6,7 +6,7 @@ PerspectiveCamera::PerspectiveCamera()
 
 PerspectiveCamera::PerspectiveCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, const float fov)
   : Camera(position, image_height, image_width), m_fov(fov) {
-
+  m_zoom = 1 / tan(fov / 2);
 }
 
 PerspectiveCamera::~PerspectiveCamera() {
@@ -25,8 +25,8 @@ const Point2D PerspectiveCamera::projectTransform(const Point3D& point_camera) c
   float z = point_camera.z * r + ((2*m_near*m_far)/(m_far-m_near));
   // Perspective divide
   const Point2D point_projected = {
-    (float)((point_camera.x * m_near / z)),
-    (float)((point_camera.y * m_near / z))
+    (point_camera.x * m_near * m_zoom) / point_camera.z,
+    (point_camera.y * m_near * m_zoom) / point_camera.z
   };
 
   const double slopeX = 1.0 / (m_image_width);
