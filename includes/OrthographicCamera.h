@@ -10,7 +10,6 @@ public:
   ~OrthographicCamera();
 
   const Vector3D viewDirection(const Point3D point) const override;
-  const Point3D viewTransform(const Point3D& point_world) const override;
   const Point2D projectTransform(const Point3D& point_camera) const override;
 };
 

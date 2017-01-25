@@ -19,24 +19,14 @@ const Vector3D PerspectiveCamera::viewDirection(const Point3D point) const {
   return view;
 }
 
-const Point3D PerspectiveCamera::viewTransform(const Point3D& point_world) const {
-  const Point3D point_camera = {
-    point_world.x * m_left.x + point_world.y * m_up.x + point_world.z * m_forward.x - m_position.x,
-    point_world.x * m_left.y + point_world.y * m_up.y + point_world.z * m_forward.y - m_position.y,
-    point_world.x * m_left.z + point_world.y * m_up.z + point_world.z * m_forward.z - m_position.z
-  };
-  return point_camera;
-}
-
 // TODO: generic
 const Point2D PerspectiveCamera::projectTransform(const Point3D& point_camera) const {
-  //const float n = 10, f = 100;
-  //const float r = (f + n) / (f - n);
-  //float z = point_camera.z * r + ((2*n*f)/(f-n));
+  const float r = (m_far + m_near) / (m_far - m_near);
+  float z = point_camera.z * r + ((2*m_near*m_far)/(m_far-m_near));
   // Perspective divide
   const Point2D point_projected = {
-    (float)((point_camera.x * m_near / point_camera.z)),
-    (float)((point_camera.y * m_near / point_camera.z))
+    (float)((point_camera.x * m_near / z)),
+    (float)((point_camera.y * m_near / z))
   };
 
   const double slopeX = 1.0 / (m_image_width);
