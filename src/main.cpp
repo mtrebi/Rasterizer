@@ -9,6 +9,7 @@
 #include "DirectionalLight.h"
 #include "PointLight.h"
 #include "OrthographicCamera.h"
+#include "PerspectiveCamera.h"
 
 const Point3D   CAMERA_POS  = Point3D(.0f, .0f, -10.0f);
 const Vector3D  CAMERA_FWD  = Vector3D(.0f, .0f, 1.0f); // Points into the screen
@@ -28,8 +29,17 @@ const std::vector<Light*> LIGHTS {
   new PointLight(RGBColor(1.0f), Point3D(0.0f, 100.0f, -50.0f))
 };
 
+Camera * camera;
+
 int main (){
-    Camera * camera = new OrthographicCamera(CAMERA_POS, CAMERA_FWD, CAMERA_UP);
+#ifdef _ORTHOGRAPHIC
+  camera = new OrthographicCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH);
+#endif 
+
+#ifdef _PERSPECTIVE
+  camera = new PerspectiveCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH);
+#endif 
+
     World * world = new World(OBJECTS, LIGHTS, camera);
     Renderer * renderer = new Rasterizer(world, IMAGE_WIDTH, IMAGE_HEIGHT);
     renderer->render(IMAGE_NAME);
