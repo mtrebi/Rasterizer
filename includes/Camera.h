@@ -26,6 +26,8 @@ public:
     Camera(const Point3D& position, const uint32_t image_height, const uint32_t image_width);
     ~Camera();
 
+    const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
+
     virtual const Vector3D viewDirection(const Point3D point) const = 0;
     virtual const Point3D viewTransform(const Point3D& point_world) const = 0;
     virtual const Point2D projectTransform(const Point3D& point_camera) const = 0;
