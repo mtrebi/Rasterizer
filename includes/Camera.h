@@ -15,7 +15,7 @@ protected:
     m_up = { 0, 1, 0 },
     m_left = { 1, 0, 0 };
   const uint32_t 
-    m_near = 10, 
+    m_near = 1, 
     m_far = 1000;
 
   Point3D m_position;
