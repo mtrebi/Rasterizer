@@ -7,9 +7,6 @@
 //	This C++ code is licensed under the GNU General Public License Version 2.
 //	See the file COPYING.txt for the full license.
 
-
-#include "Matrix.h"
-
 class Normal;
 class Point3D;
 
@@ -177,18 +174,6 @@ inline Vector3D
 operator* (const double a, const Vector3D& v) {
 	return (Vector3D(a * v.x, a * v.y, a * v.z));	
 }
-
-
-
-// non-inlined non-member function
-
-// ----------------------------------------------------------------------- operator* 
-// multiplication by a matrix on the left
-
-Vector3D 											// prototype
-operator* (const Matrix& mat, const Vector3D& v);
-
-
 #endif
 
 

@@ -13,7 +13,6 @@ set(SOURCES src/RGBColor.cpp
             src/Vector2D.cpp
             src/Point3D.cpp
             src/Vector3D.cpp
-            src/Matrix.cpp
             src/Material.cpp
             src/GeometryObject.cpp
             src/Camera.cpp

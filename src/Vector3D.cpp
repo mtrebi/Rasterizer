@@ -121,16 +121,3 @@ Vector3D::hat(void) {
 	return (*this);
 } 
 
-
-// non-member function
-
-// ----------------------------------------------------------  operator* 
-// multiplication by a matrix on the left
-
-Vector3D 
-operator* (const Matrix& mat, const Vector3D& v) {
-	return (Point3D(mat.m[0][0] * v.x + mat.m[0][1] * v.y + mat.m[0][2] * v.z,
-					mat.m[1][0] * v.x + mat.m[1][1] * v.y + mat.m[1][2] * v.z,
-					mat.m[2][0] * v.x + mat.m[2][1] * v.y + mat.m[2][2] * v.z));
-}
-

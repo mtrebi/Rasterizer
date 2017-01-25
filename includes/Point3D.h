@@ -8,7 +8,6 @@
 //	See the file COPYING.txt for the full license.
 
 
-#include "Matrix.h"
 #include "Point2D.h"
 #include "Vector3D.h"
 
@@ -126,16 +125,6 @@ inline Point3D
 operator* (double a, const Point3D& p) {
 	return (Point3D(a * p.x, a * p.y, a * p.z));
 }
-
-
-
-// non-inlined non-member function
-
-// -------------------------------------------------------------- operator*
-// multiplication by a matrix on the left
-
-Point3D 											// prototype					
-operator* (const Matrix& mat, const Point3D& p);
 
 #endif
 

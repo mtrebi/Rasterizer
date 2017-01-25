@@ -123,16 +123,4 @@ operator* (double a, const Point2D& p) {
   return (Point2D(a * p.x, a * p.y));
 }
 
-
-
-// non-inlined non-member function
-
-// -------------------------------------------------------------- operator*
-// multiplication by a matrix on the left
-
-Point2D 											// prototype					
-operator* (const Matrix& mat, const Point2D& p);
-
 #endif
-
-
