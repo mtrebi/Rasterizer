@@ -18,7 +18,7 @@ Rasterizer::~Rasterizer(){
 
 void Rasterizer::render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) {
   m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
-  m_depth_buffer = std::vector<double>(image_height * image_width, 1000);
+  m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
   
   for (auto& object : m_world->m_objects) {
     const std::vector<Triangle3D> triangles = object->triangulate();
@@ -29,8 +29,8 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
         for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
           const Point2D pixel = { (double) pixel_x, (double) pixel_y };
           if(triangle_raster.contains(pixel)) {
-            const Point3D point_surface_triangle = m_world->m_camera->viewTransform(triangle.interpolatePoint(triangle_raster, pixel));
-            if (m_world->m_camera->insideFrustrum(pixel, point_surface_triangle.z)) {
+            const Point3D point_surface_triangle = m_camera->viewTransform(triangle.interpolatePoint(triangle_raster, pixel));
+            if (m_camera->insideFrustrum(pixel, point_surface_triangle.z)) {
               const uint32_t i = pixel_y * image_width + pixel_x;
               if (point_surface_triangle.z < m_depth_buffer[i]) {
                 m_depth_buffer[i] = point_surface_triangle.z;
@@ -43,22 +43,29 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
     }
   }
 
-  //exportDepthBuffer(depth_buffer, output_path);
+  exportDepthBuffer(m_depth_buffer, "depth.bmp", image_width, image_height);
   exportImage(m_pixels, output_path, image_width, image_height);
 }
-/*
-void Rasterizer::exportDepthBuffer(const std::vector<RGBColor>& depth_buffer, const std::string output_path) const {
-  std::vector<RGBColor> depth_buffer_grey;
-  for (auto& d : depth_buffer) {
 
+void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, const std::string output_path, const uint16_t image_width, const uint16_t image_height) const {
+  std::vector<RGBColor> depth_buffer_grey(image_height*image_width, RGBColor(1.0));
+  for (int i = 0; i < depth_buffer.size(); ++i) {
+    const double depth = depth_buffer[i];
+    if (depth != m_camera->get_far_plane()) {
+      // Convert depth in the range [near, far] to [0,1]
+      const double slope = 1.0 / (m_camera->get_far_plane() - m_camera->get_near_plane());
+      const double depth_normalized = slope * (depth - m_camera->get_near_plane());
+      depth_buffer_grey[i]= RGBColor(depth_normalized);
+    }
   }
+  exportImage(depth_buffer_grey, output_path, image_width, image_height);
 }
-*/
+
 
 const Point2D Rasterizer::toRaster(const Point3D& point_world) const {
-  const Point3D point_camera = m_world->m_camera->viewTransform(point_world);
-  const Point2D point_ndc = m_world->m_camera->projectTransform(point_camera);
-  const Point2D point_raster = m_world->m_camera->viewportTransform(point_ndc);
+  const Point3D point_camera = m_camera->viewTransform(point_world);
+  const Point2D point_ndc = m_camera->projectTransform(point_camera);
+  const Point2D point_raster = m_camera->viewportTransform(point_ndc);
   return point_raster;
 }
 
