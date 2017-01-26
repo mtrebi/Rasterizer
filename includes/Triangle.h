@@ -76,8 +76,13 @@ public:
   }
 
   Triangle3D(const Point3D& p1, const Point3D& p2, const Point3D& p3) : v1(p1), v2(p2), v3(p3) { 
-    normal = (v2 - v1) ^ (v3 - v2);
-    normal.normalize();
+    Vector3D v1v2 = (v2 - v1);
+    Vector3D v2v3 = (v3 - v2);
+
+    v1v2.normalize();
+    v2v3.normalize();
+
+    normal = v1v2 ^ v2v3;
   }
 
   ~Triangle3D() { }
