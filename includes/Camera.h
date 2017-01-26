@@ -19,7 +19,7 @@ protected:
     m_left = { 1, 0, 0 };
   const uint32_t 
     m_near = 1, 
-    m_far = 1000;
+    m_far = 100;
 
   Point3D m_position;
   uint32_t m_image_height,
