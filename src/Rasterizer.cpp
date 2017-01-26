@@ -25,8 +25,8 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
     for (auto& triangle : triangles) {
       const Triangle2D triangle_raster = this->toRaster(triangle);
       const BoundingBox2D bbox_raster = triangle_raster.calculateBBox();
-      for (uint16_t pixel_x = bbox_raster.min.x; pixel_x < bbox_raster.max.x; ++pixel_x) {
-        for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
+      for (int32_t pixel_x = bbox_raster.min.x; pixel_x <= bbox_raster.max.x; ++pixel_x) {
+        for (int32_t pixel_y = bbox_raster.min.y; pixel_y <= bbox_raster.max.y; ++pixel_y) {
           const Point2D pixel = { (double) pixel_x, (double) pixel_y };
           if(triangle_raster.contains(pixel)) {
             const Point3D point_surface_triangle = m_camera->viewTransform(triangle.interpolatePoint(triangle_raster, pixel));
