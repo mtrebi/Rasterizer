@@ -6,7 +6,7 @@ Camera::Camera() {
 
 Camera::Camera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer)
   : m_position(position), m_image_height(image_height), m_image_width(image_width), m_renderer(renderer) {
-
+  m_renderer->set_camera(this);
 }
 
 Camera::~Camera(){
