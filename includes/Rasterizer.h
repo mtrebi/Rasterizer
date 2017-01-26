@@ -9,13 +9,15 @@ class Rasterizer : public Renderer {
 private:
   const float k_a = 0.1;
   const RGBColor AMBIENT_COLOR = RGBColor(1.0f, 1.0f, 1.0f);
+  std::vector<double> m_depth_buffer;
+
 public:
   Rasterizer();
-  Rasterizer(World* world, const uint16_t image_width, const uint16_t image_height);
+  Rasterizer(World* world);
   ~Rasterizer();
   
   const RGBColor shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
-  void render(const std::string output_path) override;
+  void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) override;
 private:
   const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
   const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;

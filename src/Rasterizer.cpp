@@ -7,8 +7,8 @@ Rasterizer::Rasterizer()
 
 }
 
-Rasterizer::Rasterizer(World* world, const uint16_t image_width, const uint16_t image_height)
-  : Renderer(world, image_width, image_height) {
+Rasterizer::Rasterizer(World* world)
+  : Renderer(world) {
 
 }
 
@@ -16,8 +16,9 @@ Rasterizer::~Rasterizer(){
 }
 
 
-void Rasterizer::render(const std::string output_path) {
-  std::vector<double> depth = std::vector<double>(m_image_height * m_image_width, 1000);
+void Rasterizer::render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) {
+  m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
+  m_depth_buffer = std::vector<double>(image_height * image_width, 1000);
   
   for (auto& object : m_world->m_objects) {
     const std::vector<Triangle3D> triangles = object->triangulate();
@@ -28,11 +29,11 @@ void Rasterizer::render(const std::string output_path) {
         for (uint16_t pixel_y = bbox_raster.min.y; pixel_y < bbox_raster.max.y; ++pixel_y) {
           const Point2D pixel = { (double) pixel_x, (double) pixel_y };
           if(triangle_raster.contains(pixel)) {
-            const Point3D  point_surface_triangle = this->interpolate3DPoint(triangle, triangle_raster, pixel);
+            const Point3D point_surface_triangle = m_world->m_camera->viewTransform(triangle.interpolatePoint(triangle_raster, pixel));
             if (m_world->m_camera->insideFrustrum(pixel, point_surface_triangle.z)) {
-              const uint32_t i = pixel_y * m_image_width + pixel_x;
-              if (point_surface_triangle.z < depth[i]) {
-                depth[i] = point_surface_triangle.z;
+              const uint32_t i = pixel_y * image_width + pixel_x;
+              if (point_surface_triangle.z < m_depth_buffer[i]) {
+                m_depth_buffer[i] = point_surface_triangle.z;
                 m_pixels[i] = shade(*object, triangle, point_surface_triangle);
               }
             }
@@ -42,22 +43,22 @@ void Rasterizer::render(const std::string output_path) {
     }
   }
 
-  exportImage(output_path);
+  //exportDepthBuffer(depth_buffer, output_path);
+  exportImage(m_pixels, output_path, image_width, image_height);
 }
+/*
+void Rasterizer::exportDepthBuffer(const std::vector<RGBColor>& depth_buffer, const std::string output_path) const {
+  std::vector<RGBColor> depth_buffer_grey;
+  for (auto& d : depth_buffer) {
 
-const Point2D Rasterizer::viewportTransform(const Point2D& point_ndc) const {
-  const Point2D point_raster = {
-    point_ndc.x * m_image_width,
-    point_ndc.y * m_image_height,
-  };
-
-  return point_raster;
+  }
 }
+*/
 
 const Point2D Rasterizer::toRaster(const Point3D& point_world) const {
   const Point3D point_camera = m_world->m_camera->viewTransform(point_world);
   const Point2D point_ndc = m_world->m_camera->projectTransform(point_camera);
-  const Point2D point_raster = viewportTransform(point_ndc);
+  const Point2D point_raster = m_world->m_camera->viewportTransform(point_ndc);
   return point_raster;
 }
 
@@ -67,15 +68,6 @@ const Triangle2D Rasterizer::toRaster(const Triangle3D& triangle_world) const {
     toRaster(triangle_world.v2),
     toRaster(triangle_world.v3)
   );
-}
-
-const Point3D Rasterizer::interpolate3DPoint(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
-  // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
-  double u, v, w;
-  triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
-  const Point3D point_interpolated = triangle_world.v1 * u + triangle_world.v2 * v + triangle_world.v3 * w;
-  const Point3D point_interpolated_camera = m_world->m_camera->viewTransform(point_interpolated);
-  return point_interpolated_camera;
 }
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {

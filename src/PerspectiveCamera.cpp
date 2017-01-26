@@ -6,8 +6,8 @@ PerspectiveCamera::PerspectiveCamera()
   : Camera() {
 }
 
-PerspectiveCamera::PerspectiveCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, const float fov)
-  : Camera(position, image_height, image_width), m_fov(fov) {
+PerspectiveCamera::PerspectiveCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer, const float fov)
+  : Camera(position, image_height, image_width, renderer), m_fov(fov) {
   m_zoom = 1 / tan((fov/ 2) * 3.1415926535897 / 180);
 }
 

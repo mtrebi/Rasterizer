@@ -5,8 +5,8 @@ OrthographicCamera::OrthographicCamera()
 
 }
 
-OrthographicCamera::OrthographicCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width)
-  : Camera(position, image_height, image_width) {
+OrthographicCamera::OrthographicCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer)
+  : Camera(position, image_height, image_width, renderer) {
 
 }
 

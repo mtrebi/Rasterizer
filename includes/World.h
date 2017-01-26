@@ -1,6 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+class Camera;
 #include <vector>
 #include <string>
 #include "Light.h"
