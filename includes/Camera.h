@@ -31,6 +31,9 @@ public:
     Camera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer);
     ~Camera();
 
+    inline const uint32_t get_near_plane() const { return m_near; }
+    inline const uint32_t get_far_plane() const { return m_far; }
+
     void render(const std::string output_name) const;
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
