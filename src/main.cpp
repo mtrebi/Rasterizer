@@ -43,18 +43,18 @@ GeometryObject* cube = new GeometryObject(Colors::RED, Materials::PLASTIC,
 
 GeometryObject* ground = new GeometryObject(Colors::GREY, Materials::WALL,
   std::vector<Point3D> {
-    Point3D(-350, -450, -10),
-    Point3D(350, -450, 50),
-    Point3D(350, -450, -10),
-    //Point3D(-250, -250, 15),
+  Point3D(-3000, -1000, 1),
+  Point3D(3000, 1000, 7),
+  Point3D(3000, -1000, 1),
+  Point3D(-3000, 1000, 7),
   },
   std::vector<uint32_t> {
       0, 1, 2,
-      //0, 3, 1
+      0, 3, 1
   });
 const std::vector<GeometryObject*> OBJECTS {
-  cube, 
-  //ground
+  //cube, 
+  ground
 };
 
 const std::vector<Light*> LIGHTS {
