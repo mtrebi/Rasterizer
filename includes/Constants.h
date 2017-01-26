@@ -16,11 +16,13 @@ const std::string IMAGE_NAME = "output.bmp";
 
 
 namespace Materials {
-  const Material PLASTIC = Material(0.4, 0.4, 2);
-  const Material WALL = Material(0.6, 0.2, 1);
+  const Material PLASTIC = Material(RGBColor(0.4), 0.4, 2);
+  const Material WALL = Material(RGBColor(0.6), 0.2, 1);
 }
 
 namespace Colors {
+  const RGBColor WHITE = RGBColor(1.0, 1.0, 1.0);
+  const RGBColor BLACK = RGBColor(0.0, 0.0, 0.0);
   const RGBColor RED = RGBColor(1.0, 0.0, 0.0);
   const RGBColor GREEN = RGBColor(0.0, 1.0, 0.0);
   const RGBColor BLUE = RGBColor(0.0, 0.0, 1.0);
