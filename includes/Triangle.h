@@ -88,12 +88,12 @@ public:
   ~Triangle3D() { }
 
   const bool contains(const Point3D& point) const {
-    float u, v, w;
+    double u, v, w;
     calculateBarycentricCoords(u, v, w, point);
     return (u >= 0 && v >= 0 && u + v < 1);
   }
 
-  void calculateBarycentricCoords(float& u, float& v, float& w, const Point3D& point) const {
+  void calculateBarycentricCoords(double& u, double& v, double& w, const Point3D& point) const {
     const Vector3D v0 = this->v2 - this->v1, v1 = this->v3 - this->v1, v2 = point - this->v1;
     float d00 = v0 * v0;
     float d01 = v0 * v1;
