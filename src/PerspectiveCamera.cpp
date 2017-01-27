@@ -15,7 +15,7 @@ PerspectiveCamera::~PerspectiveCamera() {
 
 }
 
-const Vector3D PerspectiveCamera::viewDirection(const Point3D point) const {
+const Vector3D PerspectiveCamera::viewDirection(const Point3D& point) const {
   Vector3D view = point - m_position;
   view.normalize();
   return view;

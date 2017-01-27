@@ -39,7 +39,7 @@ public:
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
     const Point3D viewTransform(const Point3D& point_world) const;
     const Point2D viewportTransform(const Point2D& point_ndc) const;
-     virtual const Vector3D viewDirection(const Point3D point) const = 0;
+     virtual const Vector3D viewDirection(const Point3D& point) const = 0;
     virtual const Point2D projectTransform(const Point3D& point_camera) const = 0;
 };
 

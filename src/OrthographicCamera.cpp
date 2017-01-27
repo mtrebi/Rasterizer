@@ -30,6 +30,6 @@ const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) 
   return point_ndc;
 }
 
-const Vector3D OrthographicCamera::viewDirection(const Point3D point) const {
+const Vector3D OrthographicCamera::viewDirection(const Point3D& point) const {
   return m_forward;
 }
