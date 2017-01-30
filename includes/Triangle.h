@@ -105,14 +105,6 @@ public:
     w = (d00 * d21 - d01 * d20) / denom;
     u = 1.0f - v - w;
   }
-
-  const Point3D interpolatePoint(const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
-    // Interpolate point in 3D triangle using barycentric coordinates of 2D triangle
-    double u, v, w;
-    triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
-    const Point3D point_interpolated = v1 * u + v2 * v + v3 * w;
-    return point_interpolated;
-  }
 };
 
 #endif // !TRIANGLE_H
