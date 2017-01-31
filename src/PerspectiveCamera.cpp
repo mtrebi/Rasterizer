@@ -27,16 +27,22 @@ const Point2D PerspectiveCamera::projectTransform(const Point3D& point_camera) c
   float z = point_camera.z * r + ((2*m_near*m_far)/(m_far-m_near));
   // Perspective divide
   const Point2D point_projected = {
-    (point_camera.x * m_near * m_zoom) / z,
-    (point_camera.y * m_near * m_zoom) / z
+    (point_camera.x * m_near * m_zoom) / point_camera.z,
+    (point_camera.y * m_near * m_zoom) / point_camera.z
+
+    //(point_camera.x * m_near * m_zoom) / z,
+   // (point_camera.y * m_near * m_zoom) / z
   };
 
-  const double slopeX = 1.0 / (m_image_width);
-  const double slopeY = 1.0 / (m_image_height);
+  return point_projected;
+}
 
-  const Point2D point_ndc = {
-    (float)(slopeX * (point_projected.x + m_image_width / 2.0)),
-    (float)(slopeY * (point_projected.y + m_image_height / 2.0))
+const Point3D PerspectiveCamera::projectTransformInv(const Point2D& point_projected, const double depth) const {
+  const Point3D point_world = {
+    (point_projected.x * depth) / (m_near * m_zoom),
+    (point_projected.y * depth) / (m_near * m_zoom),
+    depth
   };
-  return point_ndc;
+
+  return point_world;
 }

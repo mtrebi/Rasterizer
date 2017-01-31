@@ -18,8 +18,8 @@ protected:
     m_up = { 0, 1, 0 },
     m_left = { 1, 0, 0 };
   const uint32_t 
-    m_near = 1, 
-    m_far = 100;
+    m_near = 2, 
+    m_far = 50;
 
   Point3D m_position;
   uint32_t m_image_height,
@@ -38,9 +38,18 @@ public:
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
     const Point3D viewTransform(const Point3D& point_world) const;
+    const Point3D viewTransformInv(const Point3D& point_camera) const;
+
+    const Point2D ndcTransform(const Point2D& point_projected) const;
+    const Point2D ndcTransformInv(const Point2D& point_ndc) const;
+
     const Point2D viewportTransform(const Point2D& point_ndc) const;
-     virtual const Vector3D viewDirection(const Point3D& point) const = 0;
+    const Point2D viewportTransformInv(const Point2D& point_raster) const;
+
     virtual const Point2D projectTransform(const Point3D& point_camera) const = 0;
+    virtual const Point3D projectTransformInv(const Point2D& point_projected, const double depth) const = 0;
+
+    virtual const Vector3D viewDirection(const Point3D& point) const = 0;
 };
 
 #endif /* CAMERA_H */
