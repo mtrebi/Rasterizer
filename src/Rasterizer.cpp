@@ -38,7 +38,9 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
                 m_depth_buffer[i] = depth;
-                m_pixels[i] = shade(*object, triangle_world, pixel_world);
+                //m_pixels[i] = shade(*object, triangle_world, pixel_world);
+                m_pixels[i] = getColor(triangle_world, pixel_world);
+
               }
             }
           }
@@ -64,7 +66,20 @@ const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triang
   // Interpolate Z in 3D using inverse function and barycentric coordinates in 2D
   const float depth = 1 / ((1 / triangle_camera.v1.z) * u + (1 / triangle_camera.v2.z) * v + (1 / triangle_camera.v3.z) * w);
   return depth;
+}
 
+#include "Constants.h"
+
+const RGBColor Rasterizer::getColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
+  const RGBColor v1_color = Colors::GREEN;
+  const RGBColor v2_color = Colors::BLUE;
+  const RGBColor v3_color = Colors::RED;
+
+  // Calculate barycentric coords in camera space
+  double u, v, w;
+  triangle_world.calculateBarycentricCoords(u, v, w, point_world);
+  const RGBColor new_color = v1_color * u +  v2_color * v + v3_color * w;
+  return new_color;
 }
 
 const Point2D Rasterizer::rasterize(const Point3D& point_world) const {
@@ -102,7 +117,6 @@ const Point2D Rasterizer::unproject(const Point2D& point_raster) const {
   const Point2D point_projected = m_camera->ndcTransformInv(point_ndc);
   return point_projected;
 }
-
 
 const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
 #ifdef _PHONG
