@@ -33,8 +33,7 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
             const Point2D pixel_projected = this->unproject(pixel_raster);
             const double depth = getDepth(triangle_world, triangle_projected, pixel_projected);
             const Point3D pixel_view = m_camera->projectTransformInv(pixel_projected, depth);
-            const Point3D pixel_world = pixel_view;
-            // TODO: const Point3D pixel_world = m_camera->viewTransformInv(pixel_view);
+            const Point3D pixel_world = m_camera->viewTransformInv(pixel_view);
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
