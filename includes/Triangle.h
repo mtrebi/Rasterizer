@@ -36,7 +36,7 @@ public:
     u = 1.0f - v - w;
   }
 
-  const BoundingBox2D calculateBBox() const {
+  const BoundingBox2D bbox() const {
     BoundingBox2D bbox;
 
     bbox.min.x = std::numeric_limits<float>::max();
