@@ -22,14 +22,14 @@ const Point3D Camera::viewTransform(const Point3D& point_world) const {
   return point_camera;
 }
 
-//TODO
+//TODO: generic
 const Point3D Camera::viewTransformInv(const Point3D& point_camera) const {
   const Point3D point_world = {
-    point_world.x * m_left.x + point_world.y * m_up.x + point_world.z * m_forward.x - m_position.x,
-    point_world.x * m_left.y + point_world.y * m_up.y + point_world.z * m_forward.y - m_position.y,
-    point_world.x * m_left.z + point_world.y * m_up.z + point_world.z * m_forward.z - m_position.z
+    (point_camera.x + m_position.x) / m_left.x,
+    (point_camera.y + m_position.y) / m_up.y,
+    (point_camera.z + m_position.z) / m_forward.z
   };
-  return point_camera;
+  return point_world;
 }
 
 const Point2D Camera::viewportTransform(const Point2D& point_ndc) const {
