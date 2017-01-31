@@ -38,14 +38,6 @@ public:
     return new_color;
   }
 
-  RGBColor operator/(const double factor) const {
-    RGBColor new_color;
-    new_color.r = std::min(this->r / factor, 1.0);
-    new_color.g = std::min(this->g / factor, 1.0);
-    new_color.b = std::min(this->b / factor, 1.0);
-    return new_color;
-  }
-
   RGBColor& operator=(const RGBColor& color) {
     if (this == &color) {
       return *this;
@@ -71,7 +63,15 @@ public:
   ~RGBColor();
 };
 
-RGBColor operator/ (double factor, const RGBColor& old_color) {
+inline RGBColor operator/ (double factor, const RGBColor& old_color) {
+  RGBColor new_color;
+  new_color.r = std::min(factor / old_color.r , 1.0);
+  new_color.g = std::min(factor / old_color.g, 1.0);
+  new_color.b = std::min(factor / old_color.b, 1.0);
+  return new_color;
+}
+
+inline RGBColor operator/ (const RGBColor& old_color, double factor) {
   RGBColor new_color;
   new_color.r = std::min(old_color.r / factor, 1.0);
   new_color.g = std::min(old_color.g / factor, 1.0);
