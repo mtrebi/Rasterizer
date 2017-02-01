@@ -55,30 +55,26 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
 
 const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
   const Triangle3D triangle_camera = Triangle3D(
-    m_camera->viewTransform(triangle_world.v1),
-    m_camera->viewTransform(triangle_world.v2),
-    m_camera->viewTransform(triangle_world.v3)
+    Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color),
+    Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color),
+    Vertex3D(m_camera->viewTransform(triangle_world.v3.position), triangle_world.v3.color)
   );
 
   // Calculate barycentric coords in camera space
   double u, v, w;
   triangle_screen.calculateBarycentricCoords(u, v, w, pixel_screen);
   // Interpolate Z in 3D using inverse function and barycentric coordinates in 2D
-  const float depth = 1 / ((1 / triangle_camera.v1.z) * u + (1 / triangle_camera.v2.z) * v + (1 / triangle_camera.v3.z) * w);
+  const float depth = 1 / ((1 / triangle_camera.v1.position.z) * u + (1 / triangle_camera.v2.position.z) * v + (1 / triangle_camera.v3.position.z) * w);
   return depth;
 }
 
 #include "Constants.h"
 
 const RGBColor Rasterizer::getColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
-  const RGBColor v1_color = Colors::GREEN;
-  const RGBColor v2_color = Colors::BLUE;
-  const RGBColor v3_color = Colors::RED;
-
   // Calculate barycentric coords in camera space
   double u, v, w;
   triangle_world.calculateBarycentricCoords(u, v, w, point_world);
-  const RGBColor new_color = v1_color * u +  v2_color * v + v3_color * w;
+  const RGBColor new_color = triangle_world.v1.color * u + triangle_world.v2.color * v + triangle_world.v3.color * w;
   return new_color;
 }
 
@@ -92,17 +88,17 @@ const Point2D Rasterizer::rasterize(const Point3D& point_world) const {
 
 const Triangle2D Rasterizer::rasterize(const Triangle3D& triangle_world) const {
   return Triangle2D(
-    rasterize(triangle_world.v1),
-    rasterize(triangle_world.v2),
-    rasterize(triangle_world.v3)
+    rasterize(triangle_world.v1.position),
+    rasterize(triangle_world.v2.position),
+    rasterize(triangle_world.v3.position)
   );
 }
 
 const Triangle2D Rasterizer::project(const Triangle3D& triangle_world) const {
   return Triangle2D(
-    project(triangle_world.v1),
-    project(triangle_world.v2),
-    project(triangle_world.v3)
+    project(triangle_world.v1.position),
+    project(triangle_world.v2.position),
+    project(triangle_world.v3.position)
   );
 }
 
@@ -124,7 +120,7 @@ const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D&
 #endif // _PHONG
 
 #ifdef _BLINN_PHONG
-  return blinnPhongShading(object.m_material, object.m_color, triangle, point_in_triangle);
+  return blinnPhongShading(object.m_material, Colors::BLACK, triangle, point_in_triangle);
 #endif // _BLINN-PHONG
 }
 
