@@ -38,9 +38,7 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
                 m_depth_buffer[i] = depth;
-                //m_pixels[i] = shade(*object, triangle_world, pixel_world);
-                m_pixels[i] = getColor(triangle_world, pixel_world);
-
+                m_pixels[i] = shade(object->m_material, getColor(triangle_world, pixel_world), triangle_world, pixel_world);
               }
             }
           }
@@ -114,13 +112,17 @@ const Point2D Rasterizer::unproject(const Point2D& point_raster) const {
   return point_projected;
 }
 
-const RGBColor Rasterizer::shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const {
+const RGBColor Rasterizer::shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const {
+#ifdef _FLAT
+  return color;
+#endif // _FLAT
+
 #ifdef _PHONG
-  return phongShading(object.m_material, object.m_color, triangle, point_in_triangle);
+  return phongShading(material, color, triangle, point_in_triangle);
 #endif // _PHONG
 
 #ifdef _BLINN_PHONG
-  return blinnPhongShading(object.m_material, Colors::BLACK, triangle, point_in_triangle);
+  return blinnPhongShading(material, color, triangle, point_in_triangle);
 #endif // _BLINN-PHONG
 }
 

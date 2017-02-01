@@ -22,7 +22,7 @@ public:
     
   inline void set_camera(Camera * camera) { m_camera = camera; }
 
-  virtual const RGBColor shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const = 0;
+  virtual const RGBColor shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const = 0;
   virtual void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) = 0;
 protected:
   void exportImage(const std::vector<RGBColor> pixels, const std::string export_path, const uint16_t image_width, const uint16_t image_height) const;

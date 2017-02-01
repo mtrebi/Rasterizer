@@ -16,7 +16,7 @@ public:
   Rasterizer(World* world);
   ~Rasterizer();
   
-  const RGBColor shade(const GeometryObject& object, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
+  const RGBColor shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
   void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) override;
 private:
   const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
