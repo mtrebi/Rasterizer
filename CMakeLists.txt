@@ -2,6 +2,9 @@
 cmake_minimum_required (VERSION 3.5)
 project (rasterizer)
 
+# Compile lib dependencies 
+add_subdirectory (lib)
+
 ## Add headers files
 include_directories (
 	includes/
@@ -31,7 +34,7 @@ add_compile_options(
   -g
 ) 
 
-add_definitions(-D_BLINN_PHONG=1)
+add_definitions(-D_FLAT=1)
 add_definitions(-D_PERSPECTIVE=1)
 
 # main.cpp
