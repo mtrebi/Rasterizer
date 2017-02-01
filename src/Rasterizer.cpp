@@ -53,9 +53,9 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
 
 const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
   const Triangle3D triangle_camera = Triangle3D(
-    Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color),
-    Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color),
-    Vertex3D(m_camera->viewTransform(triangle_world.v3.position), triangle_world.v3.color)
+    Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color, triangle_world.v1.texture_coords),
+    Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color, triangle_world.v2.texture_coords),
+    Vertex3D(m_camera->viewTransform(triangle_world.v3.position), triangle_world.v3.color, triangle_world.v3.texture_coords)
   );
 
   // Calculate barycentric coords in camera space

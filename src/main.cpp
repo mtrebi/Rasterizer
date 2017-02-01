@@ -41,6 +41,7 @@ GeometryObject* cube = new GeometryObject(Colors::RED, Materials::PLASTIC,
       6, 5, 1
   });
   */
+/*
 GeometryObject* ground = new GeometryObject(Materials::WALL,
   std::vector<Point3D> {
     Point3D(-3000., -1000., 1.),
@@ -58,7 +59,7 @@ GeometryObject* ground = new GeometryObject(Materials::WALL,
     0, 1, 2,
     0, 3, 1
   });
-
+*/
 GeometryObject* triangle = new GeometryObject(Materials::WALL,
   std::vector<Point3D> {
     Point3D(-1500, -250, 15.),
@@ -69,7 +70,11 @@ GeometryObject* triangle = new GeometryObject(Materials::WALL,
     Colors::GREEN,
     Colors::RED,
     Colors::BLUE,
-    Colors::GREEN,
+  },
+  std::vector<Vector2D> {
+    Vector2D(0, 0),
+    Vector2D(.5, 1),
+    Vector2D(1, 0)
   },
   std::vector<uint32_t> {
     0, 1, 2,

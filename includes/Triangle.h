@@ -70,11 +70,10 @@ public:
 struct Vertex3D {
   Point3D position;
   RGBColor color;
-  // Vector3D normal_coords;
-  // Vector3D texture_coords;
+  Vector2D texture_coords;
 
   Vertex3D();
-  Vertex3D(const Point3D& p, const RGBColor& c) : position(p), color(c) { }
+  Vertex3D(const Point3D& p, const RGBColor& c, const Vector2D& text) : position(p), color(c), texture_coords(text) { }
 };
 
 class Triangle3D {

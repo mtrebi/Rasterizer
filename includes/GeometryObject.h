@@ -14,6 +14,7 @@ public:
 	std::vector<Point3D> m_vertices;
 	std::vector<uint32_t> m_indices;
   std::vector<RGBColor> m_colors;
+  std::vector<Vector2D> m_texture;
 
   Material m_material;
 	// TODO: Normals
@@ -21,7 +22,7 @@ public:
 
 public:
   GeometryObject();
-  GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<uint32_t>& indices);
+  GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices);
   ~GeometryObject();
 
   const std::vector<Triangle3D> triangulate() const;
