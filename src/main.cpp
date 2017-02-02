@@ -11,36 +11,107 @@
 #include "OrthographicCamera.h"
 #include "PerspectiveCamera.h"
 #include "Constants.h"
-/*
-GeometryObject* cube = new GeometryObject(Colors::RED, Materials::PLASTIC, 
-  std::vector<Point3D> {
-    Point3D(500, -500, 1),
-    Point3D(500, 500, 1),
-    Point3D(1000, 500, 1),
-    Point3D(1000, -500, 1),
 
-    Point3D(500, -500, 20),
-    Point3D(500, 500, 20),
-    Point3D(1000, 500, 20),
-    Point3D(1000, -500, 20),
+GeometryObject* box = new GeometryObject(Materials::PLASTIC, 
+  std::vector<Point3D> {
+    // Vertices positions
+      // Front face
+    Point3D(500, -500, 5),
+    Point3D(500, 500, 5),
+    Point3D(1500, 500, 5),
+    Point3D(1500, -500, 5),
+      // Back face
+    Point3D(500, -500, 10),
+    Point3D(500, 500, 10),
+    Point3D(1500, 500, 10),
+    Point3D(1500, -500, 10),
+      // Top face
+    Point3D(500, 500, 5),
+    Point3D(500, 500, 10),
+    Point3D(1500, 500, 10),
+    Point3D(1500, 500, 5),
+      // Bottom face
+    Point3D(500, -500, 5),
+    Point3D(500, -500, 10),
+    Point3D(1500, -500, 10),
+    Point3D(1500, -500, 5),
+      // Left face
+    Point3D(500, -500, 5),
+    Point3D(500, 500, 5),
+    Point3D(500, 500, 10),
+    Point3D(500, -500, 10),
+      // Right face
+    Point3D(1500, -500, 5),
+    Point3D(1500, 500, 5),
+    Point3D(1500, 500, 10),
+    Point3D(1500, -500, 10),
+
   }, 
+  std::vector<RGBColor> {
+    // Vertices colors
+  },
+  std::vector<Vector2D> {
+    // Texture coordinates
+      // Front face
+    Vector2D(0, 0),
+    Vector2D(0, 1),
+    Vector2D(1, 1),
+    Vector2D(1, 0),
+      // Back face
+    Vector2D(1, 1),
+    Vector2D(1, 0),
+    Vector2D(0, 0),
+    Vector2D(0, 1),
+      // Top face
+    Vector2D(0, 0),
+    Vector2D(0, 1),
+    Vector2D(1, 1),
+    Vector2D(1, 0),
+      // Bottom face
+    Vector2D(0, 0),
+    Vector2D(0, 1),
+    Vector2D(1, 1),
+    Vector2D(1, 0),
+     // Left face
+    Vector2D(1, 0),
+    Vector2D(1, 1),
+    Vector2D(0, 1),
+    Vector2D(0, 0),
+     // Right face
+    Vector2D(0, 0),
+    Vector2D(0, 1),
+    Vector2D(1, 1),
+    Vector2D(1, 0)
+  },
   std::vector<uint32_t> {
+    // Vertices indices
+      // Front face
       0, 1, 2,
       2, 3, 0,
 
-      3, 2, 6,
-      6, 7, 3,
+      // Back face
+      4, 5, 6,
+      6, 7, 4,
+      
+      // Top face
+      8, 9, 10,
+      10, 11, 8,
 
-      6, 5, 4,
-      4, 7, 6,
+      // Bottom face
+      12, 13, 14,
+      14, 15, 12,
 
-      1, 5, 4,
-      4, 0, 1,
+      // Left face
+      16, 17, 18,
+      18, 19, 16,
 
-      1, 2, 6,
-      6, 5, 1
-  });
-  */
+      // Right face
+      20, 21, 22,
+      22, 23, 20
+  },
+  // Texture image location
+  "../assets/box.bmp");
+  
 
 GeometryObject* ground = new GeometryObject(Materials::WALL,
   std::vector<Point3D> {
@@ -118,8 +189,8 @@ GeometryObject* triangle = new GeometryObject(Materials::WALL,
 const std::vector<GeometryObject*> OBJECTS {
   //triangle,
   //textured_rectangle
-  //cube, 
- ground
+  box
+// ground
 };
 
 const std::vector<Light*> LIGHTS {
