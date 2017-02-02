@@ -41,25 +41,31 @@ GeometryObject* cube = new GeometryObject(Colors::RED, Materials::PLASTIC,
       6, 5, 1
   });
   */
-/*
+
 GeometryObject* ground = new GeometryObject(Materials::WALL,
   std::vector<Point3D> {
     Point3D(-3000., -1000., 1.),
-    Point3D(3000., -1000., 50.),
+    Point3D(-3000., -1000., 50.),
     Point3D(3000., -1000., 1.),
-    Point3D(-3000., -1000., 50.)
+    Point3D(3000., -1000., 50.)
   },
   std::vector<RGBColor> {
-    Colors::RED,
-    Colors::RED,
-    Colors::RED,
-    Colors::RED,
+
   },
-  std::vector<uint32_t> {
-    0, 1, 2,
-    0, 3, 1
-  });
-*/
+      std::vector<Vector2D> {
+    Vector2D(0, 0),
+      Vector2D(0, 1),
+      Vector2D(1, 0),
+      Vector2D(1, 1)
+
+  },
+
+    std::vector<uint32_t> {
+      0, 1, 2,
+        1, 3, 2
+    },
+      "../assets/brick_wall.bmp");
+
 GeometryObject* textured_rectangle = new GeometryObject(Materials::WALL,
   std::vector<Point3D> {
   Point3D(-1500, -250, 15.),
@@ -111,9 +117,9 @@ GeometryObject* triangle = new GeometryObject(Materials::WALL,
 
 const std::vector<GeometryObject*> OBJECTS {
   //triangle,
-  textured_rectangle
+  //textured_rectangle
   //cube, 
- //ground
+ ground
 };
 
 const std::vector<Light*> LIGHTS {
