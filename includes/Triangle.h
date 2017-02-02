@@ -72,7 +72,7 @@ struct Vertex3D {
   RGBColor color;
   Vector2D texture_coords;
 
-  Vertex3D();
+  Vertex3D() { }
   Vertex3D(const Point3D& p, const RGBColor& c, const Vector2D& text) : position(p), color(c), texture_coords(text) { }
 };
 
