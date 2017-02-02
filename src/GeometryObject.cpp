@@ -17,35 +17,33 @@ GeometryObject::~GeometryObject() {
 
 const std::vector<Triangle3D> GeometryObject::triangulate() const { 
   assert(m_indices.size() % 3 == 0 && "Indices array must be made up of triangles");
+  assert((m_colors.size() == 0 || m_vertices.size() == m_colors.size()) && "Vertices size and colors size should match");
+  assert((m_texture_coords.size() == 0 || m_vertices.size() == m_texture_coords.size()) && "Vertices size and texture coordinates size should match");
+
   std::vector<Triangle3D> triangles;
   for (int i = 0; i < m_indices.size(); i+=3) {
-    const Vertex3D v1 = {
-      m_vertices[m_indices[i]],
-      m_colors[m_indices[i]],
-      m_texture_coords[m_indices[i]]
-    };
-    const Vertex3D v2 = {
-      m_vertices[m_indices[i+1]],
-      m_colors[m_indices[i+1]],
-      m_texture_coords[m_indices[i+1]]
-    };
-    const Vertex3D v3 = {
-      m_vertices[m_indices[i+2]],
-      m_colors[m_indices[i+2]],
-      m_texture_coords[m_indices[i+2]]
-    };
-    const Triangle3D triangle ( v1, v2, v3 );
+    const Triangle3D triangle = Triangle3D(
+      build_vertex(m_indices[i]),
+      build_vertex(m_indices[i + 1]),
+      build_vertex(m_indices[i + 2])
+    );
+
     triangles.push_back(triangle);
   }
   
   return triangles;
 }
 
-typedef struct bitmap
-{
-  unsigned int width, height;
-  unsigned char *pixels;
-};
+const Vertex3D GeometryObject::build_vertex(const uint32_t vertex_index) const {
+  Vertex3D v;
+  
+  v.position = m_vertices[vertex_index];
+  v.color = (m_colors.size() > 1) ? m_colors[vertex_index] : RGBColor();
+  v.texture_coords = (m_texture_coords.size() > 1) ? m_texture_coords[vertex_index] : Vector2D();
+
+  return v;
+}
+
 
 void GeometryObject::loadTexture(const std::string import_path) {
   if (import_path != "") {
@@ -61,9 +59,6 @@ void GeometryObject::loadTexture(const std::string import_path) {
         for (int y = 0; y < m_texture_height; ++y) {
           RGBApixel pixel = image.GetPixel(x, y);
           RGBColor color(pixel.Red / 255.0, pixel.Green / 255.0, pixel.Blue / 255.0);
-
-
-
           m_texture.push_back(color);
         }
       }

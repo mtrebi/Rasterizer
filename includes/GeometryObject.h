@@ -14,6 +14,7 @@ public:
 	std::vector<Point3D> m_vertices;
 	std::vector<uint32_t> m_indices;
 	std::vector<RGBColor> m_colors;
+
 	std::vector<Vector2D> m_texture_coords;
 	std::vector<RGBColor> m_texture;
 	int m_texture_width,
@@ -21,7 +22,6 @@ public:
 
 	Material m_material;
 	// TODO: Normals
-	// TODO: Textures
 
 public:
 	GeometryObject();
@@ -36,6 +36,8 @@ public:
 	const RGBColor getTextureColor(const Vector2D& text_coords) const;
 private:
 	void loadTexture(const std::string import_path);
+  const Vertex3D build_vertex(const uint32_t vertex_index) const;
+
 };
 
 
