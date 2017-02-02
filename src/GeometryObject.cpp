@@ -6,7 +6,7 @@ GeometryObject::GeometryObject() {
 
 }
 
-GeometryObject::GeometryObject(const Material & material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::string texture_file, const std::vector<uint32_t>& indices)
+GeometryObject::GeometryObject(const Material & material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const std::string texture_file)
   : m_material(material), m_vertices(vertices), m_indices(indices), m_colors(colors), m_texture_coords(texture_coords){
   loadTexture(texture_file);
 }
@@ -48,21 +48,25 @@ typedef struct bitmap
 };
 
 void GeometryObject::loadTexture(const std::string import_path) {
-  BMP image;
-  image.ReadFromFile(import_path.c_str());
+  if (import_path != "") {
+    BMP image;
+    image.ReadFromFile(import_path.c_str());
 
-  m_texture_width = image.TellWidth();
-  m_texture_height = image.TellHeight();
+    m_texture_width = image.TellWidth();
+    m_texture_height = image.TellHeight();
 
-  m_texture.reserve(m_texture_width * m_texture_height);
-  for (int x = 0; x < m_texture_width; ++x) {
-    for (int y = 0; y < m_texture_height; ++y) {
-      RGBApixel pixel = image.GetPixel(x, y);
-      RGBColor color(pixel.Red / 255.0, pixel.Green / 255.0, pixel.Blue / 255.0);
-      
-      
-      
-      m_texture.push_back(color);
+    if (m_texture_width > 1 && m_texture_height > 1) {
+      m_texture.reserve(m_texture_width * m_texture_height);
+      for (int x = 0; x < m_texture_width; ++x) {
+        for (int y = 0; y < m_texture_height; ++y) {
+          RGBApixel pixel = image.GetPixel(x, y);
+          RGBColor color(pixel.Red / 255.0, pixel.Green / 255.0, pixel.Blue / 255.0);
+
+
+
+          m_texture.push_back(color);
+        }
+      }
     }
   }
 }

@@ -25,7 +25,7 @@ public:
 
 public:
 	GeometryObject();
-	GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::string texture_file, const std::vector<uint32_t>& indices);
+	GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const std::string texture_file = "");
 	~GeometryObject();
 
 
