@@ -21,10 +21,11 @@ public:
 private:
   const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
   const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
-  const double getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
-  const RGBColor getColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
-  const Vector2D getTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
-  const RGBColor getColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const;
+  
+  const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
+  const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const RGBColor calculateBaseColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const RGBColor calculateComposedColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const;
 
 
   // Transformations
