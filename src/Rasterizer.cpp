@@ -88,9 +88,13 @@ const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_wor
   double u, v, w;
   triangle_world.calculateBarycentricCoords(u, v, w, point_world);
   const Vector2D texture_coords = triangle_world.v1.texture_coords * u + triangle_world.v2.texture_coords * v + triangle_world.v3.texture_coords * w;
-  return texture_coords;
-}
+  const Vector2D texture_coords_abs {
+    abs(texture_coords.x),
+    abs(texture_coords.y)
 
+  };
+  return texture_coords_abs;
+}
 
 const RGBColor Rasterizer::calculateBaseColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
   // Calculate barycentric coords in camera space
@@ -99,8 +103,6 @@ const RGBColor Rasterizer::calculateBaseColor(const Triangle3D& triangle_world, 
   const RGBColor new_color = triangle_world.v1.color * u + triangle_world.v2.color * v + triangle_world.v3.color * w;
   return new_color;
 }
-
-
 
 const Point2D Rasterizer::rasterize(const Point3D& point_world) const {
   const Point3D point_camera = m_camera->viewTransform(point_world);
