@@ -12,26 +12,26 @@ include_directories (
 
 
 set(SOURCES src/RGBColor.cpp
-            src/Point2D.cpp
-            src/Vector2D.cpp
-            src/Point3D.cpp
-            src/Vector3D.cpp
-            src/Material.cpp
-            src/GeometryObject.cpp
-            src/Camera.cpp
-            src/OrthographicCamera.cpp
-            src/PerspectiveCamera.cpp
-            src/Light.cpp
-            src/DirectionalLight.cpp
-            src/PointLight.cpp
-            src/Renderer.cpp
-            src/Rasterizer.cpp
-            src/World.cpp
-            src/main.cpp)
+						src/Point2D.cpp
+						src/Vector2D.cpp
+						src/Point3D.cpp
+						src/Vector3D.cpp
+						src/Material.cpp
+						src/GeometryObject.cpp
+						src/Camera.cpp
+						src/OrthographicCamera.cpp
+						src/PerspectiveCamera.cpp
+						src/Light.cpp
+						src/DirectionalLight.cpp
+						src/PointLight.cpp
+						src/Renderer.cpp
+						src/Rasterizer.cpp
+						src/World.cpp
+						src/main.cpp)
 
 add_compile_options(
-  -std=c++11
-  -g
+	-std=c++11
+	-g
 ) 
 
 add_definitions(-D_FLAT=1)
@@ -39,4 +39,4 @@ add_definitions(-D_PERSPECTIVE=1)
 
 # main.cpp
 add_executable(main ${SOURCES})
-target_link_libraries(main)
+target_link_libraries(main EASY_BMP)
