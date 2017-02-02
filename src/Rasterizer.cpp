@@ -38,7 +38,9 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
                 m_depth_buffer[i] = depth;
-                m_pixels[i] = shade(object->m_material, getColor(triangle_world, pixel_world), triangle_world, pixel_world);
+                m_pixels[i] = object->getTextureColor(getTextureCoords(triangle_world, pixel_world));
+
+                //m_pixels[i] = shade(object->m_material, getColor(triangle_world, pixel_world), triangle_world, pixel_world);
               }
             }
           }
@@ -66,7 +68,14 @@ const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triang
   return depth;
 }
 
-#include "Constants.h"
+const Vector2D Rasterizer::getTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const {
+  // Calculate barycentric coords in camera space
+  double u, v, w;
+  triangle_world.calculateBarycentricCoords(u, v, w, point_world);
+  const Vector2D texture_coords = triangle_world.v1.texture_coords * u + triangle_world.v2.texture_coords * v + triangle_world.v3.texture_coords * w;
+  return texture_coords;
+}
+
 
 const RGBColor Rasterizer::getColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
   // Calculate barycentric coords in camera space
@@ -75,6 +84,8 @@ const RGBColor Rasterizer::getColor(const Triangle3D& triangle_world, const Poin
   const RGBColor new_color = triangle_world.v1.color * u + triangle_world.v2.color * v + triangle_world.v3.color * w;
   return new_color;
 }
+
+
 
 const Point2D Rasterizer::rasterize(const Point3D& point_world) const {
   const Point3D point_camera = m_camera->viewTransform(point_world);
