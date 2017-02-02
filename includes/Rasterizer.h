@@ -24,6 +24,8 @@ private:
   const double getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   const RGBColor getColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
   const Vector2D getTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const RGBColor getColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const;
+
 
   // Transformations
   const Triangle2D rasterize(const Triangle3D& triangle_world) const;
