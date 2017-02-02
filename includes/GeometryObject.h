@@ -28,6 +28,10 @@ public:
 	GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::string texture_file, const std::vector<uint32_t>& indices);
 	~GeometryObject();
 
+
+  inline const bool hasTexture() const { return m_texture.size() > 0; }
+  inline const bool hasColor() const { return m_colors.size() > 0; }
+
 	const std::vector<Triangle3D> triangulate() const;
 	const RGBColor getTextureColor(const Vector2D& text_coords) const;
 private:
