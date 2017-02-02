@@ -54,9 +54,9 @@ GeometryObject* ground = new GeometryObject(Materials::WALL,
   },
       std::vector<Vector2D> {
     Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 0),
-      Vector2D(1, 1)
+      Vector2D(0, 5),
+      Vector2D(5, 0),
+      Vector2D(5, 5)
 
   },
 
