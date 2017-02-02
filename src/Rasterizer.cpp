@@ -31,16 +31,17 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
           const Point2D pixel_raster = { (double) pixel_raster_x, (double) pixel_raster_y };
           if (triangle_raster.contains(pixel_raster)) {
             const Point2D pixel_projected = this->unproject(pixel_raster);
-            const double depth = getDepth(triangle_world, triangle_projected, pixel_projected);
+            const double depth = calculateDepth(triangle_world, triangle_projected, pixel_projected);
             const Point3D pixel_view = m_camera->projectTransformInv(pixel_projected, depth);
             const Point3D pixel_world = m_camera->viewTransformInv(pixel_view);
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
-                m_depth_buffer[i] = depth;
-                m_pixels[i] = object->getTextureColor(getTextureCoords(triangle_world, pixel_world));
+                const RGBColor color = calculateComposedColor(*object, triangle_world, pixel_world);
+                const RGBColor shaded_color = shade(object->m_material, color, triangle_world, pixel_world);
 
-                //m_pixels[i] = shade(object->m_material, getColor(triangle_world, pixel_world), triangle_world, pixel_world);
+                m_pixels[i] = color;
+                m_depth_buffer[i] = depth;
               }
             }
           }
@@ -53,7 +54,21 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
   exportImage(m_pixels, output_path, image_width, image_height);
 }
 
-const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
+
+const RGBColor Rasterizer::calculateComposedColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const {
+  RGBColor texture_color (1.0);
+  if (object.hasTexture()) {
+    texture_color = object.getTextureColor(calculateTextureCoords(triangle_world, point_world));
+  }
+
+  RGBColor base_color(1.0);
+  if (object.hasColor()) {
+    base_color = calculateBaseColor(triangle_world, point_world);
+  }
+  return texture_color * base_color;
+}
+
+const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
   const Triangle3D triangle_camera = Triangle3D(
     Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color, triangle_world.v1.texture_coords),
     Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color, triangle_world.v2.texture_coords),
@@ -68,7 +83,7 @@ const double Rasterizer::getDepth(const Triangle3D& triangle_world, const Triang
   return depth;
 }
 
-const Vector2D Rasterizer::getTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const {
+const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const {
   // Calculate barycentric coords in camera space
   double u, v, w;
   triangle_world.calculateBarycentricCoords(u, v, w, point_world);
