@@ -1,7 +1,7 @@
 #include "GeometryObject.h"
 #include <cassert>
 #include "../lib/EasyBMP_1.06/EasyBMP.h"
-
+#include <math.h>       /* fmod */
 GeometryObject::GeometryObject() {
 
 }
@@ -69,8 +69,8 @@ void GeometryObject::loadTexture(const std::string import_path) {
 const RGBColor GeometryObject::getTextureColor(const Vector2D& text_coords) const {
   // Convert from (0,0) at left-bottom to (0,0) at left-top 
   const Vector2D text_coords_image (
-    1 - std::min(text_coords.y, 1.0),
-    std::min(text_coords.x, 1.0)
+    1 - std::min(fmod(text_coords.y, 1), 1.0),
+    std::min(fmod(text_coords.x, 1), 1.0)
   );
   // Scale to texture size
   const int x = text_coords_image.x * (m_texture_width - 1);
