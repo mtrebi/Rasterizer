@@ -19,7 +19,7 @@ const Vertex3D Rasterizer::calculateVertexAttributes(const Triangle3D& triangle_
     point_world,
     calculateColor(triangle_world, point_world),
     calculateTextureCoords(triangle_world, point_world),
-    calculateNormal(triangle_world, point_world);
+    calculateNormal(triangle_world, point_world)
   };
 
   return v;
