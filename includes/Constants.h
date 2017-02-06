@@ -1,6 +1,6 @@
 #pragma once
-#include <string>
 
+#include <string>
 #include "POINT3D.H"
 #include "VECTOR3D.H"
 #include "Material.h"
@@ -14,12 +14,6 @@ const int IMAGE_WIDTH = 800;
 const int IMAGE_HEIGHT = 600;
 const std::string IMAGE_NAME = "output.bmp";
 
-
-namespace Materials {
-  const Material PLASTIC = Material(RGBColor(0.4), 0.4, 2);
-  const Material WALL = Material(RGBColor(0.6), 0.2, 1);
-}
-
 namespace Colors {
   const RGBColor WHITE = RGBColor(1.0, 1.0, 1.0);
   const RGBColor BLACK = RGBColor(0.0, 0.0, 0.0);
@@ -32,8 +26,20 @@ namespace Colors {
   const RGBColor CYAN = RGBColor(0.0, 1.0, 1.0);
 }
 
+namespace Materials {
+  Material* PLASTIC = new FlatMaterial(RGBColor(0.4), 0.4, 2);
+  Material* WALL = new FlatMaterial(RGBColor(0.6), 0.2, 1);
+
+  //const Material* BRICK = new TexturedMaterial();
+   Material* BOX = new TexturedMaterial(
+    "../assets/box.bmp",
+    "../assets/box_specular.bmp",
+    5.0
+  );
+}
+
 namespace Objects {
-  GeometryObject* box = new GeometryObject(Materials::PLASTIC,
+  GeometryObject* box = new GeometryObject(Materials::BOX,
     std::vector<Point3D> {
       // Vertices positions
       // Front face
@@ -128,9 +134,7 @@ namespace Objects {
       // Right face
       20, 21, 22,
       22, 23, 20
-    },
-    // Texture image location
-    "../assets/box.bmp");
+    });
 
   GeometryObject* ground = new GeometryObject(Materials::WALL,
     std::vector<Point3D> {
@@ -155,8 +159,7 @@ namespace Objects {
       // Indices
       0, 1, 2,
       1, 3, 2
-    },
-    "../assets/brick_wall.bmp");
+    });
 
   GeometryObject* textured_rectangle = new GeometryObject(Materials::WALL,
     std::vector<Point3D> {
@@ -180,8 +183,7 @@ namespace Objects {
         // Indices
       0, 1, 2,
       1, 3, 2
-    },
-    "../assets/brick_wall.bmp");
+    });
 
   GeometryObject* rainbow_triangle = new GeometryObject(Materials::WALL,
     std::vector<Point3D> {
