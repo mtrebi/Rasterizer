@@ -2,6 +2,8 @@
 #define RGBCOLOR_H
 
 #include <algorithm> //min
+#include "VECTOR3D.H"
+
 
 class RGBColor  {
 public:
@@ -11,6 +13,9 @@ public:
   RGBColor();
   RGBColor(const float rgb);
   RGBColor(const float red, const float green, const float blue);
+
+
+  explicit operator Vector3D() const;
 
   RGBColor operator+(const RGBColor& color) const {
     RGBColor new_color;

@@ -10,7 +10,7 @@
 class Normal;
 class Point3D;
 
-#include "RGBCOLOR.H"
+class RGBColor;
 
 //----------------------------------------- class Vector3D
 
@@ -31,7 +31,7 @@ class Vector3D {
 		~Vector3D (void);										// destructor
 
 
-    explicit operator RGBColor() const { return RGBColor(x, y, z); }
+    explicit operator RGBColor() const;
 
 		Vector3D& 												// assignment operator
 		operator= (const Vector3D& rhs);

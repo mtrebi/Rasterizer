@@ -20,3 +20,8 @@ RGBColor::~RGBColor() {
   g = .0f;
   b = .0f;
 }
+
+
+RGBColor::operator Vector3D() const {
+  return Vector3D(r, g, b);
+}

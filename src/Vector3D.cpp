@@ -9,7 +9,7 @@
 #include <math.h>    // for sqrt
 
 #include "Vector3D.h"
-//#include "Normal.h"
+#include "RGBColor.h"
 #include "Point3D.h"
 
 // ---------------------------------------------------------- default constructor
@@ -57,6 +57,13 @@ Vector3D::Vector3D(const Point3D& p)
 
 Vector3D::~Vector3D (void) {}
 
+// ---------------------------------------------------------- cast
+
+
+Vector3D::operator RGBColor() const {
+  // Vector should be normalized first
+  return RGBColor(x, y, z);
+}
 
 
 // ---------------------------------------------------------- assignment operator
