@@ -10,6 +10,8 @@
 class Normal;
 class Point3D;
 
+#include "RGBCOLOR.H"
+
 //----------------------------------------- class Vector3D
 
 class Vector3D {
@@ -27,6 +29,9 @@ class Vector3D {
 		Vector3D(const Point3D& p);								// constructs a vector from a point
 
 		~Vector3D (void);										// destructor
+
+
+    explicit operator RGBColor() const { return RGBColor(x, y, z); }
 
 		Vector3D& 												// assignment operator
 		operator= (const Vector3D& rhs);
@@ -86,6 +91,8 @@ inline Vector3D
 Vector3D::operator- (void) const {
 	return (Vector3D(-x, -y, -z));    
 }
+
+
 
 
 // ---------------------------------------------------------------------  len_squared
