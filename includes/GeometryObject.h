@@ -1,45 +1,29 @@
-#ifndef GEOMETRYOBJECT_H
-#define GEOMETRYOBJECT_H
+#pragma once
 
-#include "Point3D.h"
-#include "Point2D.h"
-#include "Triangle.h"
-#include "RGBColor.h"
-#include "Material.h"
+class Material;
+
 #include <vector>
-#include <cstdint>
+#include "RGBColor.h"
+#include "Point2D.h"
+#include "Point3D.h"
+#include "Triangle.h"
+#include "MATERIAL.H"
 
 class GeometryObject {
-public:
-	std::vector<Point3D> m_vertices;
-	std::vector<uint32_t> m_indices;
-	std::vector<RGBColor> m_colors;
-
-	std::vector<Vector2D> m_texture_coords;
-	std::vector<RGBColor> m_texture;
-	int m_texture_width,
-		m_texture_height;
-
-	Material m_material;
-	// TODO: Normals
+private:
+	std::vector<Triangle3D> m_triangles;
+	Material *m_material;
 
 public:
 	GeometryObject();
-	GeometryObject(const Material& material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const std::string texture_file = "");
+	GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices);
 	~GeometryObject();
 
-
-  inline const bool hasTexture() const { return m_texture.size() > 0; }
-  inline const bool hasColor() const { return m_colors.size() > 0; }
-
-	const std::vector<Triangle3D> triangulate() const;
-	const RGBColor getTextureColor(const Vector2D& text_coords) const;
+	const std::vector<Triangle3D> triangles() const;
+	const Material * material() const;
+	
 private:
-	void loadTexture(const std::string import_path);
-  const Vertex3D build_vertex(const uint32_t vertex_index) const;
-
+	const std::vector<Triangle3D> triangulate(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices) const;
+	const Vertex3D build_vertex(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const uint32_t vertex_index) const;
 };
-
-
-#endif /* GEOMETRYOBJECT_H */
 
