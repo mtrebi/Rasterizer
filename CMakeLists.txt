@@ -26,6 +26,8 @@ set(SOURCES src/RGBColor.cpp
 						src/PointLight.cpp
 						src/Renderer.cpp
 						src/Rasterizer.cpp
+            src/ForwardRasterizer.cpp
+            src/DeferredRasterizer.cpp
 						src/World.cpp
 						src/main.cpp)
 
@@ -34,6 +36,7 @@ add_compile_options(
 	-g
 ) 
 
+add_definitions(-D_FORWARD=1)
 add_definitions(-D_PHONG=1)
 add_definitions(-D_PERSPECTIVE=1)
 
