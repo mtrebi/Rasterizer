@@ -9,21 +9,25 @@
 #include "Camera.H"
 
 class Material {
+protected:
+  float k_shininess;
 public:
   Material();
+  Material(const float shininess);
   ~Material();
 
-  virtual const RGBColor shade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const;
+  const RGBColor shade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const;
 
 protected:
   virtual const RGBColor phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const = 0;
-  //TODO: generic phong/blinn-phong
+  
+  const RGBColor phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
+    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color) const;
 };
 
 class FlatMaterial : public Material {
 public:
   RGBColor k_d, k_s;
-  float k_shininess;
 
   FlatMaterial();
   FlatMaterial(const RGBColor& d, const RGBColor& s, float shininess);
@@ -43,7 +47,6 @@ private:
     m_texture_specular_width,
     m_texture_specular_height;
 
-  float k_shininess;
 public:
   TexturedMaterial();
   TexturedMaterial(const std::string texture_diffuse_file, const std::string texture_specular_file, float shininess);
