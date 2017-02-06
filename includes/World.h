@@ -2,6 +2,7 @@
 #define WORLD_H
 
 class Camera;
+class GeometryObject;
 #include <vector>
 #include <string>
 #include "Light.h"
