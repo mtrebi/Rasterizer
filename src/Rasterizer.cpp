@@ -1,7 +1,5 @@
 #include "Rasterizer.h"
-#include <limits>   //numerics::max
-#include "Utils.h"  //
-#include <algorithm> // std::max
+
 Rasterizer::Rasterizer()
   : Renderer() {
 
@@ -21,7 +19,7 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
   m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
 
   for (auto& object : m_world->m_objects) {
-    const std::vector<Triangle3D> triangles = object->triangulate();
+    const std::vector<Triangle3D> triangles = object->triangles();
     for (auto& triangle_world : triangles) {
       const Triangle2D triangle_projected = this->project(triangle_world);
       const Triangle2D triangle_raster = this->rasterize(triangle_world);
@@ -37,10 +35,8 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
-                const RGBColor color = calculateComposedColor(*object, triangle_world, pixel_world);
-                const RGBColor shaded_color = shade(object->m_material, color, triangle_world, pixel_world);
-
-                m_pixels[i] = color;
+                const Vertex3D vertex = calculateVertexAttributes(triangle_world, pixel_world);
+                m_pixels[i] = object->material()->shade(m_world->m_lights, *m_world->m_camera, vertex);
                 m_depth_buffer[i] = depth;
               }
             }
@@ -54,25 +50,22 @@ void Rasterizer::render(const std::string output_path, const uint16_t image_widt
   exportImage(m_pixels, output_path, image_width, image_height);
 }
 
+const Vertex3D Rasterizer::calculateVertexAttributes(const Triangle3D& triangle_world, const Point3D& point_world) const {
+  const Vertex3D v {
+    point_world,
+    calculateColor(triangle_world, point_world),
+    calculateTextureCoords(triangle_world, point_world),
+    triangle_world.normal // TODO: Use normal maps
+  };
 
-const RGBColor Rasterizer::calculateComposedColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const {
-  RGBColor texture_color (1.0);
-  if (object.hasTexture()) {
-    texture_color = object.getTextureColor(calculateTextureCoords(triangle_world, point_world));
-  }
-
-  RGBColor base_color(1.0);
-  if (object.hasColor()) {
-    base_color = calculateBaseColor(triangle_world, point_world);
-  }
-  return texture_color * base_color;
+  return v;
 }
 
 const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
   const Triangle3D triangle_camera = Triangle3D(
-    Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color, triangle_world.v1.texture_coords),
-    Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color, triangle_world.v2.texture_coords),
-    Vertex3D(m_camera->viewTransform(triangle_world.v3.position), triangle_world.v3.color, triangle_world.v3.texture_coords)
+    Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color, triangle_world.v1.texture_coords, triangle_world.v1.normal),
+    Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color, triangle_world.v2.texture_coords, triangle_world.v1.normal),
+    Vertex3D(m_camera->viewTransform(triangle_world.v3.position), triangle_world.v3.color, triangle_world.v3.texture_coords, triangle_world.v1.normal)
   );
 
   // Calculate barycentric coords in camera space
@@ -96,7 +89,7 @@ const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_wor
   return texture_coords_abs;
 }
 
-const RGBColor Rasterizer::calculateBaseColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
+const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
   // Calculate barycentric coords in camera space
   double u, v, w;
   triangle_world.calculateBarycentricCoords(u, v, w, point_world);
@@ -138,56 +131,6 @@ const Point2D Rasterizer::unproject(const Point2D& point_raster) const {
   const Point2D point_ndc = m_camera->viewportTransformInv(point_raster);
   const Point2D point_projected = m_camera->ndcTransformInv(point_ndc);
   return point_projected;
-}
-
-const RGBColor Rasterizer::shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const {
-#ifdef _FLAT
-  return color;
-#endif // _FLAT
-
-#ifdef _PHONG
-  return phongShading(material, color, triangle, point_in_triangle);
-#endif // _PHONG
-
-#ifdef _BLINN_PHONG
-  return blinnPhongShading(material, color, triangle, point_in_triangle);
-#endif // _BLINN-PHONG
-}
-
-const RGBColor Rasterizer::phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const {
-  const RGBColor ambient = AMBIENT_COLOR * k_a;
-
-  RGBColor diffuse, specular;
-  for (auto& light : m_world->m_lights) {
-    const Vector3D L = -(light->getDirectionToPoint(point_in_triangle));
-    const Vector3D N = triangle.normal;
-    const Vector3D R = 2 * (N * L) * N - L;
-    const Vector3D V = -(m_world->m_camera->viewDirection(point_in_triangle));
-
-    diffuse += light->getColor() * material.k_d * std::max((L * N), 0.0);
-    specular += light->getColor() *  material.k_s * pow(std::max((R * V), 0.0), material.k_shininess);
-  }
-  const RGBColor phong_result = (ambient + diffuse + specular) * base_color;
-  return phong_result;
-}
-
-const RGBColor Rasterizer::blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const {
-  const RGBColor ambient = AMBIENT_COLOR * k_a;
-
-  RGBColor diffuse, specular;
-  for (auto& light : m_world->m_lights) {
-    const Vector3D L = -(light->getDirectionToPoint(point_in_triangle));
-    const Vector3D N = triangle.normal;
-    const Vector3D V = -(m_world->m_camera->viewDirection(point_in_triangle));
-    // Halfway calculation: Can be moved outside to increase performance
-    Vector3D H = V + L;
-    H.normalize();
-    float a = (H * V);
-    diffuse += light->getColor() * material.k_d * std::max((L * N), 0.0);
-    specular += light->getColor() * material.k_s  * pow(std::max((H * V), 0.0), material.k_shininess);
-  }
-  const RGBColor phong_result = (ambient + diffuse + specular) * base_color;
-  return phong_result;
 }
 
 void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, const std::string output_path, const uint16_t image_width, const uint16_t image_height) const {

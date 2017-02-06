@@ -16,17 +16,18 @@ public:
   Rasterizer(World* world);
   ~Rasterizer();
   
-  const RGBColor shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
+  //const RGBColor shade(const Material& material, const RGBColor& color, const Triangle3D& triangle, const Point3D point_in_triangle) const override;
   void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) override;
 private:
-  const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
-  const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
+  //const RGBColor phongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
+  //const RGBColor blinnPhongShading(const Material& material, const RGBColor& base_color, const Triangle3D& triangle, const Point3D& point_in_triangle) const;
   
+  // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
-  const RGBColor calculateBaseColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const RGBColor calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
   const RGBColor calculateComposedColor(const GeometryObject& object, const Triangle3D& triangle_world, const Point3D& point_world) const;
-
+  const Vertex3D calculateVertexAttributes(const Triangle3D& triangle_world, const Point3D& point_world) const;
 
   // Transformations
   const Triangle2D rasterize(const Triangle3D& triangle_world) const;
@@ -34,9 +35,7 @@ private:
 
   const Triangle2D project(const Triangle3D& triangle_world) const;
   const Point2D project(const Point3D& point_world) const;
- 
   const Point2D unproject(const Point2D& point_raster) const;
-
 
   const Point2D viewportTransform(const Point2D& point_ndc) const;
 
