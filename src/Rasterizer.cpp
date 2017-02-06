@@ -15,11 +15,11 @@ Rasterizer::~Rasterizer() {
 
 
 const Vertex3D Rasterizer::calculateVertexAttributes(const Triangle3D& triangle_world, const Point3D& point_world) const {
-  const Vertex3D v {
+  const Vertex3D v{
     point_world,
     calculateColor(triangle_world, point_world),
     calculateTextureCoords(triangle_world, point_world),
-    triangle_world.normal // TODO: Use normal maps
+    calculateNormal(triangle_world, point_world);
   };
 
   return v;
@@ -51,6 +51,11 @@ const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_wor
 
   };
   return texture_coords_abs;
+}
+
+//TODO : Use normal maps
+const Vector3D Rasterizer::calculateNormal(const Triangle3D& triangle_world, const Point3D& point_world) const {
+  return triangle_world.normal;
 }
 
 const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
