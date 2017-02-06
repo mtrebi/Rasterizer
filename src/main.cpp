@@ -3,7 +3,8 @@
 
 #include "World.h"
 #include "Renderer.h"
-#include "Rasterizer.h"
+#include "ForwardRasterizer.h"
+#include "DeferredRasterizer.h"
 #include "Camera.h"
 #include "Light.h"
 #include "DirectionalLight.h"
@@ -15,8 +16,8 @@
 const std::vector<GeometryObject*> OBJECTS {
   //triangle,
   //textured_rectangle
-  Objects::box
-// ground
+  Objects::box,
+  Objects::ground
 };
 
 const std::vector<Light*> LIGHTS {
@@ -24,10 +25,18 @@ const std::vector<Light*> LIGHTS {
 };
 
 Camera * camera;
-
+Renderer * renderer;
 int main (){
     World * world = new World(OBJECTS, LIGHTS, camera);
-    Renderer * renderer = new Rasterizer(world);
+
+
+#ifdef _FORWARD
+    renderer = new ForwardRasterizer(world);
+#endif 
+
+#ifdef _DEFERRED
+    renderer = new DeferredRasterizer(world);
+#endif 
 
 #ifdef _ORTHOGRAPHIC
     camera = new OrthographicCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
