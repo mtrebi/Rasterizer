@@ -20,7 +20,7 @@ const std::vector<GeometryObject*> OBJECTS {
 };
 
 const std::vector<Light*> LIGHTS {
-  new PointLight(Colors::WHITE, Point3D(0, 0, 105))
+  new PointLight(Colors::WHITE, Point3D(1000, 0, -250))
 };
 
 Camera * camera;
