@@ -34,7 +34,7 @@ add_compile_options(
 	-g
 ) 
 
-add_definitions(-D_FLAT=1)
+add_definitions(-D_PHONG=1)
 add_definitions(-D_PERSPECTIVE=1)
 
 # main.cpp
