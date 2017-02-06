@@ -36,6 +36,12 @@ namespace Materials {
     "../assets/box_specular.bmp",
     5.0
   );
+   Material* GROUND = new TexturedMaterial(
+     "../assets/brick_wall.bmp",
+     "../assets/brick_wall.bmp",
+     5.0
+   );
+
 }
 
 namespace Objects {
@@ -142,7 +148,7 @@ namespace Objects {
       22, 23, 20
     });
 
-  GeometryObject* ground = new GeometryObject(Materials::WALL,
+  GeometryObject* ground = new GeometryObject(Materials::GROUND,
     std::vector<Point3D> {
       // Vertices positions
       Point3D(-3000., -1000., 1.),
