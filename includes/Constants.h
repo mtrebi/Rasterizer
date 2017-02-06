@@ -47,6 +47,7 @@ namespace Objects {
       Point3D(500, 500, 5),
       Point3D(1500, 500, 5),
       Point3D(1500, -500, 5),
+        
       // Back face
       Point3D(500, -500, 10),
       Point3D(500, 500, 10),
@@ -62,16 +63,20 @@ namespace Objects {
       Point3D(500, -500, 10),
       Point3D(1500, -500, 10),
       Point3D(1500, -500, 5),
+      
       // Left face
       Point3D(500, -500, 5),
+      Point3D(500, -500, 10),
       Point3D(500, 500, 5),
       Point3D(500, 500, 10),
-      Point3D(500, -500, 10),
+
+        
       // Right face
       Point3D(1500, -500, 5),
       Point3D(1500, 500, 5),
       Point3D(1500, 500, 10),
       Point3D(1500, -500, 10),
+      
     },
     std::vector<RGBColor> {
       // Vertices colors
@@ -83,6 +88,7 @@ namespace Objects {
       Vector2D(0, 1),
       Vector2D(1, 1),
       Vector2D(1, 0),
+        
       // Back face
       Vector2D(1, 1),
       Vector2D(1, 0),
@@ -100,9 +106,9 @@ namespace Objects {
       Vector2D(1, 0),
       // Left face
       Vector2D(1, 0),
+      Vector2D(0, 0),
       Vector2D(1, 1),
       Vector2D(0, 1),
-      Vector2D(0, 0),
       // Right face
       Vector2D(0, 0),
       Vector2D(0, 1),
@@ -114,7 +120,7 @@ namespace Objects {
       // Front face
       0, 1, 2,
       2, 3, 0,
-
+        
       // Back face
       4, 5, 6,
       6, 7, 4,
@@ -128,8 +134,8 @@ namespace Objects {
       14, 15, 12,
 
       // Left face
-      16, 17, 18,
-      18, 19, 16,
+      18, 17, 16,
+      18, 19, 17,
 
       // Right face
       20, 21, 22,
