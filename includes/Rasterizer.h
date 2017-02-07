@@ -19,7 +19,7 @@ protected:
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
   const RGBColor calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
-  const Vertex3D calculateVertexAttributes(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const Fragment calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Material& material) const;
   const Vector3D calculateNormal(const Triangle3D& triangle_world, const Point3D& point_world) const;
 
   // Transformations

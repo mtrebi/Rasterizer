@@ -14,15 +14,17 @@ Rasterizer::~Rasterizer() {
 }
 
 
-const Vertex3D Rasterizer::calculateVertexAttributes(const Triangle3D& triangle_world, const Point3D& point_world) const {
-  const Vertex3D v{
+const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Material& material) const {
+  const Vector2D text_coords = calculateTextureCoords(triangle_world, point_world);
+  const Fragment f {
     point_world,
     calculateColor(triangle_world, point_world),
-    calculateTextureCoords(triangle_world, point_world),
+    material.getDiffuseColor(text_coords), 
+    material.getSpecularColor(text_coords),
     calculateNormal(triangle_world, point_world)
   };
 
-  return v;
+  return f;
 }
 
 const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
