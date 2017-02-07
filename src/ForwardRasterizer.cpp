@@ -33,8 +33,8 @@ void ForwardRasterizer::render(const std::string output_path, const uint16_t ima
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
-                const Vertex3D vertex = calculateVertexAttributes(triangle_world, pixel_world);
-                m_pixels[i] = object->material()->shade(m_world->m_lights, *m_world->m_camera, vertex);
+                const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, *object->material());
+                m_pixels[i] = object->material()->shade(m_world->m_lights, *m_world->m_camera, fragment);
                 m_depth_buffer[i] = depth;
               }
             }
@@ -44,6 +44,6 @@ void ForwardRasterizer::render(const std::string output_path, const uint16_t ima
     }
   }
 
-  exportDepthBuffer(m_depth_buffer, "depth.bmp", image_width, image_height);
-  exportImage(m_pixels, output_path, image_width, image_height);
+  exportDepthBuffer(m_depth_buffer, "f_depth.bmp", image_width, image_height);
+  exportImage(m_pixels, "f_" + output_path, image_width, image_height);
 }
