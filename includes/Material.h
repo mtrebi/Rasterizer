@@ -16,13 +16,13 @@ public:
   Material(const float shininess);
   ~Material();
 
-  const RGBColor shade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const;
+  static const RGBColor shade(const std::vector<Light*>& lights, const Camera& camera, const Fragment& fragment);
+  virtual const RGBColor getDiffuseColor(const Vector2D& text_coords) const = 0;
+  virtual const RGBColor getSpecularColor(const Vector2D& text_coords) const = 0;
 
-protected:
-  virtual const RGBColor phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const = 0;
-  
-  const RGBColor phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
-    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color) const;
+protected:  
+  static const RGBColor phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
+    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess);
 };
 
 class FlatMaterial : public Material {
@@ -33,9 +33,8 @@ public:
   FlatMaterial(const RGBColor& d, const RGBColor& s, float shininess);
   ~FlatMaterial();
 
-protected:
-  virtual const RGBColor phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const override;
-
+  virtual const RGBColor getDiffuseColor(const Vector2D& text_coords = Vector2D(0,0)) const override;
+  virtual const RGBColor getSpecularColor(const Vector2D& text_coords = Vector2D(0,0)) const override;
 };
 
 class TexturedMaterial : public Material {
@@ -52,9 +51,8 @@ public:
   TexturedMaterial(const std::string texture_diffuse_file, const std::string texture_specular_file, float shininess);
   ~TexturedMaterial();
 
-protected:
-  virtual const RGBColor phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const override;
-
+  virtual const RGBColor getDiffuseColor(const Vector2D& text_coords) const override;
+  virtual const RGBColor getSpecularColor(const Vector2D& text_coords) const override;
 private:
   const RGBColor getTextureColor(const std::vector<RGBColor>& texture, int texture_width, int texture_height, const Vector2D& text_coords) const;
   std::vector<RGBColor> loadTexture(int& texture_width, int& texture_height, const std::string import_path) const;

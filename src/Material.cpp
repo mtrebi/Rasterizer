@@ -14,13 +14,13 @@ Material::Material(const float shininess)
 Material::~Material() {
 }
 
-const RGBColor Material::shade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const {
+const RGBColor Material::shade(const std::vector<Light*>& lights, const Camera& camera, const Fragment& fragment) {
 #ifdef _FLAT
-  return vertex.color;
+  return fragment.color;
 #endif // _FLAT
 
 #ifdef _PHONG
-  return phongShade(lights, camera, vertex);
+  return phongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 5.0);
 #endif // _PHONG
 
 #ifdef _BLINN_PHONG
@@ -30,7 +30,7 @@ const RGBColor Material::shade(const std::vector<Light*>& lights, const Camera& 
 
 
 const RGBColor Material::phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
-                                    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color) const {
+                                    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess) {
   const RGBColor ambient(0.1);
   RGBColor diffuse, specular;
   for (auto& light : lights) {
@@ -38,7 +38,7 @@ const RGBColor Material::phongEquation(const std::vector<Light*>& lights, const 
     const Vector3D R = 2 * (N * L) * N - L;
 
     diffuse = light->getColor() * diffuse_color * std::max((L * N), 0.0);
-    specular = light->getColor() *  specular_color * pow(std::max((R * V), 0.0), k_shininess);
+    specular = light->getColor() *  specular_color * pow(std::max((R * V), 0.0), shininess);
   }
 
   const RGBColor phong_result = (ambient + diffuse + specular) * vertex_color;
@@ -58,11 +58,11 @@ FlatMaterial::FlatMaterial(const RGBColor& d, const RGBColor& s, float shininess
 FlatMaterial::~FlatMaterial() {
 }
 
-const RGBColor FlatMaterial::phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const {
-  const Vector3D N = vertex.normal;
-  const Vector3D V = -(camera.viewDirection(vertex.position));
-
-  return phongEquation(lights, N, V, vertex.position, vertex.color, k_d, k_s);
+const RGBColor FlatMaterial::getDiffuseColor(const Vector2D& text_coords) const {
+  return k_d;
+}
+const RGBColor FlatMaterial::getSpecularColor(const Vector2D& text_coords) const {
+  return k_s;
 }
 
 /******************************** TexturedMaterial ********************************/
@@ -80,13 +80,11 @@ TexturedMaterial::TexturedMaterial(const std::string texture_diffuse_file, const
 TexturedMaterial::~TexturedMaterial() {
 }
 
-const RGBColor TexturedMaterial::phongShade(const std::vector<Light*>& lights, const Camera& camera, const Vertex3D& vertex) const {
-  const Vector3D N = vertex.normal;
-  const Vector3D V = -(camera.viewDirection(vertex.position));
-  RGBColor diff_color = getTextureColor(m_texture_diffuse, m_texture_diffuse_width, m_texture_diffuse_height, vertex.texture_coords);
-  RGBColor spec_color = getTextureColor(m_texture_specular, m_texture_specular_width, m_texture_specular_height, vertex.texture_coords);
-
-  return phongEquation(lights, N, V, vertex.position, vertex.color, diff_color, spec_color);
+const RGBColor TexturedMaterial::getDiffuseColor(const Vector2D& text_coords) const {
+  return getTextureColor(m_texture_diffuse, m_texture_diffuse_width, m_texture_diffuse_height, text_coords);
+}
+const RGBColor TexturedMaterial::getSpecularColor(const Vector2D& text_coords) const {
+  return getTextureColor(m_texture_specular, m_texture_specular_width, m_texture_specular_height, text_coords);
 }
 
 const RGBColor TexturedMaterial::getTextureColor(const std::vector<RGBColor>& texture, int texture_width, int texture_height, const Vector2D& text_coords) const {
