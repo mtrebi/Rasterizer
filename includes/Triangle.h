@@ -67,6 +67,17 @@ public:
   }
 };
 
+struct Fragment {
+  Point3D position;
+  RGBColor color, diffuse, specular;
+  Vector3D normal;
+
+  Fragment() { }
+  Fragment(const Point3D& p, const RGBColor& c, const RGBColor& d, const RGBColor& s, const Vector3D& n)
+    : position(p), color(c), diffuse(d), specular(s), normal(n) { }
+
+};
+
 struct Vertex3D {
   Point3D position;
   RGBColor color;
@@ -74,7 +85,7 @@ struct Vertex3D {
   Vector3D normal;
 
   Vertex3D() { }
-  Vertex3D(const Point3D& p, const RGBColor& c, const Vector2D& text, const Vector3D& n) 
+  Vertex3D(const Point3D& p, const RGBColor& c, const Vector2D& text, const Vector3D& n)
     : position(p), color(c), texture_coords(text), normal(n) { }
 };
 
