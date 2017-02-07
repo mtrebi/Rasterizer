@@ -24,13 +24,29 @@ const RGBColor Material::shade(const std::vector<Light*>& lights, const Camera& 
 #endif // _PHONG
 
 #ifdef _BLINN_PHONG
-  //return blinnPhongShading(material, color, triangle, point_in_triangle);
+  return blinnPhongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 5.0);
 #endif // _BLINN-PHONG
 }
 
+const RGBColor Material::blinnPhongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
+                                    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess) {
+  const RGBColor ambient(0.1);
+  RGBColor diffuse, specular;
+  for (auto& light : lights) {
+    const Vector3D L = -(light->getDirectionToPoint(vertex_position));
+    Vector3D H = V + L;
+    H.normalize();
+
+    diffuse = light->getColor() * diffuse_color * std::max((L * N), 0.0);
+    specular = light->getColor() *  specular_color * pow(std::max((H * V), 0.0), shininess);
+  }
+
+  const RGBColor result = (ambient + diffuse + specular) * vertex_color;
+  return result;
+}
 
 const RGBColor Material::phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
-                                    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess) {
+  const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess) {
   const RGBColor ambient(0.1);
   RGBColor diffuse, specular;
   for (auto& light : lights) {

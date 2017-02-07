@@ -23,6 +23,9 @@ public:
 protected:  
   static const RGBColor phongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
     const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess);
+  
+  static const RGBColor blinnPhongEquation(const std::vector<Light*>& lights, const Vector3D& N, const Vector3D& V, const Point3D vertex_position,
+    const RGBColor& vertex_color, const RGBColor& diffuse_color, const RGBColor& specular_color, const float shininess);
 };
 
 class FlatMaterial : public Material {
