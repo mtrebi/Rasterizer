@@ -13,11 +13,26 @@
 #include "PerspectiveCamera.h"
 #include "Constants.h"
 
+
+// Build two scenes
+  // Textured scene
+    // Textured boxes
+    // Textures walls
+  // Flat scene
+    // Cubes 
+    // Pyramids
+    // Planes
+
+// Build cube -> center + (diagonal/side)
+// build pyramid
 const std::vector<GeometryObject*> OBJECTS {
   //triangle,
   //textured_rectangle
-  Objects::box,
-  Objects::ground
+  //Objects::box,
+  //Objects::ground
+  buildTexturedBox(Materials::BOX, Point3D(500, 500, 750), 500),
+  buildPlainBox(Materials::PLASTIC, Colors::RED, Point3D(-500, 500, 750), 500)
+
 };
 
 const std::vector<Light*> LIGHTS {
