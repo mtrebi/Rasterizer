@@ -62,7 +62,15 @@ Vector3D::~Vector3D (void) {}
 
 Vector3D::operator RGBColor() const {
   // Vector should be normalized first
-  return RGBColor(x, y, z);
+
+  const float slope = (1 - -1) / 255;
+  const RGBColor c = {
+    (float) (-1 + slope * (x - -1)),
+    (float) (-1 + slope * (y - -1)),
+    (float) (-1 + slope * (z - -1)),
+  };
+
+  return c;
 }
 
 

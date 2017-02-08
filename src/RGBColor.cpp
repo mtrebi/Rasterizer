@@ -23,5 +23,13 @@ RGBColor::~RGBColor() {
 
 
 RGBColor::operator Vector3D() const {
-  return Vector3D(r, g, b);
+  const float slope = 255 / (1 - -1);
+
+  Vector3D v = {
+    slope * (r - -1),
+    slope * (g - -1),
+    slope * (b - -1)
+  };
+
+  return v;
 }
