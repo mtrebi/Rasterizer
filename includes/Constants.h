@@ -37,16 +37,17 @@ namespace Materials {
    Material* BOX = new TexturedMaterial(
     "../assets/box.bmp",
     "../assets/box_specular.bmp",
+    "../assets/box_NRM.bmp",
     5.0
   );
    Material* GROUND = new TexturedMaterial(
      "../assets/brick_wall.bmp",
-     "../assets/brick_wall.bmp",
+     "../assets/brick_wall_SPEC.bmp",
+     "../assets/brick_wall_NRM.bmp",
      5.0
    );
 
 }
-
 
 void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side) {
   const float half_diagonal = (side / 2) / sin(PI / 2); // Distance to center
@@ -161,22 +162,22 @@ GeometryObject* buildTexturedBox(Material* material, const Point3D& center, cons
   std::vector<Point3D> vertices;
   std::vector<Vector2D> texture_coords;
   std::vector<uint32_t> indices;
-
   buildAlignedBox(vertices, texture_coords, indices, center, side);
   GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices);
   return box;
 }
 
 namespace Objects {
-  GeometryObject* box = new GeometryObject(Materials::BOX,
-    std::vector<Point3D> {
+    GeometryObject* box = new GeometryObject(Materials::BOX,
+      std::vector<Point3D> {
       // Vertices positions
+      
       // Front face
       Point3D(500, -500, 5),
       Point3D(500, 500, 5),
       Point3D(1500, 500, 5),
       Point3D(1500, -500, 5),
-        
+
       // Back face
       Point3D(500, -500, 10),
       Point3D(500, 500, 10),
@@ -205,19 +206,20 @@ namespace Objects {
       Point3D(1500, 500, 5),
       Point3D(1500, 500, 10),
       Point3D(1500, -500, 10),
-      
+
     },
     std::vector<RGBColor> {
       // Vertices colors
     },
-    std::vector<Vector2D> {
+      std::vector<Vector2D> {
       // Texture coordinates
       // Front face
+        
       Vector2D(0, 0),
       Vector2D(0, 1),
       Vector2D(1, 1),
       Vector2D(1, 0),
-        
+
       // Back face
       Vector2D(1, 1),
       Vector2D(1, 0),
@@ -233,43 +235,45 @@ namespace Objects {
       Vector2D(0, 1),
       Vector2D(1, 1),
       Vector2D(1, 0),
+        
       // Left face
       Vector2D(1, 0),
       Vector2D(0, 0),
       Vector2D(1, 1),
       Vector2D(0, 1),
+          
       // Right face
       Vector2D(0, 0),
       Vector2D(0, 1),
       Vector2D(1, 1),
       Vector2D(1, 0)
     },
-    std::vector<uint32_t> {
-      // Vertices indices
-      // Front face
-      0, 1, 2,
-      2, 3, 0,
-        
-      // Back face
-      4, 5, 6,
-      6, 7, 4,
+        std::vector<uint32_t> {
+          // Vertices indices
+          // Front face            
+            0, 1, 2,
+            2, 3, 0,
 
-      // Top face
-      8, 9, 10,
-      10, 11, 8,
+            // Back face
+            4, 5, 6,
+            6, 7, 4,
 
-      // Bottom face
-      12, 13, 14,
-      14, 15, 12,
+            // Top face
+            8, 9, 10,
+            10, 11, 8,
 
-      // Left face
-      18, 17, 16,
-      18, 19, 17,
+            // Bottom face
+            12, 13, 14,
+            14, 15, 12,
 
-      // Right face
-      20, 21, 22,
-      22, 23, 20
-    });
+            // Left face
+            18, 17, 16,
+            18, 19, 17,
+
+            // Right face
+            20, 21, 22,
+            22, 23, 20
+        });
 
   GeometryObject* ground = new GeometryObject(Materials::GROUND,
     std::vector<Point3D> {
@@ -323,9 +327,9 @@ namespace Objects {
   GeometryObject* rainbow_triangle = new GeometryObject(Materials::WALL,
     std::vector<Point3D> {
       // Vertices positions
-      Point3D(-1500, -250, 15.),
-      Point3D(0, 2348, 15.),
-      Point3D(1500, -250, 15.),
+      Point3D(-500, 500, 500),
+      Point3D(0, 1300, 500),
+      Point3D(500, 500, 500),
     },
     std::vector<RGBColor> {
       // Vertices colors
