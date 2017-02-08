@@ -20,7 +20,6 @@ protected:
   const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
   const RGBColor calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
   const Fragment calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Material& material) const;
-  const Vector3D calculateNormal(const Triangle3D& triangle_world, const Point3D& point_world) const;
 
   // Transformations
   const Triangle2D rasterize(const Triangle3D& triangle_world) const;
