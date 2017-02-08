@@ -27,5 +27,8 @@ public:
 	
 private:
 	const Vertex3D build_vertex(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const uint32_t vertex_index) const;
+  const Point3D rotation_roll(const Point3D& point, const float amount_r) const;
+  const Point3D rotation_pitch(const Point3D& point, const float amount_p) const;
+  const Point3D rotation_yaw(const Point3D& point, const float amount_y) const;
 };
 

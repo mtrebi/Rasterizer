@@ -1,6 +1,8 @@
 #include "GeometryObject.h"
 #include <cassert>
 #include <math.h>       /* fmod */
+#define _USE_MATH_DEFINES
+#include <math.h>       /* sin */
 GeometryObject::GeometryObject() {
 
 }
@@ -24,10 +26,41 @@ const Vertex3D GeometryObject::build_vertex(const std::vector<Point3D>& vertices
   return v;
 }
 
-void GeometryObject::rotate(const float roll, const float pitch, const float yaw) {
+void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees, const float yaw_degrees) {
+  const float roll_radians = ((roll_degrees / 180.0) * M_PI);
+  const float pitch_radians = ((pitch_degrees / 180.0) * M_PI);
+  const float yaw_radians = ((yaw_degrees / 180.0) * M_PI);
   for (auto& point : m_vertices) {
-    //Apply rotation
+    point = rotation_roll(rotation_pitch(rotation_yaw(point, yaw_radians), pitch_radians), roll_radians);
+    //point = rotation_yaw(point, yaw_radians);
   }
+}
+
+const Point3D GeometryObject::rotation_roll(const Point3D& point, const float amount_r) const {
+  const Point3D rotated_point(
+    point.x * cos (amount_r) + point.y * -sin(amount_r),
+    point.x * sin (amount_r) + point.z * cos(amount_r),
+    point.z
+  );
+  return rotated_point;
+}
+const Point3D GeometryObject::rotation_pitch(const Point3D& point, const float amount_p) const {
+  const Point3D rotated_point(
+    point.x,
+    point.y * cos(amount_p) + point.z * -sin(amount_p),
+    point.y * sin(amount_p) * point.z * cos(amount_p)
+  );
+  
+  return rotated_point;
+}
+const Point3D GeometryObject::rotation_yaw(const Point3D& point, const float amount_y) const {
+  const Point3D rotated_point(
+    point.x * cos(amount_y) + point.z * sin(amount_y),
+    point.y,
+    point.x * -sin(amount_y) + point.z * cos(amount_y)
+  );
+  
+  return rotated_point;
 }
 
 const std::vector<Triangle3D> GeometryObject::triangles() const { 
