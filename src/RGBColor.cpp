@@ -29,5 +29,7 @@ RGBColor::operator Vector3D() const {
     - 1 + 2 * b
   };
 
+  v.normalize();
+
   return v;
 }
