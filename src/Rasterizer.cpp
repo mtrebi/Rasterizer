@@ -21,7 +21,7 @@ const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangl
     calculateColor(triangle_world, point_world),
     material.getDiffuseColor(text_coords), 
     material.getSpecularColor(text_coords),
-    calculateNormal(triangle_world, point_world)
+    material.getNormal(triangle_world, text_coords)
   };
 
   return f;
@@ -53,11 +53,6 @@ const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_wor
 
   };
   return texture_coords_abs;
-}
-
-//TODO : Use normal maps
-const Vector3D Rasterizer::calculateNormal(const Triangle3D& triangle_world, const Point3D& point_world) const {
-  return triangle_world.normal;
 }
 
 const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
