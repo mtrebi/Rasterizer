@@ -4,6 +4,7 @@ _TODO_
 
 * Orthographic and perspective cameras
 * Phong shading &  Blinn-Phong shading
+* Object rotations
 * Linear depth-buffer
 * Depth buffer to texture
 * Forward rendered & Deferred renderer
