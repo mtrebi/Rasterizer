@@ -1,7 +1,6 @@
 #include "Material.h"
 #include "../lib/EasyBMP_1.06/EasyBMP.h"
 
-
 /******************************** Material ********************************/
 
 Material::Material(){
@@ -77,20 +76,26 @@ FlatMaterial::~FlatMaterial() {
 const RGBColor FlatMaterial::getDiffuseColor(const Vector2D& text_coords) const {
   return k_d;
 }
+
 const RGBColor FlatMaterial::getSpecularColor(const Vector2D& text_coords) const {
   return k_s;
 }
 
+const Vector3D FlatMaterial::getNormal(const Triangle3D& triangle_world, const Vector2D& text_coords) const {
+  return triangle_world.normal;
+}
 /******************************** TexturedMaterial ********************************/
 
 TexturedMaterial::TexturedMaterial() {
 }
 
-TexturedMaterial::TexturedMaterial(const std::string texture_diffuse_file, const std::string texture_specular_file, float shininess) 
+TexturedMaterial::TexturedMaterial(const std::string texture_diffuse_file, const std::string texture_specular_file, const std::string texture_normal_file, const float shininess) 
   : Material(shininess) {
 
   m_texture_diffuse = loadTexture(m_texture_diffuse_width, m_texture_diffuse_height, texture_diffuse_file);
   m_texture_specular = loadTexture(m_texture_specular_width, m_texture_specular_height, texture_specular_file);
+  m_texture_normal = loadTexture(m_texture_normal_width, m_texture_normal_height, texture_normal_file);
+
 }
 
 TexturedMaterial::~TexturedMaterial() {
@@ -99,8 +104,58 @@ TexturedMaterial::~TexturedMaterial() {
 const RGBColor TexturedMaterial::getDiffuseColor(const Vector2D& text_coords) const {
   return getTextureColor(m_texture_diffuse, m_texture_diffuse_width, m_texture_diffuse_height, text_coords);
 }
+
 const RGBColor TexturedMaterial::getSpecularColor(const Vector2D& text_coords) const {
   return getTextureColor(m_texture_specular, m_texture_specular_width, m_texture_specular_height, text_coords);
+}
+
+const Vector3D TexturedMaterial::getNormal(const Triangle3D& triangle_world, const Vector2D& text_coords) const { 
+  Vector3D tangent, bitangent;
+  calculateTangentSpace(tangent, bitangent, triangle_world);
+
+  const Vector3D normal_tangent = (Vector3D) getTextureColor(m_texture_normal, m_texture_normal_width, m_texture_normal_height, text_coords);
+  const Vector3D normal_world = TangentToWorld(normal_tangent, tangent, bitangent, normal_tangent);
+  
+  return normal_world;
+}
+
+
+const Vector3D TexturedMaterial::TangentToWorld(const Vector3D& v, const Vector3D& tangent, const Vector3D& bitangent, const Vector3D& normal) const {
+  const int handness = -1; // Left coordinate system
+  // V * TBN
+  Vector3D v_world = {
+    v.x * tangent.x + v.y * bitangent.x + v.z * normal.x,
+    v.x * tangent.y + v.y * bitangent.y + v.z * normal.y,
+    v.x * tangent.z + v.y * bitangent.z + v.z * normal.z,
+  };
+  // V * TBN(-1) = V * TBN(T)
+  Vector3D v_world2 = {
+    v.x * tangent.x   + v.y * tangent.y   + v.z * tangent.z,
+    v.x * bitangent.x + v.y * bitangent.y + v.z * bitangent.z,
+    v.x * normal.x    + v.y * normal.y    + v.z * normal.z,
+  };
+
+  v_world2.normalize();
+
+  return handness * v_world2;
+}
+
+void TexturedMaterial::calculateTangentSpace(Vector3D& tangent, Vector3D& bitangent, const Triangle3D& triangle_world) const {
+  const Vector3D q1 = triangle_world.v2.position - triangle_world.v1.position;
+  const Vector3D q2 = triangle_world.v3.position - triangle_world.v2.position;
+
+  const double s1 = triangle_world.v2.texture_coords.x - triangle_world.v1.texture_coords.x;
+  const double s2 = triangle_world.v3.texture_coords.x - triangle_world.v2.texture_coords.x;
+
+  const double t1 = triangle_world.v2.texture_coords.y - triangle_world.v1.texture_coords.y;
+  const double t2 = triangle_world.v3.texture_coords.y - triangle_world.v2.texture_coords.y;
+
+
+  tangent = t2 * q1 - t1 * q2;
+  bitangent = -s2 * q1 + s1 * q2;
+
+  tangent.normalize();
+  bitangent.normalize();
 }
 
 const RGBColor TexturedMaterial::getTextureColor(const std::vector<RGBColor>& texture, int texture_width, int texture_height, const Vector2D& text_coords) const {
