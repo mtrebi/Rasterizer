@@ -114,30 +114,23 @@ const Vector3D TexturedMaterial::getNormal(const Triangle3D& triangle_world, con
   calculateTangentSpace(tangent, bitangent, triangle_world);
 
   const Vector3D normal_tangent = (Vector3D) getTextureColor(m_texture_normal, m_texture_normal_width, m_texture_normal_height, text_coords);
-  const Vector3D normal_world = TangentToWorld(normal_tangent, tangent, bitangent, normal_tangent);
+  const Vector3D normal_world = TangentToWorld(normal_tangent, tangent, bitangent, triangle_world.normal);
   
   return normal_world;
 }
 
 
 const Vector3D TexturedMaterial::TangentToWorld(const Vector3D& v, const Vector3D& tangent, const Vector3D& bitangent, const Vector3D& normal) const {
-  const int handness = -1; // Left coordinate system
   // V * TBN
   Vector3D v_world = {
     v.x * tangent.x + v.y * bitangent.x + v.z * normal.x,
     v.x * tangent.y + v.y * bitangent.y + v.z * normal.y,
     v.x * tangent.z + v.y * bitangent.z + v.z * normal.z,
   };
-  // V * TBN(-1) = V * TBN(T)
-  Vector3D v_world2 = {
-    v.x * tangent.x   + v.y * tangent.y   + v.z * tangent.z,
-    v.x * bitangent.x + v.y * bitangent.y + v.z * bitangent.z,
-    v.x * normal.x    + v.y * normal.y    + v.z * normal.z,
-  };
 
-  v_world2.normalize();
+  v_world.normalize();
 
-  return handness * v_world2;
+  return v_world;
 }
 
 void TexturedMaterial::calculateTangentSpace(Vector3D& tangent, Vector3D& bitangent, const Triangle3D& triangle_world) const {
