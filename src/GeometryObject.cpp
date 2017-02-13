@@ -31,35 +31,36 @@ void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees,
   const float pitch_radians = ((pitch_degrees / 180.0) * M_PI);
   const float yaw_radians = ((yaw_degrees / 180.0) * M_PI);
   for (auto& point : m_vertices) {
-    point = rotation_roll(rotation_pitch(rotation_yaw(point, yaw_radians), pitch_radians), roll_radians);
-    //point = rotation_yaw(point, yaw_radians);
+    point = rotation_roll(point, roll_radians);
+    point = rotation_yaw(point, yaw_radians);
+    point = rotation_pitch(point, pitch_radians);
   }
 }
 
 const Point3D GeometryObject::rotation_roll(const Point3D& point, const float amount_r) const {
   const Point3D rotated_point(
-    point.x * cos (amount_r) + point.y * -sin(amount_r),
-    point.x * sin (amount_r) + point.z * cos(amount_r),
-    point.z
+    point.x,
+    point.y * cos(amount_r) + point.z * -sin(amount_r),
+    point.y * sin(amount_r) + point.z * cos(amount_r)
   );
   return rotated_point;
 }
-const Point3D GeometryObject::rotation_pitch(const Point3D& point, const float amount_p) const {
+const Point3D GeometryObject::rotation_pitch(const Point3D& point, const float amount_p) const { 
   const Point3D rotated_point(
-    point.x,
-    point.y * cos(amount_p) + point.z * -sin(amount_p),
-    point.y * sin(amount_p) * point.z * cos(amount_p)
+    point.x * cos(amount_p) + point.z * -sin(amount_p),
+    point.y,
+    point.x * sin(amount_p) + point.z * cos(amount_p)
   );
   
   return rotated_point;
 }
 const Point3D GeometryObject::rotation_yaw(const Point3D& point, const float amount_y) const {
   const Point3D rotated_point(
-    point.x * cos(amount_y) + point.z * sin(amount_y),
-    point.y,
-    point.x * -sin(amount_y) + point.z * cos(amount_y)
+    point.x * cos(amount_y) + point.y * -sin(amount_y),
+    point.x * sin(amount_y) + point.y * cos(amount_y),
+    point.z
   );
-  
+
   return rotated_point;
 }
 
