@@ -38,7 +38,12 @@ const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const 
   double u, v, w;
   triangle_screen.calculateBarycentricCoords(u, v, w, pixel_screen);
   // Interpolate Z in 3D using inverse function and barycentric coordinates in 2D
-  const float depth = 1 / ((1 / triangle_camera.v1.position.z) * u + (1 / triangle_camera.v2.position.z) * v + (1 / triangle_camera.v3.position.z) * w);
+  const float depth = 1 / 
+    (
+      (1 / triangle_camera.v1.position.z) * u + 
+      (1 / triangle_camera.v2.position.z) * v + 
+      (1 / triangle_camera.v3.position.z) * w
+    );
   return depth;
 }
 
