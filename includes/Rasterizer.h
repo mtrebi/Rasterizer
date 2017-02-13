@@ -13,6 +13,8 @@ public:
   Rasterizer(World* world);
   ~Rasterizer();
   
+  inline const std::vector<double> get_depth_buffer() const { return m_depth_buffer; }
+
   virtual void render() = 0;
   virtual void export_output(const std::string output_path) const = 0;
 
