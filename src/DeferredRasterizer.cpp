@@ -12,7 +12,10 @@ DeferredRasterizer::~DeferredRasterizer() {
 }
 
 
-void DeferredRasterizer::render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) {
+void DeferredRasterizer::render() {
+  const uint16_t image_width = m_camera->get_width();
+  const uint16_t image_height = m_camera->get_height();
+
   m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
   m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
   m_normal_buffer = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
@@ -80,6 +83,11 @@ void DeferredRasterizer::render(const std::string output_path, const uint16_t im
       }
     }
   }
+}
+
+void DeferredRasterizer::export_output(const std::string output_path) const {
+  const uint16_t image_width = m_camera->get_width();
+  const uint16_t image_height = m_camera->get_height();
 
   exportDepthBuffer(m_depth_buffer, "d_depth.bmp", image_width, image_height);
   exportImage(m_normal_buffer, "d_normals.bmp", image_width, image_height);

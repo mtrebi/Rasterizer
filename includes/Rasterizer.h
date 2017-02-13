@@ -13,7 +13,9 @@ public:
   Rasterizer(World* world);
   ~Rasterizer();
   
-  virtual void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) = 0;
+  virtual void render() = 0;
+  virtual void export_output(const std::string output_path) const = 0;
+
 protected:
   // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;

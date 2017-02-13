@@ -12,7 +12,10 @@ ForwardRasterizer::~ForwardRasterizer() {
 }
 
 
-void ForwardRasterizer::render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) {
+void ForwardRasterizer::render() {
+  const uint16_t image_width = m_camera->get_width();
+  const uint16_t image_height = m_camera->get_height();
+  
   m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
   m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
 
@@ -43,7 +46,12 @@ void ForwardRasterizer::render(const std::string output_path, const uint16_t ima
       }
     }
   }
+}
 
+void ForwardRasterizer::export_output(const std::string output_path) const {
+  const uint16_t image_width = m_camera->get_width();
+  const uint16_t image_height = m_camera->get_height();
+  
   exportDepthBuffer(m_depth_buffer, "f_depth.bmp", image_width, image_height);
   exportImage(m_pixels, "f_" + output_path, image_width, image_height);
 }

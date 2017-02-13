@@ -34,6 +34,9 @@ public:
     inline const uint32_t get_near_plane() const { return m_near; }
     inline const uint32_t get_far_plane() const { return m_far; }
 
+    inline const uint32_t get_width() const { return m_image_width; }
+    inline const uint32_t get_height() const { return m_image_height; }
+
     void render(const std::string output_name) const;
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;

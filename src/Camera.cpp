@@ -80,5 +80,5 @@ const bool Camera::insideFrustrum(const Point2D& point_raster, const float depth
 }
 
 void Camera::render(const std::string output_name) const {
-  m_renderer->render(output_name, m_image_width, m_image_height);
+  m_renderer->render();
 }

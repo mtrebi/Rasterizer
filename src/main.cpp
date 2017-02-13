@@ -19,20 +19,21 @@
     // Textured boxes
     // Textures walls
   // Flat scene
-    // Cubes 
     // Pyramids
     // Planes
 
-// Build cube -> center + (diagonal/side)
-// build pyramid
-const std::vector<GeometryObject*> OBJECTS {
+std::vector<GeometryObject*> OBJECTS {
   //triangle,
   //textured_rectangle
   //Objects::box,
-  //Objects::ground
-  buildTexturedBox(Materials::BOX, Point3D(500, 500, 750), 500),
-  buildPlainBox(Materials::PLASTIC, Colors::RED, Point3D(-500, 500, 750), 500)
+  Objects::box,
 
+  //Objects::ground,
+  //Objects::ground2,
+
+  //buildPlainBox(Materials::PLASTIC, Colors::RED, Point3D(100, 100, 50), 100),
+  //buildTexturedBox(Materials::BOX, Point3D(-500, 0, 3000), 500),
+  //Objects::rainbow_triangle
 };
 
 const std::vector<Light*> LIGHTS {
@@ -42,26 +43,26 @@ const std::vector<Light*> LIGHTS {
 Camera * camera;
 Renderer * renderer;
 int main (){
-    World * world = new World(OBJECTS, LIGHTS, camera);
+  World * world = new World(OBJECTS, LIGHTS, camera);
 
 
 #ifdef _FORWARD
-    renderer = new ForwardRasterizer(world);
+  renderer = new ForwardRasterizer(world);
 #endif 
 
 #ifdef _DEFERRED
-    renderer = new DeferredRasterizer(world);
+  renderer = new DeferredRasterizer(world);
 #endif 
 
 #ifdef _ORTHOGRAPHIC
-    camera = new OrthographicCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
+  camera = new OrthographicCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
 
 #ifdef _PERSPECTIVE
-    camera = new PerspectiveCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
+  camera = new PerspectiveCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
-    world->m_camera = camera;
-    camera->render(IMAGE_NAME);
-    
-    return 0;
+  world->m_camera = camera;
+  camera->render(IMAGE_NAME);
+  renderer->export_output(IMAGE_NAME);
+  return 0;
 }

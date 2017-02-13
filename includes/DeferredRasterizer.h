@@ -12,7 +12,8 @@ public:
   DeferredRasterizer(World* world);
   ~DeferredRasterizer();
 
-  void render(const std::string output_path, const uint16_t image_width, const uint16_t image_height) override;
+  void render() override;
+  void export_output(const std::string output_path) const override;
 
 private:
 
