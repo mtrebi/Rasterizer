@@ -79,6 +79,6 @@ const bool Camera::insideFrustrum(const Point2D& point_raster, const float depth
     depth >= m_near && depth <= m_far);
 }
 
-void Camera::render(const std::string output_name) const {
+void Camera::render() const {
   m_renderer->render();
 }

@@ -62,7 +62,7 @@ int main (){
   camera = new PerspectiveCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
   world->m_camera = camera;
-  camera->render(IMAGE_NAME);
+  camera->render();
   renderer->export_output(IMAGE_NAME);
   return 0;
 }
