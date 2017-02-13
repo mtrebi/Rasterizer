@@ -14,5 +14,6 @@ public:
   ~PointLight();
 
   const Vector3D getDirectionToPoint(const Point3D& point) const override;
+  virtual const std::vector<double> getDepthBuffer() const override;
 };
 
