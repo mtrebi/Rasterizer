@@ -53,6 +53,8 @@ public:
     virtual const Point3D projectTransformInv(const Point2D& point_projected, const double depth) const = 0;
 
     virtual const Vector3D viewDirection(const Point3D& point) const = 0;
+protected:
+  inline const double get_aspect() const { return (float) m_image_width / m_image_height; }
 };
 
 #endif /* CAMERA_H */

@@ -16,8 +16,8 @@ OrthographicCamera::~OrthographicCamera() {
 
 const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) const {
   const Point2D point_projected = {
-    point_camera.x * m_near,
-    point_camera.y * m_near,
+    point_camera.x * m_near * get_aspect(),
+    point_camera.y * m_near * get_aspect(),
   };
 
   return point_projected;
@@ -26,8 +26,8 @@ const Point2D OrthographicCamera::projectTransform(const Point3D& point_camera) 
 
 const Point3D OrthographicCamera::projectTransformInv(const Point2D& pixel_projected, const double depth) const {
   const Point3D pixel_world = {
-    (pixel_projected.x) / (m_near),
-    (pixel_projected.y) / (m_near),
+    (pixel_projected.x) / (m_near * get_aspect()),
+    (pixel_projected.y) / (m_near * get_aspect()),
     depth
   };
 
