@@ -128,7 +128,8 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     6, 7, 4,
 
     // Top face
-    10, 9, 8,
+    8, 9, 10,
+    //10, 9, 8,
     10, 11, 8,
 
     // Bottom face
