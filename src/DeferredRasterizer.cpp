@@ -42,7 +42,7 @@ void DeferredRasterizer::render() {
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
-                const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, *object->material());
+                const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, triangle_projected, pixel_projected, *object->material());
 
                 //TODO: Use one-single buffer of fragment objects
                 m_depth_buffer[i] = depth;

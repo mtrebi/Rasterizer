@@ -21,9 +21,11 @@ public:
 protected:
   // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
-  const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  //const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
+  const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& pixel_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
+
   const RGBColor calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const;
-  const Fragment calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Material& material) const;
+  const Fragment calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen, const Material& material) const;
 
   // Transformations
   const Triangle2D rasterize(const Triangle3D& triangle_world) const;

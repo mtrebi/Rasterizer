@@ -36,7 +36,7 @@ void ForwardRasterizer::render() {
             if (m_camera->insideFrustrum(pixel_raster, depth)) {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
-                const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, *object->material());
+                const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, triangle_projected, pixel_projected, *object->material());
                 m_pixels[i] = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
                 m_depth_buffer[i] = depth;
               }
