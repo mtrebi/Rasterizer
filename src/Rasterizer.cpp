@@ -14,8 +14,8 @@ Rasterizer::~Rasterizer() {
 }
 
 
-const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Material& material) const {
-  const Vector2D text_coords = calculateTextureCoords(triangle_world, point_world);
+const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangle_world, const Point3D& point_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen, const Material& material) const {
+  const Vector2D text_coords = calculateTextureCoords(triangle_world, point_world, triangle_screen, pixel_screen);
   const Fragment f {
     point_world,
     calculateColor(triangle_world, point_world),
@@ -47,17 +47,30 @@ const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const 
   return depth;
 }
 
-const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const {
-  // Calculate barycentric coords in camera space
+const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& pixel_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const {
+  // Calculate barycentric coords in screen space  (inverse linear)
   double u, v, w;
-  triangle_world.calculateBarycentricCoords(u, v, w, point_world);
+  triangle_camera.calculateBarycentricCoords(u, v, w, pixel_camera);
   const Vector2D texture_coords = triangle_world.v1.texture_coords * u + triangle_world.v2.texture_coords * v + triangle_world.v3.texture_coords * w;
-  const Vector2D texture_coords_abs {
+  // Affine texture mapping (in screen space)
+  const Vector2D texture_coords_abs_screen {
     abs(texture_coords.x),
     abs(texture_coords.y)
-
   };
-  return texture_coords_abs;
+#ifdef _AFFINE_TEXTURES
+  return texture_coords_abs_screen;
+#endif 
+
+#ifdef _PERSPECTIVE_TEXTURES
+  // Lets take into account z
+  const double z = 1 / (1 / pixel_world.z);
+  const Vector2D texture_coords_perspective_corrected{
+    (texture_coords_abs_screen.x / z) * z,
+    (texture_coords_abs_screen.y / z) * z
+  };
+
+  return texture_coords_perspective_corrected;
+#endif 
 }
 
 const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
