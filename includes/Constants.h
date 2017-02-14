@@ -30,8 +30,7 @@ namespace Colors {
 }
 
 namespace Materials {
-  Material* PLASTIC = new FlatMaterial(RGBColor(0.4), 0.4, 2);
-  Material* WALL = new FlatMaterial(RGBColor(0.6), 0.2, 1);
+  Material* FLAT_PLASTIC = new FlatMaterial(RGBColor(0.4), 0.4, 5);
 
   //const Material* BRICK = new TexturedMaterial();
    Material* BOX = new TexturedMaterial(
@@ -40,10 +39,10 @@ namespace Materials {
     "../assets/box_NRM.bmp",
     5.0
   );
-   Material* GROUND = new TexturedMaterial(
-     "../assets/brick_wall.bmp",
-     "../assets/brick_wall_SPEC.bmp",
-     "../assets/brick_wall_NRM.bmp",
+   Material* DEFAULT = new TexturedMaterial(
+     "../assets/default_DIFF.bmp",
+     "../assets/default_SPEC.bmp",
+     "../assets/default_NRM.bmp",
      5.0
    );
 
@@ -168,187 +167,51 @@ GeometryObject* buildTexturedBox(Material* material, const Point3D& center, cons
   return box;
 }
 
-namespace Objects {
-    GeometryObject* box = new GeometryObject(Materials::BOX,
-      std::vector<Point3D> {
-      // Vertices positions
-      
-      // Front face
-      Point3D(500, -500, 5),
-      Point3D(500, 500, 5),
-      Point3D(1500, 500, 5),
-      Point3D(1500, -500, 5),
+void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side) {
+  const float half_diagonal = (side / 2) / sin(PI / 2); // Distance to center
 
-      // Back face
-      Point3D(500, -500, 1000),
-      Point3D(500, 500, 1000),
-      Point3D(1500, 500, 1000),
-      Point3D(1500, -500, 1000),
-      // Top face
-      Point3D(500, 500, 5),
-      Point3D(500, 500, 10),
-      Point3D(1500, 500, 10),
-      Point3D(1500, 500, 5),
-      // Bottom face
-      Point3D(500, -500, 5),
-      Point3D(500, -500, 1000),
-      Point3D(1500, -500, 1000),
-      Point3D(1500, -500, 5),
-      
-      // Left face
-      Point3D(500, -500, 5),
-      Point3D(500, -500, 1000),
-      Point3D(500, 500, 5),
-      Point3D(500, 500, 1000),
+  const Point3D v1(center.x - half_diagonal, center.y, center.z - half_diagonal);
+  const Point3D v2(v1.x,        v1.y,         v1.z + side);
+  const Point3D v3(v1.x + side, v1.y,         v1.z);
+  const Point3D v4(v1.x + side, v1.y,         v1.z + side);
+  
+  vertices = {
+    // Vertices positions
+    v1, v2, v3, v4
+  };
 
-        
-      // Right face
-      Point3D(1500, -500, 5),
-      Point3D(1500, 500, 5),
-      Point3D(1500, 500, 1000),
-      Point3D(1500, -500, 1000),
+  texture_coords = {
+    // Texture coordinates
+    Vector2D(0, 0),
+    Vector2D(0, 4),
+    Vector2D(4, 0),
+    Vector2D(4, 4)
+  };
 
-    },
-    std::vector<RGBColor> {
-      // Vertices colors
-    },
-      std::vector<Vector2D> {
-      // Texture coordinates
-      // Front face
-        
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 1),
-      Vector2D(1, 0),
-
-      // Back face
-      Vector2D(1, 1),
-      Vector2D(1, 0),
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      // Top face
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 1),
-      Vector2D(1, 0),
-      // Bottom face
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 1),
-      Vector2D(1, 0),
-        
-      // Left face
-      Vector2D(1, 0),
-      Vector2D(0, 0),
-      Vector2D(1, 1),
-      Vector2D(0, 1),
-          
-      // Right face
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 1),
-      Vector2D(1, 0)
-    },
-        std::vector<uint32_t> {
-          // Vertices indices
-          // Front face            
-            0, 1, 2,
-            2, 3, 0,
-
-            // Back face
-            4, 5, 6,
-            6, 7, 4,
-
-            // Top face
-            8, 9, 10,
-            10, 11, 8,
-
-            // Bottom face
-            12, 13, 14,
-            14, 15, 12,
-
-            // Left face
-            18, 17, 16,
-            18, 19, 17,
-
-            // Right face
-            20, 21, 22,
-            22, 23, 20
-        });
-
-  GeometryObject* ground = new GeometryObject(Materials::GROUND,
-    std::vector<Point3D> {
-      // Vertices positions
-      Point3D(-3000., -1000., 1.),
-      Point3D(-3000., -1000., 1000.),
-      Point3D(3000., -1000., 1.),
-      Point3D(3000., -1000., 1000.)
-    },
-    std::vector<RGBColor> {
-      // Vertices colors
-    },
-    std::vector<Vector2D> {
-      // Texture coordinates
-      Vector2D(0, 0),
-      Vector2D(0, 5),
-      Vector2D(5, 0),
-      Vector2D(5, 5)
-    },
-
-    std::vector<uint32_t> {
-      // Indices
-      0, 1, 2,
-      1, 3, 2
-    });
-
-  GeometryObject* textured_rectangle = new GeometryObject(Materials::WALL,
-    std::vector<Point3D> {
-      // Vertices positions
-      Point3D(-1500, -250, 15.),
-      Point3D(-1500, 2348, 15.),
-      Point3D(1500, -250, 15.),
-      Point3D(1500, 2348, 15.),
-    },
-    std::vector<RGBColor> {
-        // Vertices colors
-    },
-    std::vector<Vector2D> {
-      // Texture coordinates
-      Vector2D(0, 0),
-      Vector2D(0, 1),
-      Vector2D(1, 0),
-      Vector2D(1, 1)
-    },
-    std::vector<uint32_t> {
-        // Indices
-      0, 1, 2,
-      1, 3, 2
-    });
-
-  GeometryObject* rainbow_triangle = new GeometryObject(Materials::WALL,
-    std::vector<Point3D> {
-      // Vertices positions
-      Point3D(-500, 500, 500),
-      Point3D(0, 1300, 500),
-      Point3D(500, 500, 500),
-    },
-    std::vector<RGBColor> {
-      // Vertices colors
-      Colors::GREEN,
-      Colors::RED,
-      Colors::BLUE,
-    },
-    std::vector<Vector2D> {
-      // Texture coordinates
-      Vector2D(0, 0),
-      Vector2D(.5, 1),
-      Vector2D(1, 0)
-    },
-    std::vector<uint32_t> {
-      // Indices
-      0, 1, 2,
-    });
+  indices = {
+    // Indices
+    0, 1, 2,
+    2, 3, 1
+  };
 }
 
+GeometryObject* buildPlainPlane(Material* material, const RGBColor& color, const Point3D& center, const float side) {
+  const std::vector<RGBColor> colors = std::vector<RGBColor>(4, color);
+  std::vector<Point3D> vertices;
+  std::vector<Vector2D> texture_coords;
+  std::vector<uint32_t> indices;
+  buildHorizontalPlane(vertices, texture_coords, indices, center, side);
+  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices);
+  return box;
+}
+
+GeometryObject* buildTexturedPlane(Material* material, const Point3D& center, const float side) {
+  std::vector<Point3D> vertices;
+  std::vector<Vector2D> texture_coords;
+  std::vector<uint32_t> indices;
+  buildHorizontalPlane(vertices, texture_coords, indices, center, side);
+  GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices);
+  return box;
+}
 
 
