@@ -13,8 +13,8 @@ const Point3D   CAMERA_POS = Point3D(.0f, .0f, -1.0f);
 const Vector3D  CAMERA_FWD = Vector3D(.0f, .0f, 1.0f); // Points into the screen
 const Vector3D  CAMERA_UP = Vector3D(.0f, 1.0f, .0f);
 
-const int IMAGE_WIDTH = 800;
-const int IMAGE_HEIGHT = 600;
+const int IMAGE_WIDTH = 1280;
+const int IMAGE_HEIGHT = 720;
 const std::string IMAGE_NAME = "output.bmp";
 
 namespace Colors {
@@ -128,7 +128,7 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     6, 7, 4,
 
     // Top face
-    8, 9, 10,
+    10, 9, 8,
     10, 11, 8,
 
     // Bottom face
@@ -179,10 +179,10 @@ namespace Objects {
       Point3D(1500, -500, 5),
 
       // Back face
-      Point3D(500, -500, 10),
-      Point3D(500, 500, 10),
-      Point3D(1500, 500, 10),
-      Point3D(1500, -500, 10),
+      Point3D(500, -500, 1000),
+      Point3D(500, 500, 1000),
+      Point3D(1500, 500, 1000),
+      Point3D(1500, -500, 1000),
       // Top face
       Point3D(500, 500, 5),
       Point3D(500, 500, 10),
@@ -190,22 +190,22 @@ namespace Objects {
       Point3D(1500, 500, 5),
       // Bottom face
       Point3D(500, -500, 5),
-      Point3D(500, -500, 10),
-      Point3D(1500, -500, 10),
+      Point3D(500, -500, 1000),
+      Point3D(1500, -500, 1000),
       Point3D(1500, -500, 5),
       
       // Left face
       Point3D(500, -500, 5),
-      Point3D(500, -500, 10),
+      Point3D(500, -500, 1000),
       Point3D(500, 500, 5),
-      Point3D(500, 500, 10),
+      Point3D(500, 500, 1000),
 
         
       // Right face
       Point3D(1500, -500, 5),
       Point3D(1500, 500, 5),
-      Point3D(1500, 500, 10),
-      Point3D(1500, -500, 10),
+      Point3D(1500, 500, 1000),
+      Point3D(1500, -500, 1000),
 
     },
     std::vector<RGBColor> {
@@ -279,9 +279,9 @@ namespace Objects {
     std::vector<Point3D> {
       // Vertices positions
       Point3D(-3000., -1000., 1.),
-      Point3D(-3000., -1000., 50.),
+      Point3D(-3000., -1000., 1000.),
       Point3D(3000., -1000., 1.),
-      Point3D(3000., -1000., 50.)
+      Point3D(3000., -1000., 1000.)
     },
     std::vector<RGBColor> {
       // Vertices colors
