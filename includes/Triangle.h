@@ -43,8 +43,8 @@ public:
     bbox.min.x = std::numeric_limits<double>::max();
     bbox.min.y = std::numeric_limits<double>::max();
 
-    bbox.max.x = std::numeric_limits<double>::min();
-    bbox.max.y = std::numeric_limits<double>::min();
+    bbox.max.x = -std::numeric_limits<double>::max();
+    bbox.max.y = -std::numeric_limits<double>::max();
 
     std::array<Point2D, 3> vertices{ this->v1, this->v2, this->v3 };
 
