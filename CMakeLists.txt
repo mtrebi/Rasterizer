@@ -36,8 +36,8 @@ add_compile_options(
 	-g
 ) 
 # renderer
-#add_definitions(-D_FORWARD=1)
-add_definitions(-D_DEFERRED=1)
+add_definitions(-D_FORWARD=1)
+#add_definitions(-D_DEFERRED=1)
 
 # shading
 #add_definitions(-D_FLAT=1)
@@ -47,6 +47,10 @@ add_definitions(-D_PHONG=1)
 # camera
 #add_definitions(-D_ORTHOGRAPHIC=1)
 add_definitions(-D_PERSPECTIVE=1)
+
+# texture mapping
+#add_definitions(-D_AFFINE_TEXTURES=1)
+add_definitions(-D_PERSPECTIVE_TEXTURES=1)
 
 # main.cpp
 add_executable(main ${SOURCES})
