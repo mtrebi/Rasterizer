@@ -21,7 +21,7 @@ public:
   const bool contains(const Point2D& point) const {
     double u, v, w;
     calculateBarycentricCoords(u, v, w, point);
-    return (u >= 0 && v >= 0 && u + v <= 1);
+    return (u >= 0 && v >= 0 && u + v <= 1.01);
   }
 
   void calculateBarycentricCoords(double& u, double& v, double& w, const Point2D& point) const {
@@ -40,11 +40,11 @@ public:
   const BoundingBox2D bbox() const {
     BoundingBox2D bbox;
 
-    bbox.min.x = std::numeric_limits<float>::max();
-    bbox.min.y = std::numeric_limits<float>::max();
+    bbox.min.x = std::numeric_limits<double>::max();
+    bbox.min.y = std::numeric_limits<double>::max();
 
-    bbox.max.x = std::numeric_limits<float>::min();
-    bbox.max.y = std::numeric_limits<float>::min();
+    bbox.max.x = std::numeric_limits<double>::min();
+    bbox.max.y = std::numeric_limits<double>::min();
 
     std::array<Point2D, 3> vertices{ this->v1, this->v2, this->v3 };
 
@@ -113,7 +113,7 @@ public:
   const bool contains(const Point3D& point) const {
     double u, v, w;
     calculateBarycentricCoords(u, v, w, point);
-    return (u >= 0 && v >= 0 && u + v <= 1);
+    return (u >= 0 && v >= 0 && u + v <= 1.01);
   }
 
   void calculateBarycentricCoords(double& u, double& v, double& w, const Point3D& point) const {
