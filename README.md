@@ -4,12 +4,13 @@ _TODO_
 
 * Orthographic and perspective cameras
 * Phong shading &  Blinn-Phong shading
-* Object rotations
+* Object rotations (roll, pitch, yaw)
 * Linear depth-buffer
 * Depth buffer to texture
 * Forward rendered & Deferred renderer
 * Diffuse and specular textures
 * Normal mapping
+* Affine mapping vs Perspective corrected mapping
 
 # Rasterization
 **Describe how it works**
