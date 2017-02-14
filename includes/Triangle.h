@@ -21,7 +21,7 @@ public:
   const bool contains(const Point2D& point) const {
     double u, v, w;
     calculateBarycentricCoords(u, v, w, point);
-    return (u >= 0 && v >= 0 && u + v <= 1.01);
+    return (u >= 0 && v >= 0 && u + v <= 1.0);
   }
 
   void calculateBarycentricCoords(double& u, double& v, double& w, const Point2D& point) const {
@@ -113,7 +113,7 @@ public:
   const bool contains(const Point3D& point) const {
     double u, v, w;
     calculateBarycentricCoords(u, v, w, point);
-    return (u >= 0 && v >= 0 && u + v <= 1.01);
+    return (u >= 0 && v >= 0 && u + v <= 1.0);
   }
 
   void calculateBarycentricCoords(double& u, double& v, double& w, const Point3D& point) const {
