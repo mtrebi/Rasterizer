@@ -11,6 +11,7 @@ _TODO_
 * Diffuse and specular textures
 * Normal mapping
 * Affine mapping vs Perspective corrected mapping
+* Generic camera transforms and rotations
 
 # Rasterization
 **Describe how it works**
