@@ -10,6 +10,9 @@ include_directories (
 	includes/
 )
 
+find_package(glm REQUIRED)
+
+include_directories(${GLM_INCLUDE_DIRS})
 
 set(SOURCES src/RGBColor.cpp
 						src/Point2D.cpp
