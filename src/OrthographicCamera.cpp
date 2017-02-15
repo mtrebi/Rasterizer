@@ -5,8 +5,8 @@ OrthographicCamera::OrthographicCamera()
 
 }
 
-OrthographicCamera::OrthographicCamera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer)
-  : Camera(position, image_height, image_width, renderer) {
+OrthographicCamera::OrthographicCamera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer)
+  : Camera(position, target, image_height, image_width, renderer) {
 
 }
 
@@ -35,5 +35,5 @@ const Point3D OrthographicCamera::projectTransformInv(const Point2D& pixel_proje
 }
 
 const Vector3D OrthographicCamera::viewDirection(const Point3D& point) const {
-  return m_forward;
+  return m_direction;
 }

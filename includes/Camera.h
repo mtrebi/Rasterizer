@@ -11,12 +11,22 @@ class World;
 #include "Triangle.h"
 #include "Renderer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
 class Camera {
 protected:
-  const Vector3D 
-    m_forward = { 0, 0, 1 },
-    m_up = { 0, 1, 0 },
-    m_left = { 1, 0, 0 };
+  Vector3D
+    m_direction,
+    m_right,
+    m_up;
+
+  glm::mat4
+    m_lookat,
+    m_lookat_inv;
+
   const uint32_t 
     m_near = 2, 
     m_far = 5000;
@@ -28,7 +38,7 @@ protected:
   Renderer * m_renderer;
 public:
     Camera();
-    Camera(const Point3D& position, const uint32_t image_height, const uint32_t image_width, Renderer * renderer);
+    Camera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer);
     ~Camera();
 
     inline const uint32_t get_near_plane() const { return m_near; }
@@ -37,6 +47,8 @@ public:
     inline const uint32_t get_width() const { return m_image_width; }
     inline const uint32_t get_height() const { return m_image_height; }
 
+
+    void rotate(const float roll_degrees, const float pitch_degrees, const float yaw_degrees);
     void render() const;
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
@@ -55,6 +67,10 @@ public:
     virtual const Vector3D viewDirection(const Point3D& point) const = 0;
 protected:
   inline const double get_aspect() const { return (float) m_image_width / m_image_height; }
+  const Point3D rotation_roll(const Point3D& point, const float amount_r) const;
+  const Point3D rotation_pitch(const Point3D& point, const float amount_p) const;
+  const Point3D rotation_yaw(const Point3D& point, const float amount_y) const;
+
 };
 
 #endif /* CAMERA_H */
