@@ -13,39 +13,35 @@
 #include "PerspectiveCamera.h"
 #include "Constants.h"
 
-
-// Build two scenes
-  // Textured scene
-    // Textured boxes
-    // Textures walls
-  // Flat scene
-    // Pyramids
-    // Planes
-
-std::vector<GeometryObject*> OBJECTS {
-  //triangle,
-  //textured_rectangle
-  //Objects::box,
-  Objects::box,
-
-  //Objects::ground,
-  //Objects::ground2,
-
-  //buildPlainBox(Materials::PLASTIC, Colors::RED, Point3D(100, 100, 50), 100),
-  //buildTexturedBox(Materials::BOX, Point3D(-500, 0, 3000), 500),
-  //Objects::rainbow_triangle
-};
-
-const std::vector<Light*> LIGHTS {
-  new PointLight(Colors::WHITE, Point3D(1000, 0, -250))
-};
-
 Camera * camera;
 Renderer * renderer;
+// TODO: Build two scenes: flat and textured
 int main (){
-  World * world = new World(OBJECTS, LIGHTS, camera);
+  std::vector<Light*> lights;
+  std::vector<GeometryObject*> objects;
+
+  // Objects
+  GeometryObject* ground = buildTexturedPlane(Materials::DEFAULT, Point3D(0, 0, 1000), 500);
+  //objects.push_back(ground);
+
+  GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(0, 0, 0), 200);
+  //flat_box->rotate(45, 60, 0);
+  objects.push_back(flat_box);
+  
+  GeometryObject* textured_box = buildTexturedBox(Materials::BOX, Point3D(0, 0, 0), 200);
+  //textured_box->rotate(45, 45, 45);
+  //objects.push_back(textured_box);
+
+  GeometryObject* textured_default_box = buildTexturedBox(Materials::DEFAULT, Point3D(0, 0, 600), 200);
+  //textured_default_box->rotate(45, 45, 45);
+  //objects.push_back(textured_default_box);
 
 
+  // Lights
+  Light * point_light = new PointLight(Colors::WHITE, Point3D(0, 2000, 0));
+  lights.push_back(point_light);
+
+  World * world = new World(objects, lights, camera);
 #ifdef _FORWARD
   renderer = new ForwardRasterizer(world);
 #endif 
@@ -55,13 +51,14 @@ int main (){
 #endif 
 
 #ifdef _ORTHOGRAPHIC
-  camera = new OrthographicCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
+  camera = new OrthographicCamera(CAMERA_POS, CAMERA_TARGET, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
 
 #ifdef _PERSPECTIVE
-  camera = new PerspectiveCamera(CAMERA_POS, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
+  camera = new PerspectiveCamera(CAMERA_POS, CAMERA_TARGET, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
   world->m_camera = camera;
+  //camera->rotate(45, 0, 0);
   camera->render();
   renderer->export_output(IMAGE_NAME);
   return 0;
