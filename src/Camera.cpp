@@ -71,25 +71,25 @@ const Point2D Camera::viewportTransformInv(const Point2D& point_raster) const {
   return point_ndc;
 }
 
-const Point2D Camera::ndcTransform(const Point2D& point_projected) const {
-  const double slopeX = 1.0 / (m_image_width);
-  const double slopeY = 1.0 / (m_image_height);
+const Point2D Camera::ndcTransform(const Point2D& point_projected) const { 
+  double slope = 1.0 / (1 - -1);
 
   const Point2D point_ndc = {
-    (float)(slopeX * (point_projected.x + m_image_width / 2.0)),
-    (float)(slopeY * (point_projected.y + m_image_height / 2.0))
+    (float)(slope * (point_projected.x - -1)),
+    (float)(slope * (point_projected.y - -1))
   };
+
   return point_ndc;
 }
 
 const Point2D Camera::ndcTransformInv(const Point2D& point_ndc) const {
-  const double slopeX = 1.0 / (m_image_width);
-  const double slopeY = 1.0 / (m_image_height);
+  const double slope = 1.0 * (1 - -1);;
 
   const Point2D point_projected = {
-    point_ndc.x / slopeX - m_image_width / 2.0,
-    point_ndc.y / slopeY - m_image_height / 2.0
+    (float)(-1 + slope * (point_ndc.x)),
+    (float)(-1 + slope * (point_ndc.y))
   };
+
   return point_projected;
 }
 
