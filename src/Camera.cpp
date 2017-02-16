@@ -39,6 +39,24 @@ Camera::~Camera(){
 
 }
 
+const Point2D Camera::projectTransform(const Point3D& point_camera) const {
+  // Perspective divide
+  const glm::vec4 point = glm::vec4(point_camera.x, point_camera.y, point_camera.z, 1);
+  const glm::vec4 r = point * m_project;
+  const Point3D point_projected(r.x / r.w, r.y / r.w, r.z / r.w);
+
+  return point_projected;
+}
+
+const Point3D Camera::projectTransformInv(const Point2D& point_projected, const double depth) const {
+  const glm::vec4 point = glm::vec4(point_projected.x, point_projected.y, depth, 1);
+  const glm::vec4 r = point * m_project_inv;
+  const Point3D point_world(r.x * r.w, r.y * r.w, r.z * r.w);
+
+  return point_world;
+}
+
+
 const Point3D Camera::viewTransform(const Point3D& point_world) const {
   glm::vec4 p = glm::vec4(point_world.x, point_world.y, point_world.z, 1);
   glm::vec4 r = p * m_lookat;
