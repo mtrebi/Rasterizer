@@ -3,6 +3,8 @@
 class PerspectiveCamera : public Camera {
 public:
   float m_fov, m_zoom;
+  glm::mat4 m_perspective,
+    m_perspective_inv;
 public:
 
   PerspectiveCamera();
