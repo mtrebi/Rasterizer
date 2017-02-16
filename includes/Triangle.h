@@ -106,6 +106,7 @@ public:
     v2v3.normalize();
 
     normal = v1v2 ^ v2v3;
+    normal.normalize();
   }
 
   ~Triangle3D() { }
