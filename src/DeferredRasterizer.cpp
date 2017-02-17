@@ -62,9 +62,7 @@ void DeferredRasterizer::render() {
       const double depth = m_depth_buffer[i];
       if (depth < m_camera->get_far_plane()) {
         const Point2D pixel_raster(x, y);
-        const Point2D pixel_projected = this->unproject(pixel_raster);
-        const Point3D pixel_view = m_camera->projectTransformInv(pixel_projected, m_depth_buffer[i]);
-        const Point3D pixel_world = m_camera->viewTransformInv(pixel_view);
+        const Point3D pixel_world = unrasterize(pixel_raster, m_depth_buffer[i]);  
 
         Fragment fragment{
           pixel_world,
