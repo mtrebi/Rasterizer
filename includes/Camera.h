@@ -63,7 +63,7 @@ public:
     const Point2D viewportTransformInv(const Point2D& point_raster) const;
 
     const Point2D projectTransform(const Point3D& point_camera) const;
-    const Point3D projectTransformInv(const Point2D& point_projected, const double depth) const;
+    virtual const Point3D projectTransformInv(const Point2D& point_projected, const double depth) const = 0;
 
     virtual const Vector3D viewDirection(const Point3D& point) const = 0;
 protected:

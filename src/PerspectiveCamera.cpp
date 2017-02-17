@@ -28,6 +28,14 @@ PerspectiveCamera::~PerspectiveCamera() {
 
 }
 
+// NDC [-1,1] to Camera space
+const Point3D PerspectiveCamera::projectTransformInv(const Point2D& point_projected, const double depth) const {
+  const glm::vec4 point = glm::vec4(point_projected.x * depth, point_projected.y * depth, depth, 1);
+  const glm::vec4 r = point * m_project_inv;
+  return Point3D(r.x, r.y, r.z * depth);
+}
+
+
 const Vector3D PerspectiveCamera::viewDirection(const Point3D& point) const {
   Vector3D view = point - m_position;
   view.normalize();
