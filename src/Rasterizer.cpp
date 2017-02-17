@@ -109,28 +109,6 @@ const Point3D Rasterizer::unrasterize(const Point2D& point_raster, const double 
   return point_world;
 }
 
-
-const Triangle2D Rasterizer::project(const Triangle3D& triangle_world) const {
-  return Triangle2D(
-    project(triangle_world.v1.position),
-    project(triangle_world.v2.position),
-    project(triangle_world.v3.position)
-  );
-}
-
-const Point2D Rasterizer::project(const Point3D& point_world) const {
-  const Point3D point_camera = m_camera->viewTransform(point_world);
-  const Point2D point_projected = m_camera->projectTransform(point_camera);
-  return point_projected;
-}
-
-
-const Point2D Rasterizer::unproject(const Point2D& point_raster) const {
-  const Point2D point_ndc = m_camera->viewportTransformInv(point_raster);
-  const Point2D point_projected = m_camera->ndcTransformInv(point_ndc);
-  return point_projected;
-}
-
 void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, const std::string output_path, const uint16_t image_width, const uint16_t image_height) const {
   std::vector<RGBColor> depth_buffer_grey(image_height*image_width, RGBColor(1.0));
   for (int i = 0; i < depth_buffer.size(); ++i) {
