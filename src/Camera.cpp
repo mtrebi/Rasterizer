@@ -48,13 +48,6 @@ const Point2D Camera::projectTransform(const Point3D& point_camera) const {
   return Point3D(r.x / r.w, r.y / r.w, r.z / r.w);
 }
 
-// NDC [-1,1] to Camera space
-const Point3D Camera::projectTransformInv(const Point2D& point_projected, const double depth) const {
-  const glm::vec4 point = glm::vec4(point_projected.x * depth, point_projected.y * depth, depth, 1);
-  const glm::vec4 r = point * m_project_inv;
-  return Point3D(r.x, r.y, r.z * depth);
-}
-
 // World space to camera/view space
 const Point3D Camera::viewTransform(const Point3D& point_world) const {
   glm::vec4 p = glm::vec4(point_world.x, point_world.y, point_world.z, 1);
