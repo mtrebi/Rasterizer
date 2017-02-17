@@ -39,24 +39,23 @@ Camera::~Camera(){
 
 }
 
+// Camera space to NDC [-1,1]
 const Point2D Camera::projectTransform(const Point3D& point_camera) const {
-  // Perspective divide
+  // Prepare matrix for clipping
   const glm::vec4 point = glm::vec4(point_camera.x, point_camera.y, point_camera.z, 1);
   const glm::vec4 r = point * m_project;
-  const Point3D point_projected(r.x / r.w, r.y / r.w, r.z / r.w);
-
-  return point_projected;
+  // Perspective divide
+  return Point3D(r.x / r.w, r.y / r.w, r.z / r.w);
 }
 
+// NDC [-1,1] to Camera space
 const Point3D Camera::projectTransformInv(const Point2D& point_projected, const double depth) const {
-  const glm::vec4 point = glm::vec4(point_projected.x, point_projected.y, depth, 1);
+  const glm::vec4 point = glm::vec4(point_projected.x * depth, point_projected.y * depth, depth, 1);
   const glm::vec4 r = point * m_project_inv;
-  const Point3D point_world(r.x * r.w, r.y * r.w, r.z * r.w);
-
-  return point_world;
+  return Point3D(r.x, r.y, r.z * depth);
 }
 
-
+// World space to camera/view space
 const Point3D Camera::viewTransform(const Point3D& point_world) const {
   glm::vec4 p = glm::vec4(point_world.x, point_world.y, point_world.z, 1);
   glm::vec4 r = p * m_lookat;
@@ -64,53 +63,40 @@ const Point3D Camera::viewTransform(const Point3D& point_world) const {
   return Point3D(r.x, r.y, r.z);
 }
 
+// Camera/view space to World space
 const Point3D Camera::viewTransformInv(const Point3D& point_camera) const {
+
   glm::vec4 p = glm::vec4(point_camera.x, point_camera.y, point_camera.z, 1);
   glm::vec4 r = p * m_lookat_inv;
 
   return Point3D(r.x, r.y, r.z);;
 }
 
+// NDC [-1,1] to raster/screen space
 const Point2D Camera::viewportTransform(const Point2D& point_ndc) const {
+  const double slopeX = m_image_width / 2.0;
+  const double slopeY = m_image_height / 2.0;
+
   const Point2D point_raster = {
-    point_ndc.x * m_image_width,
-    point_ndc.y * m_image_height,
+    slopeX * (point_ndc.x - -1),
+    slopeY * (point_ndc.y - -1)
   };
 
   return point_raster;
 }
 
+// Raster/screen space to NDC [-1,1]
 const Point2D Camera::viewportTransformInv(const Point2D& point_raster) const {
+  const double slopeX = 2.0 / m_image_width;
+  const double slopeY = 2.0 / m_image_height;
+
   const Point2D point_ndc = {
-    point_raster.x / m_image_width,
-    point_raster.y / m_image_height,
+    -1 + slopeX * point_raster.x,
+    -1 + slopeY * point_raster.y
   };
 
   return point_ndc;
 }
-
-const Point2D Camera::ndcTransform(const Point2D& point_projected) const { 
-  double slope = 1.0 / (1 - -1);
-
-  const Point2D point_ndc = {
-    (float)(slope * (point_projected.x - -1)),
-    (float)(slope * (point_projected.y - -1))
-  };
-
-  return point_ndc;
-}
-
-const Point2D Camera::ndcTransformInv(const Point2D& point_ndc) const {
-  const double slope = 1.0 * (1 - -1);;
-
-  const Point2D point_projected = {
-    (float)(-1 + slope * (point_ndc.x)),
-    (float)(-1 + slope * (point_ndc.y))
-  };
-
-  return point_projected;
-}
-
 
 const bool Camera::insideFrustrum(const Point2D& point_raster, const float depth) const {
   return (point_raster.x < m_image_width && point_raster.x >= 0 &&

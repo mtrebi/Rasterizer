@@ -54,11 +54,10 @@ public:
     void render() const;
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
+    
+    // Transformations
     const Point3D viewTransform(const Point3D& point_world) const;
     const Point3D viewTransformInv(const Point3D& point_camera) const;
-
-    const Point2D ndcTransform(const Point2D& point_projected) const;
-    const Point2D ndcTransformInv(const Point2D& point_ndc) const;
 
     const Point2D viewportTransform(const Point2D& point_ndc) const;
     const Point2D viewportTransformInv(const Point2D& point_raster) const;
