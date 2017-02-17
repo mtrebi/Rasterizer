@@ -31,6 +31,8 @@ protected:
   const Triangle2D rasterize(const Triangle3D& triangle_world) const;
   const Point2D rasterize(const Point3D& point) const;
 
+  const Point3D unrasterize(const Point2D& point_raster, const double depth_from_camera) const;
+
   const Triangle2D project(const Triangle3D& triangle_world) const;
   const Point2D project(const Point3D& point_world) const;
   const Point2D unproject(const Point2D& point_raster) const;

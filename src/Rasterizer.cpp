@@ -27,7 +27,8 @@ const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangl
   return f;
 }
 
-const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_screen, const Point2D& pixel_screen) const {
+// Calculate depth in screen space and then interpolate using inverse function (1/z) 
+const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_raster, const Point2D& pixel_raster) const {
   const Triangle3D triangle_camera = Triangle3D(
     Vertex3D (m_camera->viewTransform(triangle_world.v1.position), triangle_world.v1.color, triangle_world.v1.texture_coords, triangle_world.v1.normal),
     Vertex3D(m_camera->viewTransform(triangle_world.v2.position), triangle_world.v2.color, triangle_world.v2.texture_coords, triangle_world.v1.normal),
@@ -36,7 +37,7 @@ const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const 
 
   // Calculate barycentric coords in camera space
   double u, v, w;
-  triangle_screen.calculateBarycentricCoords(u, v, w, pixel_screen);
+  triangle_raster.calculateBarycentricCoords(u, v, w, pixel_raster);
   // Interpolate Z in 3D using inverse function and barycentric coordinates in 2D
   const double depth = 1 / 
     (
@@ -81,14 +82,16 @@ const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, cons
   return new_color;
 }
 
+// World to raster/screen space
 const Point2D Rasterizer::rasterize(const Point3D& point_world) const {
   const Point3D point_camera = m_camera->viewTransform(point_world);
-  const Point2D point_projected = m_camera->projectTransform(point_camera);
-  const Point2D point_ndc = m_camera->ndcTransform(point_projected);
-  const Point2D point_raster = m_camera->viewportTransform(point_ndc);
+  const Point2D point_ndc = m_camera->projectTransform(point_camera);
+  //const Point2D point_ = m_camera->ndcTransform(point_ndc);
+  const Point2D point_raster = m_camera->viewportTransform(point_ndc);  
   return point_raster;
 }
 
+// World to raster/screen space
 const Triangle2D Rasterizer::rasterize(const Triangle3D& triangle_world) const {
   return Triangle2D(
     rasterize(triangle_world.v1.position),
@@ -96,6 +99,16 @@ const Triangle2D Rasterizer::rasterize(const Triangle3D& triangle_world) const {
     rasterize(triangle_world.v3.position)
   );
 }
+
+
+// Raster/screen space to world
+const Point3D Rasterizer::unrasterize(const Point2D& point_raster, const double depth_from_camera) const {
+  const Point2D point_ndc = m_camera->viewportTransformInv(point_raster);
+  const Point3D point_camera = m_camera->projectTransformInv(point_ndc, depth_from_camera);
+  const Point3D point_world= m_camera->viewTransformInv(point_camera);
+  return point_world;
+}
+
 
 const Triangle2D Rasterizer::project(const Triangle3D& triangle_world) const {
   return Triangle2D(
@@ -110,6 +123,7 @@ const Point2D Rasterizer::project(const Point3D& point_world) const {
   const Point2D point_projected = m_camera->projectTransform(point_camera);
   return point_projected;
 }
+
 
 const Point2D Rasterizer::unproject(const Point2D& point_raster) const {
   const Point2D point_ndc = m_camera->viewportTransformInv(point_raster);
