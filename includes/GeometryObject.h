@@ -21,18 +21,20 @@ private:
   std::vector<Vector2D> m_texture_coords;
   std::vector<uint32_t> m_indices;
 
-  glm::vec3 m_center;
+  glm::mat4 m_model, m_rotation, m_translation;
 public:
 	GeometryObject();
 	GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const Point3D& center = Point3D(0,0,0));
 	~GeometryObject();
 
   void rotate(const float roll, const float pitch, const float yaw);
-	const std::vector<Triangle3D> triangles() const;
+  void translate(const Vector3D translation);
+
+  const std::vector<Triangle3D> triangles() ;
 	const Material * material() const;
-	
+
 private:
 	const Vertex3D build_vertex(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const uint32_t vertex_index) const;
-
+  void model_transform();
 };
 

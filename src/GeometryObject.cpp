@@ -8,8 +8,10 @@ GeometryObject::GeometryObject() {
 }
 
 GeometryObject::GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const Point3D& center)
-  : m_material(material), m_vertices(vertices), m_colors(colors), m_texture_coords(texture_coords), m_indices(indices), m_center(center.x, center.y, center.z) {
+  : m_material(material), m_vertices(vertices), m_colors(colors), m_texture_coords(texture_coords), m_indices(indices) {
   
+  m_translation = glm::translate(m_model, glm::vec3(center.x, center.y, center.z));
+
 }
 
 GeometryObject::~GeometryObject() {
@@ -32,25 +34,34 @@ void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees,
   const float yaw_r = ((yaw_degrees / 180.0) * M_PI);
 
   // Model transformation (Local object space to World)
-  glm::mat4 mat_roll, mat_pitch, mat_yaw, mat_rotation, mat_translation;
-  mat_roll = glm::rotate(glm::mat4(1.0f), roll_r, glm::vec3(1.0f, 0.0f, 0.0f));
-  mat_pitch = glm::rotate(glm::mat4(1.0f), pitch_r, glm::vec3(0.0f, 1.0f, 0.0f));
-  mat_yaw = glm::rotate(glm::mat4(1.0f), yaw_r, glm::vec3(0.0f, 0.0f, 1.0f));
+  glm::mat4 mat_roll, mat_pitch, mat_yaw;
+  mat_roll = glm::transpose(glm::rotate(glm::mat4(1.0f), roll_r, glm::vec3(1.0f, 0.0f, 0.0f)));
+  mat_pitch = glm::transpose(glm::rotate(glm::mat4(1.0f), pitch_r, glm::vec3(0.0f, 1.0f, 0.0f)));
+  mat_yaw = glm::transpose(glm::rotate(glm::mat4(1.0f), yaw_r, glm::vec3(0.0f, 0.0f, 1.0f)));
 
-  mat_rotation = mat_yaw * mat_pitch * mat_roll;
-  mat_translation = glm::translate(mat_translation, m_center);
+  m_rotation = mat_yaw * mat_pitch * mat_roll;
+}
 
+void GeometryObject::translate(const Vector3D translation) {
+  m_translation = glm::translate(m_translation, glm::vec3(translation.x, translation.y, translation.z));
+}
+
+void GeometryObject::model_transform() {
+  // Transform object vertices using Model matrix
+  m_model = m_translation * m_rotation;
   for (auto& point : m_vertices) {
-    glm::vec4 p(point.x, point.y, point.z, 1);
-    glm::vec4 r = mat_translation * mat_rotation  * p;
+    glm::vec4 r =  m_model * glm::vec4(point.x, point.y, point.z, 1);
     point = Point3D(r.x, r.y, r.z);
   }
 }
 
-const std::vector<Triangle3D> GeometryObject::triangles() const { 
+// Returns object triangles in World Space
+const std::vector<Triangle3D> GeometryObject::triangles() { 
   assert(m_indices.size() % 3 == 0 && "Indices array must be made up of triangles");
   assert((m_colors.size() == 0 || m_vertices.size() == m_colors.size()) && "Vertices size and colors size should match");
   assert((m_texture_coords.size() == 0 || m_vertices.size() == m_texture_coords.size()) && "Vertices size and texture coordinates size should match");
+
+  model_transform();
 
   std::vector<Triangle3D> triangles;
   for (int i = 0; i < m_indices.size(); i += 3) {
