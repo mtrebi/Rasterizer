@@ -15,6 +15,8 @@ _TODO_
 * Generic camera transforms and rotations
 
 # Latest generated image
+More images at docs/images
+
 ![Flat scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_flat_scene.bmp "Flat scene render")
 
 # Rasterization
