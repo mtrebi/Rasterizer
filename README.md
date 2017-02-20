@@ -5,13 +5,17 @@ _TODO_
 * Orthographic and perspective cameras
 * Phong shading &  Blinn-Phong shading
 * Object rotations (roll, pitch, yaw)
-* Linear depth-buffer
+* Object translations
+* Depth-buffer
 * Depth buffer to texture
 * Forward rendered & Deferred renderer
 * Diffuse and specular textures
 * Normal mapping
 * Affine mapping vs Perspective corrected mapping
 * Generic camera transforms and rotations
+
+# Latest generated image
+![Flat scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_flat_scene.bmp "Flat scene render")
 
 # Rasterization
 **Describe how it works**
