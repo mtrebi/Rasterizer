@@ -7,8 +7,8 @@ GeometryObject::GeometryObject() {
 
 }
 
-GeometryObject::GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices)
-  : m_material(material), m_vertices(vertices), m_colors(colors), m_texture_coords(texture_coords), m_indices(indices) {
+GeometryObject::GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const Point3D& center)
+  : m_material(material), m_vertices(vertices), m_colors(colors), m_texture_coords(texture_coords), m_indices(indices), m_center(center.x, center.y, center.z) {
   
 }
 
@@ -27,41 +27,24 @@ const Vertex3D GeometryObject::build_vertex(const std::vector<Point3D>& vertices
 }
 
 void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees, const float yaw_degrees) {
-  const float roll_radians = ((roll_degrees / 180.0) * M_PI);
-  const float pitch_radians = ((pitch_degrees / 180.0) * M_PI);
-  const float yaw_radians = ((yaw_degrees / 180.0) * M_PI);
+  const float roll_r = ((roll_degrees / 180.0) * M_PI);
+  const float pitch_r = ((pitch_degrees / 180.0) * M_PI);
+  const float yaw_r = ((yaw_degrees / 180.0) * M_PI);
+
+  // Model transformation (Local object space to World)
+  glm::mat4 mat_roll, mat_pitch, mat_yaw, mat_rotation, mat_translation;
+  mat_roll = glm::rotate(glm::mat4(1.0f), roll_r, glm::vec3(1.0f, 0.0f, 0.0f));
+  mat_pitch = glm::rotate(glm::mat4(1.0f), pitch_r, glm::vec3(0.0f, 1.0f, 0.0f));
+  mat_yaw = glm::rotate(glm::mat4(1.0f), yaw_r, glm::vec3(0.0f, 0.0f, 1.0f));
+
+  mat_rotation = mat_yaw * mat_pitch * mat_roll;
+  mat_translation = glm::translate(mat_translation, m_center);
+
   for (auto& point : m_vertices) {
-    point = rotation_roll(point, roll_radians);
-    point = rotation_yaw(point, yaw_radians);
-    point = rotation_pitch(point, pitch_radians);
+    glm::vec4 p(point.x, point.y, point.z, 1);
+    glm::vec4 r = mat_translation * mat_rotation  * p;
+    point = Point3D(r.x, r.y, r.z);
   }
-}
-
-const Point3D GeometryObject::rotation_roll(const Point3D& point, const float amount_r) const {
-  const Point3D rotated_point(
-    point.x,
-    point.y * cos(amount_r) + point.z * -sin(amount_r),
-    point.y * sin(amount_r) + point.z * cos(amount_r)
-  );
-  return rotated_point;
-}
-const Point3D GeometryObject::rotation_pitch(const Point3D& point, const float amount_p) const { 
-  const Point3D rotated_point(
-    point.x * cos(amount_p) + point.z * -sin(amount_p),
-    point.y,
-    point.x * sin(amount_p) + point.z * cos(amount_p)
-  );
-  
-  return rotated_point;
-}
-const Point3D GeometryObject::rotation_yaw(const Point3D& point, const float amount_y) const {
-  const Point3D rotated_point(
-    point.x * cos(amount_y) + point.y * -sin(amount_y),
-    point.x * sin(amount_y) + point.y * cos(amount_y),
-    point.z
-  );
-
-  return rotated_point;
 }
 
 const std::vector<Triangle3D> GeometryObject::triangles() const { 
