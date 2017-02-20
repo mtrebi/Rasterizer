@@ -14,44 +14,29 @@
 #include "Constants.h"
 
 // Forward declaration utils functions
-void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side);
+void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const float side);
 GeometryObject* buildPlainBox(Material* material, const RGBColor& color, const Point3D& center, const float side);
 GeometryObject* buildTexturedBox(Material* material, const Point3D& center, const float side);
 
-void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side);
+void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const float side);
 GeometryObject* buildTexturedPlane(Material* material, const Point3D& center, const float side);
 GeometryObject* buildPlainPlane(Material* material, const RGBColor& color, const Point3D& center, const float side);
+GeometryObject* buildMultiColorBox(Material* material, const Point3D& center, const float side);
 
+const std::vector<GeometryObject*> setupFlatScene();
+const std::vector<GeometryObject*> setupTexturedScene();
 
 Camera * camera;
 Renderer * renderer;
-// TODO: Build two scenes: flat and textured
 int main (){
-  std::vector<Light*> lights;
-  std::vector<GeometryObject*> objects;
-
-  // Objects
-  GeometryObject* ground = buildTexturedPlane(Materials::DEFAULT, Point3D(0, 0, 1000), 500);
-  //objects.push_back(ground);
-
-  GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(200, -200, 0), 100);
-  //flat_box->rotate(45, 60, 0);
-  objects.push_back(flat_box);
-  
-  GeometryObject* textured_box = buildTexturedBox(Materials::DEFAULT, Point3D(0, 200, 0), 100);
-  textured_box->rotate(45, 45, 45);
-  objects.push_back(textured_box);
-
-  GeometryObject* textured_default_box = buildTexturedBox(Materials::DEFAULT, Point3D(0, 0, 600), 100);
-  //textured_default_box->rotate(45, 45, 45);
-  //objects.push_back(textured_default_box);
+  std::vector<Light*> lights = {
+    new DirectionalLight(Colors::WHITE, Vector3D(0, -1, 0))
+  };
+  const std::vector<GeometryObject*> objects_flat = setupFlatScene();
+  const std::vector<GeometryObject*> objects_textured = setupTexturedScene();
 
 
-  // Lights
-  Light * point_light = new PointLight(Colors::WHITE, Point3D(0, 2000, -2000));
-  lights.push_back(point_light);
-
-  World * world = new World(objects, lights, camera);
+  World * world = new World(objects_flat, lights, camera);
 #ifdef _FORWARD
   renderer = new ForwardRasterizer(world);
 #endif 
@@ -68,18 +53,55 @@ int main (){
   camera = new PerspectiveCamera(CAMERA_POS, CAMERA_TARGET, IMAGE_HEIGHT, IMAGE_WIDTH, renderer);
 #endif 
   world->m_camera = camera;
-  //camera->rotate(45, 0, 0);
   camera->render();
   renderer->export_output(IMAGE_NAME);
   return 0;
 }
 
 
+const std::vector<GeometryObject*> setupFlatScene() {
+  std::vector<GeometryObject*> objects;
 
-void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side) {
+  // Objects
+  GeometryObject* ground = buildPlainPlane(Materials::FLAT_PLASTIC, Colors::GREY, Point3D(0, 0, 0), 500);
+  //objects.push_back(ground);
+
+  GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(150, 50, 100), 100);
+  //GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(0, 0, 0), 100);
+  flat_box->rotate(0, 45, 0);
+  //flat_box->rotate(45, 45, 45);
+
+  objects.push_back(flat_box);
+
+  GeometryObject* flying_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::GREEN, Point3D(100, 100, -90), 75);
+  //flying_box->rotate(45, 45, 45);
+  //objects.push_back(flying_box);
+
+  GeometryObject* multicolor_box = buildMultiColorBox(Materials::FLAT_PLASTIC, Point3D(-100, 50, -90), 100);
+  //objects.push_back(multicolor_box);
+  
+
+  return objects;
+}
+
+const std::vector<GeometryObject*> setupTexturedScene() {
+  std::vector<GeometryObject*> objects;
+  GeometryObject* textured_box = buildTexturedBox(Materials::DEFAULT, Point3D(0, 200, 0), 100);
+  textured_box->rotate(45, 45, 45);
+  objects.push_back(textured_box);
+
+  GeometryObject* textured_default_box = buildTexturedBox(Materials::DEFAULT, Point3D(0, 0, 600), 100);
+  //textured_default_box->rotate(45, 45, 45);
+  //objects.push_back(textured_default_box);
+
+  return objects;
+}
+
+
+void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const float side) {
   const float half_diagonal = (side / 2) / sin(PI / 2); // Distance to center
                                                         // Front
-  const Point3D v1(center.x - half_diagonal, center.y - half_diagonal, center.z - half_diagonal);
+  const Point3D v1(-half_diagonal, -half_diagonal, -half_diagonal);
   const Point3D v2(v1.x, v1.y + side, v1.z);
   const Point3D v3(v1.x + side, v1.y + side, v1.z);
   const Point3D v4(v1.x + side, v1.y, v1.z);
@@ -173,15 +195,56 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
   };
 }
 
-
 GeometryObject* buildPlainBox(Material* material, const RGBColor& color, const Point3D& center, const float side) {
   const std::vector<RGBColor> colors = std::vector<RGBColor>(24, color);
 
   std::vector<Point3D> vertices;
   std::vector<Vector2D> texture_coords;
   std::vector<uint32_t> indices;
-  buildAlignedBox(vertices, texture_coords, indices, center, side);
-  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices);
+  buildAlignedBox(vertices, texture_coords, indices, side);
+  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices, center);
+
+  return box;
+}
+
+GeometryObject* buildMultiColorBox(Material* material, const Point3D& center, const float side) {
+  const std::vector<RGBColor> colors = {
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+
+    Colors::RED,
+    Colors::GREEN,
+    Colors::RED,
+    Colors::BLUE,
+  };
+
+  std::vector<Point3D> vertices;
+  std::vector<Vector2D> texture_coords;
+  std::vector<uint32_t> indices;
+  buildAlignedBox(vertices, texture_coords, indices, side);
+  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices, center);
 
   return box;
 }
@@ -190,15 +253,15 @@ GeometryObject* buildTexturedBox(Material* material, const Point3D& center, cons
   std::vector<Point3D> vertices;
   std::vector<Vector2D> texture_coords;
   std::vector<uint32_t> indices;
-  buildAlignedBox(vertices, texture_coords, indices, center, side);
-  GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices);
+  buildAlignedBox(vertices, texture_coords, indices, side);
+  GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices, center);
   return box;
 }
 
-void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const Point3D& center, const float side) {
+void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>& texture_coords, std::vector<uint32_t>& indices, const float side) {
   const float half_diagonal = (side / 2) / sin(PI / 2); // Distance to center
 
-  const Point3D v1(center.x - half_diagonal, center.y, center.z - half_diagonal);
+  const Point3D v1(-half_diagonal, 0, -half_diagonal);
   const Point3D v2(v1.x, v1.y, v1.z + side);
   const Point3D v3(v1.x + side, v1.y, v1.z);
   const Point3D v4(v1.x + side, v1.y, v1.z + side);
@@ -219,7 +282,7 @@ void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>&
   indices = {
     // Indices
     0, 1, 2,
-    2, 3, 1
+    1, 3, 2
   };
 }
 
@@ -228,8 +291,8 @@ GeometryObject* buildPlainPlane(Material* material, const RGBColor& color, const
   std::vector<Point3D> vertices;
   std::vector<Vector2D> texture_coords;
   std::vector<uint32_t> indices;
-  buildHorizontalPlane(vertices, texture_coords, indices, center, side);
-  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices);
+  buildHorizontalPlane(vertices, texture_coords, indices, side);
+  GeometryObject* box = new GeometryObject(material, vertices, colors, texture_coords, indices, center);
   return box;
 }
 
@@ -237,7 +300,7 @@ GeometryObject* buildTexturedPlane(Material* material, const Point3D& center, co
   std::vector<Point3D> vertices;
   std::vector<Vector2D> texture_coords;
   std::vector<uint32_t> indices;
-  buildHorizontalPlane(vertices, texture_coords, indices, center, side);
-  GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices);
+  buildHorizontalPlane(vertices, texture_coords, indices, side);
+  GeometryObject* box = new GeometryObject(material, vertices, std::vector<RGBColor>(), texture_coords, indices, center);
   return box;
 }
