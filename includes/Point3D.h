@@ -40,6 +40,9 @@ class Point3D {
 		Point3D 													// multiplication by a double on the right
 		operator* (const double a) const;
 
+    Point3D 													// division by a double on the right
+      operator/ (const double a) const;
+
     operator Point2D() const {
       return Point2D(x, y);
     }
@@ -99,6 +102,10 @@ Point3D::operator* (const double a) const {
 	return (Point3D(x * a,y * a,z * a));
 }
 
+
+inline Point3D Point3D::operator/ (const double a) const {
+  return (Point3D(x / a, y / a, z / a));
+}
 
 // -------------------------------------------------------------- d_squared
 // the square of the distance between the two points as a member function
