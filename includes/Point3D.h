@@ -47,6 +47,10 @@ class Point3D {
       return Point2D(x, y);
     }
 		
+    operator Vector3D() const {
+      return Vector3D(x, y, z);
+    }
+
 		double														// square of distance bertween two points
 		d_squared(const Point3D& p) const;
 		
