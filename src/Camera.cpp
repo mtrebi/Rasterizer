@@ -96,7 +96,3 @@ const bool Camera::insideFrustrum(const Point2D& point_raster, const float depth
     point_raster.y < m_image_height && point_raster.y >= 0 &&
     depth >= m_near && depth <= m_far);
 }
-
-void Camera::render() const {
-  m_renderer->render();
-}

@@ -51,7 +51,6 @@ public:
 
 
     void rotate(const float roll_degrees, const float pitch_degrees, const float yaw_degrees);
-    void render() const;
 
     const bool insideFrustrum(const Point2D& point_raster, const float depth) const;
     
