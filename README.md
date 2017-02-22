@@ -14,6 +14,7 @@ _TODO_
 * Affine mapping vs Perspective corrected mapping
 * Generic camera transforms and rotations
 * View frusrtum clipping
+* (TODO) Back-face culling
 * (TODO) Shadow maps
 
 # Latest generated image
