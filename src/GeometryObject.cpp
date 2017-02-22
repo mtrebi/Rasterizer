@@ -21,7 +21,7 @@ GeometryObject::~GeometryObject() {
 const Vertex3D GeometryObject::build_vertex(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const uint32_t vertex_index) const {
   Vertex3D v;
   
-  v.position = vertices[vertex_index];
+  v.position = model_transform(vertices[vertex_index]);
   v.color = (colors.size() > 1) ? colors[vertex_index] : RGBColor();
   v.texture_coords = (texture_coords.size() > 1) ? texture_coords[vertex_index] : Vector2D();
 
@@ -46,13 +46,10 @@ void GeometryObject::translate(const Vector3D translation) {
   m_translation = glm::translate(m_translation, glm::vec3(translation.x, translation.y, translation.z));
 }
 
-void GeometryObject::model_transform() {
+const Point3D GeometryObject::model_transform(const Point3D& p) const {
   // Transform object vertices using Model matrix
-  m_model = m_translation * m_rotation;
-  for (auto& point : m_vertices) {
-    glm::vec4 r =  m_model * glm::vec4(point.x, point.y, point.z, 1);
-    point = Point3D(r.x, r.y, r.z);
-  }
+  glm::vec4 r =  m_model * glm::vec4(p.x, p.y, p.z, 1);
+  return Point3D(r.x, r.y, r.z);;
 }
 
 // Returns object triangles in World Space
@@ -61,7 +58,7 @@ const std::vector<Triangle3D> GeometryObject::triangles() {
   assert((m_colors.size() == 0 || m_vertices.size() == m_colors.size()) && "Vertices size and colors size should match");
   assert((m_texture_coords.size() == 0 || m_vertices.size() == m_texture_coords.size()) && "Vertices size and texture coordinates size should match");
 
-  model_transform();
+  m_model = m_translation * m_rotation;
 
   std::vector<Triangle3D> triangles;
   for (int i = 0; i < m_indices.size(); i += 3) {

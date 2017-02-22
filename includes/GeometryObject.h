@@ -35,6 +35,6 @@ public:
 
 private:
 	const Vertex3D build_vertex(const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const uint32_t vertex_index) const;
-  void model_transform();
+  const Point3D GeometryObject::model_transform(const Point3D& p) const;
 };
 
