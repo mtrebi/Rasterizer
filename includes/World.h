@@ -3,6 +3,9 @@
 
 class Camera;
 class GeometryObject;
+class Light;
+class Renderer;
+
 #include <vector>
 #include <string>
 #include "Light.h"
