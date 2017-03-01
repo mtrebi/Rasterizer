@@ -9,7 +9,6 @@
 
 class Normal;
 class Point3D;
-
 class RGBColor;
 
 //----------------------------------------- class Vector3D
@@ -77,10 +76,10 @@ class Vector3D {
 		
 		Vector3D& 												// return a unit vector, and normalize the vector												
 		hat(void);
-
+    /*
     operator Point3D() const {
       return Vector3D(x, y, z);
-    }
+    }*/
 };
 
 
