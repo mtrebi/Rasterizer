@@ -5,7 +5,7 @@ Rasterizer::Rasterizer()
 
 }
 
-Rasterizer::Rasterizer(World* world)
+Rasterizer::Rasterizer(const World* world)
   : Renderer(world) {
 
 }
@@ -23,7 +23,7 @@ const Fragment Rasterizer::calculateFragmentAttributes(const Triangle3D& triangl
     material.getSpecularColor(text_coords),
     material.getNormal(triangle_world, text_coords)
   };
-
+  
   return f;
 }
 
@@ -51,27 +51,55 @@ const double Rasterizer::calculateDepth(const Triangle3D& triangle_world, const 
 const Vector2D Rasterizer::calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& pixel_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const {
   // Calculate barycentric coords in screen space  (inverse linear)
   double u, v, w;
+#ifdef _AFFINE_TEXTURES
   triangle_camera.calculateBarycentricCoords(u, v, w, pixel_camera);
-  const Vector2D texture_coords = triangle_world.v1.texture_coords * u + triangle_world.v2.texture_coords * v + triangle_world.v3.texture_coords * w;
-  // Affine texture mapping (in screen space)
+#endif 
+#ifdef _PERSPECTIVE_TEXTURES
+  triangle_world.calculateBarycentricCoords(u, v, w, pixel_world);
+#endif 
+
+  const Vector2D texture_coords = 
+    triangle_world.v1.texture_coords * u + 
+    triangle_world.v2.texture_coords * v +
+    triangle_world.v3.texture_coords * w;
+
   const Vector2D texture_coords_abs_screen {
     abs(texture_coords.x),
     abs(texture_coords.y)
   };
-#ifdef _AFFINE_TEXTURES
-  return texture_coords_abs_screen;
-#endif 
 
-#ifdef _PERSPECTIVE_TEXTURES
-  // Lets take into account z
-  const double z = 1 / (1 / pixel_world.z);
-  const Vector2D texture_coords_perspective_corrected{
-    (texture_coords_abs_screen.x / z) * z,
-    (texture_coords_abs_screen.y / z) * z
+  return texture_coords_abs_screen;
+
+  /*
+
+  // Divide texture attribute at vertices by their z-coord
+  Vector2D v1t = triangle_world.v1.texture_coords / abs(triangle_world.v1.position.z);
+  Vector2D v2t = triangle_world.v2.texture_coords / abs(triangle_world.v2.position.z);
+  Vector2D v3t = triangle_world.v3.texture_coords / abs(triangle_world.v3.position.z);
+
+  float v1t_ = 1.0 / abs(triangle_world.v1.position.z);
+  float v2t_ = 1.0 / abs(triangle_world.v2.position.z);
+  float v3t_ = 1.0 / abs(triangle_world.v3.position.z);
+
+  const Vector2D texture_coords2 =
+    v1t * u +
+    v2t * v +
+    v3t * w;
+
+  const float z = 1.0 / 
+    (
+      v1t_ * u +
+      v2t_ * v +
+      v3t_ * w
+    );
+
+  const Vector2D result = {
+    texture_coords2.x * z,
+    texture_coords2.y * z
   };
 
-  return texture_coords_perspective_corrected;
-#endif 
+  return result;
+  */
 }
 
 const RGBColor Rasterizer::calculateColor(const Triangle3D& triangle_world, const Point3D& point_world) const {
@@ -107,18 +135,4 @@ const Point3D Rasterizer::unrasterize(const Point2D& point_raster, const double 
   const Point3D point_camera = m_camera->projectTransformInv(point_ndc, depth_from_camera);
   const Point3D point_world= m_camera->viewTransformInv(point_camera);
   return point_world;
-}
-
-void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, const std::string output_path, const uint16_t image_width, const uint16_t image_height) const {
-  std::vector<RGBColor> depth_buffer_grey(image_height*image_width, RGBColor(1.0));
-  for (int i = 0; i < depth_buffer.size(); ++i) {
-    const double depth = depth_buffer[i];
-    if (depth != m_camera->get_far_plane()) {
-      // Convert depth in the range [near, far] to [0,1]
-      const double slope = 1.0 / (m_camera->get_far_plane() - m_camera->get_near_plane());
-      const double depth_normalized = slope * (depth - m_camera->get_near_plane());
-      depth_buffer_grey[i] = RGBColor(depth_normalized);
-    }
-  }
-  exportImage(depth_buffer_grey, output_path, image_width, image_height);
 }
