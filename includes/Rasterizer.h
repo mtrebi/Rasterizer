@@ -7,18 +7,21 @@
 class Rasterizer : public Renderer {
 protected:
   std::vector<double> m_depth_buffer;
-
+  std::vector<double> m_shadow_maps;
 public:
   Rasterizer();
-  Rasterizer(World* world);
+  Rasterizer(const World* world);
   ~Rasterizer();
   
   inline const std::vector<double> get_depth_buffer() const { return m_depth_buffer; }
 
-  virtual void render() = 0;
+  virtual void render(const bool use_shade = true, const bool use_shadow_maps = true) = 0;
   virtual void export_output(const std::string output_path) const = 0;
 
-protected:
+public:
+  // Shadows
+  const bool is_shadowed(const uint32_t index) const;
+  const double shadowFactor(const uint32_t index) const;
   // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   //const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;

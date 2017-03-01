@@ -136,3 +136,34 @@ const Point3D Rasterizer::unrasterize(const Point2D& point_raster, const double 
   const Point3D point_world= m_camera->viewTransformInv(point_camera);
   return point_world;
 }
+
+void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, const std::string output_path, const uint16_t image_width, const uint16_t image_height) const {
+  std::vector<RGBColor> depth_buffer_grey(image_height*image_width, RGBColor(1.0));
+  for (int i = 0; i < depth_buffer.size(); ++i) {
+    const double depth = depth_buffer[i];
+    if (depth != m_camera->get_far_plane()) {
+      // Convert depth in the range [near, far] to [0,1]
+      const double slope = 1.0 / (m_camera->get_far_plane() - m_camera->get_near_plane());
+      const double depth_normalized = slope * (depth - m_camera->get_near_plane());
+      depth_buffer_grey[i] = RGBColor(depth_normalized);
+    }
+  }
+  exportImage(depth_buffer_grey, output_path, image_width, image_height);
+}
+
+// Calculate shadows using shadow maps
+const double Rasterizer::shadowFactor(const uint32_t index) const {
+  double shadow_modifier = 1.0;
+  if (is_shadowed(index)) {
+    shadow_modifier = 0.4;
+  }
+
+  return shadow_modifier;
+}
+
+const bool Rasterizer::is_shadowed(const uint32_t index) const {
+  const double depth_camera = m_depth_buffer[index];
+  const double depth_lights = m_shadow_maps[index];
+
+  return (depth_lights < depth_camera) ? true : false;
+}
