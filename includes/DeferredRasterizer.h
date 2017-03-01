@@ -9,10 +9,10 @@ private:
   std::vector<RGBColor> m_specular_buffer;
 public:
   DeferredRasterizer();
-  DeferredRasterizer(World* world);
+  DeferredRasterizer(const World* world);
   ~DeferredRasterizer();
 
-  void render() override;
+  void render(const bool use_shade = true, const bool use_shadow_maps = true) override;
   void export_output(const std::string output_path) const override;
 
 private:

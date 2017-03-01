@@ -3,7 +3,7 @@
 DeferredRasterizer::DeferredRasterizer() {
 }
 
-DeferredRasterizer::DeferredRasterizer(World* world)
+DeferredRasterizer::DeferredRasterizer(const World* world)
   : Rasterizer(world) {
 
 }
@@ -12,7 +12,7 @@ DeferredRasterizer::~DeferredRasterizer() {
 }
 
 
-void DeferredRasterizer::render() {
+void DeferredRasterizer::render(const bool use_shade, const bool use_shadow_maps) {
   const uint16_t image_width = m_camera->get_width();
   const uint16_t image_height = m_camera->get_height();
 

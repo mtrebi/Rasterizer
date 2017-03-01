@@ -3,7 +3,7 @@
 ForwardRasterizer::ForwardRasterizer(){
 }
 
-ForwardRasterizer::ForwardRasterizer(World* world)
+ForwardRasterizer::ForwardRasterizer(const World* world)
   : Rasterizer(world) {
 
 }
@@ -12,12 +12,16 @@ ForwardRasterizer::~ForwardRasterizer() {
 }
 
 
-void ForwardRasterizer::render() {
+void ForwardRasterizer::render(const bool use_shade, const bool use_shadow_maps) {
   const uint16_t image_width = m_camera->get_width();
   const uint16_t image_height = m_camera->get_height();
   
   m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
   m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
+
+  //if (use_shadow_maps) {
+  //  m_shadow_maps = m_world->m_lights[0]->getShadowMap(m_world, image_height, image_width,  this);
+  //}
 
   for (auto& object : m_world->m_objects) {
     const std::vector<Triangle3D> triangles = object->triangles();
@@ -34,8 +38,11 @@ void ForwardRasterizer::render() {
               const uint32_t i = pixel_raster_y * image_width + pixel_raster_x;
               if (depth < m_depth_buffer[i]) {
                 const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, triangle_raster, pixel_raster, *object->material());
-                m_pixels[i] = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
                 m_depth_buffer[i] = depth;
+                if (use_shade) {
+                  m_pixels[i] = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
+                    //* shadowFactor(i);
+                }
               }
             }
           }
@@ -49,6 +56,6 @@ void ForwardRasterizer::export_output(const std::string output_path) const {
   const uint16_t image_width = m_camera->get_width();
   const uint16_t image_height = m_camera->get_height();
   
-  exportDepthBuffer(m_depth_buffer, "f_depth.bmp", image_width, image_height);
+  exportDepthBuffer(m_depth_buffer, "f_d_"+output_path, image_width, image_height);
   exportImage(m_pixels, "f_" + output_path, image_width, image_height);
 }

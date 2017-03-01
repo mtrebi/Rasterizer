@@ -6,7 +6,7 @@ Renderer::Renderer()
     
 }
 
-Renderer::Renderer(World* world)
+Renderer::Renderer(const World* world)
   : m_world(world) {
 
 }
