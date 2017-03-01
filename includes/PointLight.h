@@ -1,10 +1,6 @@
 #pragma once
 #include "LIGHT.H"
 
-#include "RGBColor.h"
-#include "Vector3D.h"
-#include "Point3D.h"
-
 class PointLight : public Light {
 private:
   Vector3D m_position;
@@ -14,6 +10,6 @@ public:
   ~PointLight();
 
   const Vector3D getDirectionToPoint(const Point3D& point) const override;
-  virtual const std::vector<double> getDepthBuffer() const override;
+  const std::vector<double> getShadowMap(const World* world, const int image_height, const int image_width, Rasterizer * rasterizer_camera) const override;
 };
 

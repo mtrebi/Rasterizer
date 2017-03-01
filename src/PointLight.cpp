@@ -9,13 +9,16 @@ PointLight::PointLight(const RGBColor& color, const Point3D& position)
 
 }
 
+PointLight::~PointLight()
+{
+}
+
 const Vector3D PointLight::getDirectionToPoint(const Point3D& point) const {
   Vector3D light_direction = point - m_position;
   light_direction.normalize();
   return light_direction;
 }
-
-
-PointLight::~PointLight()
-{
+// TODO
+const std::vector<double> PointLight::getShadowMap(const World* world, const int image_height, const int image_width, Rasterizer * rasterizer_camera) const {
+  return std::vector<double>();
 }
