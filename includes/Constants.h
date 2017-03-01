@@ -9,7 +9,7 @@
 
 #define PI 3.14159265
 
-const Point3D   CAMERA_POS = Point3D(100, 1000, -1000);
+const Point3D   CAMERA_POS = Point3D(0, 200, -400);
 const Point3D   CAMERA_TARGET = Point3D(0, 0, 0);
 
 const int IMAGE_WIDTH = 1280;
