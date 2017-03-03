@@ -30,7 +30,7 @@ Camera * camera;
 Renderer * renderer;
 int main (){
   std::vector<Light*> lights = {
-    new DirectionalLight(Colors::WHITE, Vector3D(-1, 1, -0.35))
+    new DirectionalLight(Colors::WHITE, Vector3D(1, 0.5, -1))
   };
   const std::vector<GeometryObject*> objects_flat = setupFlatScene();
   const std::vector<GeometryObject*> objects_textured = setupTexturedScene();
@@ -63,7 +63,6 @@ const std::vector<GeometryObject*> setupFlatScene() {
   std::vector<GeometryObject*> objects;
 
   // Objects
-  /**/
   GeometryObject* ground = buildPlainPlane(Materials::FLAT_PLASTIC, Colors::GREY, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
 
@@ -72,32 +71,19 @@ const std::vector<GeometryObject*> setupFlatScene() {
   flat_box->rotate(0, 45, 0);
   objects.push_back(flat_box);
 
-  //GeometryObject* ground2 = buildPlainPlane(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(247, 0.29, -249), 10);
-  //objects.push_back(ground2);
-
-  /*
-  GeometryObject* flat_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::BLUE, Point3D(150, 125, 100), 50);
+  GeometryObject* flat_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::CYAN, Point3D(150, 125, 100), 50);
   objects.push_back(flat_box2);
 
-  GeometryObject* flying_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::GREEN, Point3D(-100, 80, 75), 50);
+  GeometryObject* flying_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(-100, 120, 75), 75);
   flying_box->rotate(45, -45, 45);
   objects.push_back(flying_box);
 
   GeometryObject* multicolor_box = buildMultiColorBox(Materials::FLAT_PLASTIC, Point3D(-100, 50, -90), 100);
+  multicolor_box->rotate(0, -45, 0);
   objects.push_back(multicolor_box);
-  
-  GeometryObject* small_box1 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, 40, -100), 20);
-  objects.push_back(small_box1);
-  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, 60, -100), 20);
+
+  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::PURPLE, Point3D(150, 75, -220), 75);
   objects.push_back(small_box2);
-  GeometryObject* small_box3 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(130, 40, -100), 20);
-  objects.push_back(small_box3);
-  GeometryObject* small_box4 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, 40, -120), 20);
-  objects.push_back(small_box4);
-  GeometryObject* small_box5 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(125, 40, -125), 20);
-  small_box5->rotate(0, 45, 0);
-  objects.push_back(small_box5);
-  */
   return objects;
 }
 
@@ -105,8 +91,6 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   std::vector<GeometryObject*> objects;
 
   // Objects
-
-  
   GeometryObject* ground = buildTexturedPlane(Materials::BRICK, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
   
