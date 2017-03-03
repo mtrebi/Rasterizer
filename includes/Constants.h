@@ -45,11 +45,11 @@ namespace Materials {
     5.0
   );
 
-  Material* GROUND = new TexturedMaterial(
-    "../assets/brick_wall_DIFF.bmp",
-    "../assets/brick_wall_SPEC.bmp",
-    "../assets/brick_wall_NRM.bmp",
-    3.0
+  Material* BRICK = new TexturedMaterial(
+    "../assets/brick_DIFF.bmp",
+    "../assets/brick_SPEC.bmp",
+    "../assets/brick_NRM.bmp",
+    1
   );
 
 }
