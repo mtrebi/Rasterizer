@@ -44,8 +44,8 @@ add_definitions(-D_FORWARD=1)
 
 # shading
 #add_definitions(-D_FLAT=1)
-#add_definitions(-D_BLINN_PHONG=1)
-add_definitions(-D_PHONG=1)
+add_definitions(-D_BLINN_PHONG=1)
+#add_definitions(-D_PHONG=1)
 
 # camera
 #add_definitions(-D_ORTHOGRAPHIC=1)
