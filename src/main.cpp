@@ -30,7 +30,7 @@ Camera * camera;
 Renderer * renderer;
 int main (){
   std::vector<Light*> lights = {
-    new DirectionalLight(Colors::WHITE, Vector3D(-1, -1, -1))
+    new DirectionalLight(Colors::WHITE, Vector3D(-1, 1, -0.35))
   };
   const std::vector<GeometryObject*> objects_flat = setupFlatScene();
   const std::vector<GeometryObject*> objects_textured = setupTexturedScene();
@@ -107,9 +107,9 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   // Objects
 
   
-  GeometryObject* ground = buildTexturedPlane(Materials::GROUND, Point3D(0, 0, 0), 500);
+  GeometryObject* ground = buildTexturedPlane(Materials::BRICK, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
-  /*
+  
   GeometryObject* flat_box = buildTexturedBox(Materials::BOX, Point3D(0, 0, 0), 100);
   flat_box->translate(Vector3D(150, 50, 100));
   flat_box->rotate(0, 45, 0);
@@ -118,28 +118,17 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   GeometryObject* flat_box2 = buildTexturedBox(Materials::BOX, Point3D(150, 125, 100), 50);
   objects.push_back(flat_box2);
 
-  GeometryObject* flying_box = buildTexturedBox(Materials::BOX, Point3D(-100, 80, 75), 50);
+  GeometryObject* flying_box = buildTexturedBox(Materials::BOX, Point3D(-100, 120, 75), 75);
   flying_box->rotate(45, -45, 45);
   objects.push_back(flying_box);
 
-  GeometryObject* multicolor_box = buildTexturedBox(Materials::BOX, Point3D(-100, 50, -90), 100);
-  objects.push_back(multicolor_box);
-
-  GeometryObject* small_box1 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 60, -155), 60);
+  GeometryObject* small_box1 = buildTexturedBox(Materials::BOX, Point3D(-100, 50, -90), 100);
   small_box1->rotate(0, -45, 0);
   objects.push_back(small_box1);
-  */
-  /*
-  GeometryObject* small_box2 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 70, -100), 50);
+  
+  GeometryObject* small_box2 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 75, -220), 75);
   objects.push_back(small_box2);
-  GeometryObject* small_box3 = buildTexturedBox(Materials::DEFAULT,Point3D(130, 40, -100), 20);
-  objects.push_back(small_box3);
-  GeometryObject* small_box4 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 40, -120), 20);
-  objects.push_back(small_box4);
-  GeometryObject* small_box5 = buildTexturedBox(Materials::DEFAULT, Point3D(125, 40, -125), 20);
-  small_box5->rotate(0, 45, 0);
-  objects.push_back(small_box5);
-  */
+  
   return objects;
 }
 
@@ -319,9 +308,9 @@ void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>&
   texture_coords = {
     // Texture coordinates
     Vector2D(0, 0),
-    Vector2D(0, 1),
-    Vector2D(1, 1),
-    Vector2D(1, 0),
+    Vector2D(0, 2),
+    Vector2D(2, 2),
+    Vector2D(2, 0),
   };
 
   indices = {
