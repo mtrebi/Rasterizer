@@ -109,7 +109,7 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   
   GeometryObject* ground = buildTexturedPlane(Materials::GROUND, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
-  
+  /*
   GeometryObject* flat_box = buildTexturedBox(Materials::BOX, Point3D(0, 0, 0), 100);
   flat_box->translate(Vector3D(150, 50, 100));
   flat_box->rotate(0, 45, 0);
@@ -128,7 +128,7 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   GeometryObject* small_box1 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 60, -155), 60);
   small_box1->rotate(0, -45, 0);
   objects.push_back(small_box1);
-  
+  */
   /*
   GeometryObject* small_box2 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 70, -100), 50);
   objects.push_back(small_box2);
@@ -308,8 +308,8 @@ void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>&
 
   const Point3D v1(-half_diagonal, 0, -half_diagonal);
   const Point3D v2(v1.x, v1.y, v1.z + side);
-  const Point3D v3(v1.x + side, v1.y, v1.z);
-  const Point3D v4(v1.x + side, v1.y, v1.z + side);
+  const Point3D v3(v1.x + side, v1.y, v1.z + side);
+  const Point3D v4(v1.x + side, v1.y, v1.z);
 
   vertices = {
     // Vertices positions
@@ -319,15 +319,15 @@ void buildHorizontalPlane(std::vector<Point3D>& vertices, std::vector<Vector2D>&
   texture_coords = {
     // Texture coordinates
     Vector2D(0, 0),
-    Vector2D(0, 3),
-    Vector2D(3, 0),
-    Vector2D(3, 3)
+    Vector2D(0, 1),
+    Vector2D(1, 1),
+    Vector2D(1, 0),
   };
 
   indices = {
     // Indices
     0, 1, 2,
-    1, 3, 2
+    2, 3, 0
   };
 }
 
