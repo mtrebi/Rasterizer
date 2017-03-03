@@ -38,7 +38,7 @@ int main (){
 
   World * world = new World(objects_textured, lights, camera);
 #ifdef _FORWARD
-  renderer = new ForwardRasterizer(world);
+  renderer = new DeferredRasterizer(world);
 #endif 
 
 #ifdef _DEFERRED
@@ -106,14 +106,24 @@ const std::vector<GeometryObject*> setupTexturedScene() {
 
   // Objects
   
+  GeometryObject* small_box3 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(150, 110, -155), 50);
+  small_box3->rotate(0, 0, 0);
+  objects.push_back(small_box3);
 
-  GeometryObject* small_box1 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, -60, -155), 60);
+
+  GeometryObject* small_box1 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::GREEN, Point3D(150, 50, -155), 50);
   small_box1->rotate(0, 90, 0);
   objects.push_back(small_box1);
 
-  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, 60, -155), 60);
+  GeometryObject* small_box4 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::BLUE, Point3D(150, -10, -155), 50);
+  small_box4->rotate(0, 180, 0);
+  objects.push_back(small_box4);
+
+  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, -70, -155), 50);
   small_box2->rotate(0, -90, 0);
   objects.push_back(small_box2);
+
+
   
   /*
   GeometryObject* ground = buildTexturedPlane(Materials::GROUND, Point3D(0, 0, 0), 500);
@@ -180,7 +190,7 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     v1, v5, v8, v4,
 
     // Left face
-    v1, v5, v2, v6,
+    v1, v2, v6, v5,
 
     // Right face
     v4, v3, v7, v8
@@ -204,17 +214,17 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     Vector2D(0, 1),
     Vector2D(1, 1),
     Vector2D(1, 0),
-    // Bottom face
+    //// Bottom face
     Vector2D(0, 0),
     Vector2D(0, 1),
     Vector2D(1, 1),
     Vector2D(1, 0),
-    // Left face
+    //// Left face
     Vector2D(1, 0),
     Vector2D(0, 0),
     Vector2D(1, 1),
     Vector2D(0, 1),
-    // Right face
+    //// Right face
     Vector2D(0, 0),
     Vector2D(0, 1),
     Vector2D(1, 1),
@@ -228,21 +238,20 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     2, 3, 0,
 
     // Back face
-    4, 5, 6,
-    6, 7, 4,
+    6, 5, 4,
+    4, 7, 6,
 
     // Top face
     8, 9, 10,
-    //10, 9, 8,
     10, 11, 8,
 
     // Bottom face
-    12, 13, 14,
-    14, 15, 12,
+    14, 13, 12,
+    12, 15, 14,
 
     // Left face
+    16, 19, 18,
     18, 17, 16,
-    18, 19, 17,
 
     // Right face
     20, 21, 22,
