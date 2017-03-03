@@ -105,7 +105,7 @@ public:
     v1v2.normalize();
     v2v3.normalize();
 
-    normal = v1v2 ^ v2v3;
+    normal = v2v3 ^ v1v2;
     normal.normalize();
   }
 
