@@ -38,7 +38,7 @@ int main (){
 
   World * world = new World(objects_textured, lights, camera);
 #ifdef _FORWARD
-  renderer = new DeferredRasterizer(world);
+  renderer = new ForwardRasterizer(world);
 #endif 
 
 #ifdef _DEFERRED
@@ -105,27 +105,8 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   std::vector<GeometryObject*> objects;
 
   // Objects
-  
-  GeometryObject* small_box3 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(150, 110, -155), 50);
-  small_box3->rotate(0, 0, 0);
-  objects.push_back(small_box3);
-
-
-  GeometryObject* small_box1 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::GREEN, Point3D(150, 50, -155), 50);
-  small_box1->rotate(0, 90, 0);
-  objects.push_back(small_box1);
-
-  GeometryObject* small_box4 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::BLUE, Point3D(150, -10, -155), 50);
-  small_box4->rotate(0, 180, 0);
-  objects.push_back(small_box4);
-
-  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(150, -70, -155), 50);
-  small_box2->rotate(0, -90, 0);
-  objects.push_back(small_box2);
-
 
   
-  /*
   GeometryObject* ground = buildTexturedPlane(Materials::GROUND, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
   
@@ -147,7 +128,7 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   GeometryObject* small_box1 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 60, -155), 60);
   small_box1->rotate(0, -45, 0);
   objects.push_back(small_box1);
-  */
+  
   /*
   GeometryObject* small_box2 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 70, -100), 50);
   objects.push_back(small_box2);
@@ -221,9 +202,9 @@ void buildAlignedBox(std::vector<Point3D>& vertices, std::vector<Vector2D>& text
     Vector2D(1, 0),
     //// Left face
     Vector2D(1, 0),
-    Vector2D(0, 0),
     Vector2D(1, 1),
     Vector2D(0, 1),
+    Vector2D(0, 0),
     //// Right face
     Vector2D(0, 0),
     Vector2D(0, 1),
