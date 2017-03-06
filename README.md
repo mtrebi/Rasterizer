@@ -10,11 +10,11 @@ I've implement some basic features that I consider relevant for any graphics pro
 * Orthographic and Perspective camera
 * Phong and Blinn-Phong shading given material phong coefficients
 * Phong and Blinn-Phong shading given material diffuse and specular textures
-
+* Normal mapping
 
 * A depth-buffer to solve the visibility surface problem
 
-* Normal mapping
+
 
 * Bounding box optimization
 * View frustrum clipping
@@ -85,7 +85,7 @@ In the next image:
 * The Green cube is using _Phong shading.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
 * The Blue cube is using _Blinn-Phong shading. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
 
-![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/flat_phong_blinn.bmp "Cubes with different shading")
+![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp "Cubes with different shading")
 
 ### Phong and Blinn-Phong shading using textures
 
@@ -96,7 +96,7 @@ In my code I've used textures for the _diffuse and specular shading_. In the nex
 * The Box in the middle uses only a diffuse texture.
 * The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
 
-![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
+![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
 
 ### Affine and Perspective corrected mapping for textures
 
@@ -110,10 +110,15 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 ![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
 
 
+### Normal mapping
 
+The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called _Tangent Space_ before getting the normal vector in World Space.
 
+In the following image we can see:
+* The Box on the left uses Blinn-Phong shading with diffuse and specular textures (as before). Quite good uh?
+* The Box on the right uses Blinn-Phong shading with diffuse and specular textures BUT it also uses normal maps. It is very easy to see the differences. This box is more realistic, gives a sense of depth in the cracks and has some roughness. It doesn't look like a completely flat texture.
 
-
+![Blinn-Phong shading and normal mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp "Blinn-Phong shading and normal mapping")
 
 
 
@@ -133,6 +138,7 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 
 Render to depth buffer image
 
+# Forward and deferred
 
 # Rasterization
 
