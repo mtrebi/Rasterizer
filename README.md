@@ -11,13 +11,10 @@ I've implement some basic features that I consider relevant for any graphics pro
 * Phong and Blinn-Phong shading given material phong coefficients
 * Phong and Blinn-Phong shading given material diffuse and specular textures
 * Normal mapping
+* Simple optimizations
+
 
 * A depth-buffer to solve the visibility surface problem
-
-
-
-* Bounding box optimization
-* View frustrum clipping
 
 * A forward and a deferred version of the renderer
 
@@ -121,25 +118,32 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 ![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
 
 
+### Simple optimizations
+
+I've implemented some very common and simple optimizations to speed up the rendering process: 
+* _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
+
+![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.bmp "Bounding Box optimization")
+
+
+* _View frustrum culling_ allow us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-### A depth-buffer to solve the visibility surface problem
+### Depth-buffering
 
 Render to depth buffer image
 
 # Forward and deferred
+
+
+
+
+
+
 
 # Rasterization
 
@@ -164,7 +168,7 @@ And this is the final render of a textured scene also using Blinn-Phong:
 
 ![Textured scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_textured_scene_blinn_phong.bmp "Textured scene render using blinn phong")
 
-Checkout the rest of the images at docs/images.
+Checkout the rest of the images at docs/images/gallery.
 
 ## Cool images
 
