@@ -19,11 +19,11 @@ const RGBColor Material::shade(const std::vector<Light*>& lights, const Camera& 
 #endif // _FLAT
 
 #ifdef _PHONG
-  return phongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 5.0);
+  return phongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 1.0);
 #endif // _PHONG
 
 #ifdef _BLINN_PHONG
-  return blinnPhongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 5.0);
+  return blinnPhongEquation(lights, fragment.normal, -camera.viewDirection(fragment.position), fragment.position, fragment.color, fragment.diffuse, fragment.specular, 1.0);
 #endif // _BLINN-PHONG
 }
 
@@ -106,10 +106,17 @@ const RGBColor TexturedMaterial::getDiffuseColor(const Vector2D& text_coords) co
 }
 
 const RGBColor TexturedMaterial::getSpecularColor(const Vector2D& text_coords) const {
+  if (m_texture_specular.size() == 0) {
+    return RGBColor(0.4);
+  }
   return getTextureColor(m_texture_specular, m_texture_specular_width, m_texture_specular_height, text_coords);
 }
 
 const Vector3D TexturedMaterial::getNormal(const Triangle3D& triangle_world, const Vector2D& text_coords) const { 
+  if (m_texture_normal.size() == 0) {
+    return triangle_world.normal;
+  }
+
   Vector3D tangent, bitangent;
   calculateTangentSpace(tangent, bitangent, triangle_world);
 
