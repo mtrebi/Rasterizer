@@ -20,31 +20,7 @@ I've implement some basic features that I consider relevant for any graphics pro
 * (TODO) Back-face culling
 * (TODO) Shadow maps
 
-# Gallery
 
-These are only some images generated with this renderer.
-
-This is the first image that I generated. Just a flat triangle. It may seem super simple but it was the start of this renderer. When it worked, I was really really happy.
-![First triangle render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/first_render.bmp "First triangle render")
-
-
-
-![Flat scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_flat_scene_blinn_phong.bmp "Flat scene render using blinn phong")
-
-![Textured scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_textured_scene_blinn_phong.bmp "Textured scene render using blinn phong")
-
-
-I've found funny to take pictures even when things go terribly wrong. First of all, because after you solved the problem, you can see why the image looked like that. Secondly, because some images are pretty cool. These are just some of the _terribly wrong but cool images* 
-
-
-[Cool images followed by bug]
-
-
-
-
-
-
-Checkout all the images at docs/images. 
 
 ## Features
 
@@ -68,6 +44,15 @@ Render to depth buffer image
 
 ### Orthographic and Perspective camera
 
+I implemented the two most common camera modes:
+* Ortographic camera: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). 
+* Perspectice camera: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect at the infinity.
+
+
+![Render using an orthograpic camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_orthograpic.bmp "Render using an orthograpic camera")
+
+
+
 [COMPARING IMAGE - Perspective vs orthographic]
 
 ### Affine and Perspective corrected mapping for textures
@@ -77,6 +62,42 @@ Render to depth buffer image
 # Rasterization
 
 Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspot.com.es/2017/02/rasterization-i-overview.html) to understand step by step how it works.
+
+# Gallery
+
+These are only some images generated with this renderer.
+
+This is the first image that I generated. Just a flat triangle. It may seem super simple but it was the start of this renderer. When it worked, I was really really happy.
+
+
+![First triangle render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/first_render.bmp "First triangle render")
+
+
+This is the final render of a flat scene using Blinn-Phong shading:
+
+![Flat scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_flat_scene_blinn_phong.bmp "Flat scene render using blinn phong")
+
+
+And this is the final render of a textured scene also using Blinn-Phong:
+
+![Textured scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_textured_scene_blinn_phong.bmp "Textured scene render using blinn phong")
+
+Checkout the rest of the images at docs/images.
+
+## Cool images
+
+I've found interesting to take pictures when things go *terribly wrong* for two reasons: First, because after you solved the problem, you can understand why the image looked like that. Second, because some images are pretty cool. These are just some of the *terribly wrong but cool images* 
+
+This is my favorite one: I was trying to draw a square (two triangles) with a texture of black and white squares. However, the indices of the triangles were not corrected and I ended up with something like this:
+
+![Cool square with wrong indices](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/strange_things_6.bmp "Cool square with wrong indices")
+
+In the following case, all pixels of the screen were shaded using some wrong calculation and the result was really cool:
+
+![Cool image with wrong shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/strange_things_2.bmp "Cool image with wrong shading")
+
+Checkout the rest of cool images at docs/images with the suffix strange.
+
 
 # Future work
 
@@ -89,3 +110,4 @@ Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspo
 
 Fletcher Dunn, Ian Parberry: “3D Math Primer for Graphics and Game Development"
 Scratchapixel, Rasterization: [Practical implementation](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/overview-rasterization-algorithm)
+
