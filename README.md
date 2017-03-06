@@ -5,23 +5,21 @@
 In order to be able to understand how rendering work I decided to implement a forward/deferred renderer (based on my experience with OpenGL) in the CPU. The goal of this project is not to create a next generation renderer or a super efficient CPU renderer. This project is just to understand how the rendering algorithms transforms a set of vertices that make up a 3D World into a 2D image of that World. I tried to be clear in my code to make it readable and easy to understand.
 
 I've implement some basic features that I consider relevant for any graphics programmer to understand:
-* Camera and Object rotations using Euler angles (roll, pitch, yaw)
-* Object translations using 4x4 homogeneous matrices
-
+* Camera and Object transformations using 4x4 homogeneous matrices
+* Affine and Perspective corrected mapping for textures
+* Orthographic and Perspective camera
+* Phong and Blinn-Phong shading given material phong coefficients
+* Phong and Blinn-Phong shading given material diffuse and specular textures
 
 
 * A depth-buffer to solve the visibility surface problem
-* Phong and Blinn-Phong shading given material phong coefficients
-* Phong and Blinn-Phong shading given material diffuse and specular textures
+
 * Normal mapping
-* Affine and Perspective corrected mapping for textures
+
 * Bounding box optimization
 * View frustrum clipping
-* Orthographic and Perspective camera
+
 * A forward and a deferred version of the renderer
-* (TODO) Alpha blending
-* (TODO) Back-face culling
-* (TODO) Shadow maps
 
 
 
@@ -78,21 +76,56 @@ I implemented the two most common camera modes:
 
 ![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_perspective.bmp "Render using a perspective camera")
 
+### Phong and Blinn-Phong shading
 
+I'm not going to talk about how Phong or Blinn-Phong works because you can find it in [blog](https://gamesandgraphicsdev.blogspot.com.es/2017/01/the-phong-lighting-model.html).
 
-* Phong and Blinn-Phong shading given material phong coefficients
-* Phong and Blinn-Phong shading given material diffuse and specular textures
+In the next image:
+* The Red cube is using _Flat shading_. This is the simple flat color of the object without taking into account lights.
+* The Green cube is using _Phong shading.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
+* The Blue cube is using _Blinn-Phong shading. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
+
+![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/flat_phong_blinn.bmp "Cubes with different shading")
+
+### Phong and Blinn-Phong shading using textures
+
+Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using _Texture Coordinates_. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
+
+In my code I've used textures for the _diffuse and specular shading_. In the next image:
+* The red cube uses flat shading
+* The Box in the middle uses only a diffuse texture.
+* The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
+
+![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
 
 ### Affine and Perspective corrected mapping for textures
 
-When mapping textures there are different ways to interpolate the values of each fragment from the values of the vertices of the triangle:
+As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
 * _Affine mapping_. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
 
 ![Affine texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp "Affine texture mapping")
 
-* _Perspective corrected mapping_. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producint better results. 
+* _Perspective corrected mapping_. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producing better results:
 
 ![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -142,11 +175,12 @@ Checkout the rest of cool images at docs/images with the suffix strange.
 
 
 # Future work
-
+* Shadow maps
 * Point lights with omnidirectional shadows (using cubemaps) and attenuation
+* Alpha blending
 * Sky boxes
-* OBJ model loading
-* Render to a window using some external library to achieve real time rendering
+* .OBJ files model loading
+* Render to a window using some external library to achieve real time rendering (SFML)
 
 # References
 
