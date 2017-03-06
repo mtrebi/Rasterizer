@@ -7,6 +7,9 @@ In order to be able to understand how rendering work I decided to implement a fo
 I've implement some basic features that I consider relevant for any graphics programmer to understand:
 * Camera and Object rotations using Euler angles (roll, pitch, yaw)
 * Object translations using 4x4 homogeneous matrices
+
+
+
 * A depth-buffer to solve the visibility surface problem
 * Phong and Blinn-Phong shading given material phong coefficients
 * Phong and Blinn-Phong shading given material diffuse and specular textures
@@ -28,12 +31,11 @@ I've implement some basic features that I consider relevant for any graphics pro
 
 I've implemented the most basic transformations: rotations and translations. To do so, I've used 4x4 homogeneous matrices. Homogeneous matrices are very useful to perform affine transformations because they can represent a linear transformation (rotation, scale, skew...) and a translation in a single matrix.
 
-To implement rotations and translation, I've added to each object a *Model matrix* that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformation can be concatenated.
+To implement rotations and translation, I've added to each object a _Model matrix_ that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformation can be concatenated.
 
 The model transform is applied to each of the vertices when the rasterizer asks for the Geometry. It is performed only once and is the first transformation performed that converts the vertices from Object Local Space to World Space.
 
-
-
+###  Object translations using 4x4 homogeneous matrices
 
 In the following image each cube is rotated 45º in roll, pitch or yaw; and translated a small amount in the X axis:
 
@@ -63,28 +65,41 @@ object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 5
 ![Rotations in all axis](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp "Rotations in all axis")
 
 
-### A depth-buffer to solve the visibility surface problem
-
-Render to depth buffer image
-
-
 ### Orthographic and Perspective camera
 
 I implemented the two most common camera modes:
 
-* *Ortographic camera*: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
+* _Ortographic camera_: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
 
 ![Render using an orthograpic camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_orthograpic.bmp "Render using an orthograpic camera")
 
 
-* *Perspectice camera*: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
+* _Perspectice camera_: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
 
 ![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_perspective.bmp "Render using a perspective camera")
 
 
+
+* Phong and Blinn-Phong shading given material phong coefficients
+* Phong and Blinn-Phong shading given material diffuse and specular textures
+
 ### Affine and Perspective corrected mapping for textures
 
-[COMPARING IMAGE - Affine vs Perspective corrected mapping]
+When mapping textures there are different ways to interpolate the values of each fragment from the values of the vertices of the triangle:
+* _Affine mapping_. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
+
+![Affine texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp "Affine texture mapping")
+
+* _Perspective corrected mapping_. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producint better results. 
+
+![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
+
+
+
+### A depth-buffer to solve the visibility surface problem
+
+Render to depth buffer image
+
 
 # Rasterization
 
