@@ -98,6 +98,17 @@ In my code I've used textures for the _diffuse and specular shading_. In the nex
 
 ![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
 
+
+### Normal mapping
+
+The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called _Tangent Space_ before getting the normal vector in World Space.
+
+In the following image we can see:
+* The Box on the left uses Blinn-Phong shading with diffuse and specular textures (as before). Quite good uh?
+* The Box on the right uses Blinn-Phong shading with diffuse and specular textures BUT it also uses normal maps. It is very easy to see the differences. This box is more realistic, gives a sense of depth in the cracks and has some roughness. It doesn't look like a completely flat texture.
+
+![Blinn-Phong shading and normal mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp "Blinn-Phong shading and normal mapping")
+
 ### Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
@@ -109,16 +120,6 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 
 ![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
 
-
-### Normal mapping
-
-The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called _Tangent Space_ before getting the normal vector in World Space.
-
-In the following image we can see:
-* The Box on the left uses Blinn-Phong shading with diffuse and specular textures (as before). Quite good uh?
-* The Box on the right uses Blinn-Phong shading with diffuse and specular textures BUT it also uses normal maps. It is very easy to see the differences. This box is more realistic, gives a sense of depth in the cracks and has some roughness. It doesn't look like a completely flat texture.
-
-![Blinn-Phong shading and normal mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp "Blinn-Phong shading and normal mapping")
 
 
 
