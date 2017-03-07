@@ -76,8 +76,8 @@ I'm not going to talk about how Phong or Blinn-Phong works because you can find 
 
 In the next image:
 * The Red cube is using _Flat shading_. This is the simple flat color of the object without taking into account lights.
-* The Green cube is using _Phong shading.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
-* The Blue cube is using _Blinn-Phong shading. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
+* The Green cube is using _Phong shading_.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
+* The Blue cube is using _Blinn-Phong shading_. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
 
 ![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp "Cubes with different shading")
 
