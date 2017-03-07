@@ -122,7 +122,7 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 I've implemented some very common and simple optimizations to speed up the rendering process: 
 * _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
 
-![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.bmp "Bounding Box optimization")
+![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.png "Bounding Box optimization")
 
 * _View frustrum culling_ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
@@ -146,16 +146,44 @@ The next image is a render without depth-buffering. As you can see, there is an 
 
 ## Rendering paths
 
+To render an image  we can use [RayTracing](https://github.com/mtrebi/Raytracer) or Rasterization. In the latter, depending on the order of how operations are performed we can talk about _Forward Rendering_ or _Deferred Rendering_. The result is always the same, the only thing that changes is the order of the operations.
+
+* To read more about this, checkout the references, there is a very good article about forward and defered rendering *
+
 ### Forward rendering
+
+This is the most common way of rendering and when we simply talk about rendering people usually mean forward rendering. The idea is that you set up the data in the GPU, project into the screen and split it into fragments or pixels and then you calculate the final color of each pixel. As you may guess, this process is called forward rendering because is linear and always goes forward.
+
+This is the a complete scene rendered using forward rendering
+
+![Textured scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp "Textured scene render")
+
+And this is the resulting depth buffer
+
+![Textured scene render depth buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene_depth.bmp "Textured scene render depth buffer")
 
 ### Deferred rendering
 
+As opposed to forward rendering it exists deferred rendering. First of all, let's analyze what's the problem with Forward Rendering. The problem is that a pixel that has been shaded previously can be shaded again if an object that is closer to the camera is found. Shading is usually an expensive process because it may take into account multiple lights, indirect lighting, direct lighting, shadows and so on. For this reason, this is a waste of resources because we're shading each pixel many times since the order of how the geometry is evaluated is arbitrary. 
+
+Deferred rendering solves this problem. The idea is that shading/lighting calculations are _deferred_ until the end. First of all, the visible surface is determined and only when this process has finished, the lighting calculations are being performed. This is very smart because shading is performed only when we know the geometry and this allows to do pixel shading is exactly once. This produces notably speed up in time execution but also increases the memory needed to render a scene. This happens because, along with the visible surface, we have to store also the other the properties used for lighting calculations: colors, specularity, normals and so on. Storing this may be quite expensive but it is usually worth.
+
+To generate the same scene as before but using a deferred render we had to use additional buffers along with the depth buffer:
+
+* Diffuse buffer: Store diffuse colors of the geometry
+
+![Textured scene render diffuse buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_diffuse.bmp "Textured scene render diffuse buffer")
+
+* Specular buffer: Store specular colors of the geometry
+
+![Textured scene render specular buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_specular.bmp "Textured scene render specular buffer")
+
+* Normal buffer: Store normals vectors of the geometry
+
+![Textured scene render normal buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_normal.bmp "Textured scene render normal buffer")
 
 
-
-
-
-
+* There is another interesting rendering algorithm usually used in hand-held devices called TBDF that uses deferred rendering but, in order to reduce the memory needed, it splits up the screen in smaller tiles having the benefits of deferred rendering without the excessive memory usage *
 
 # Gallery
 
@@ -199,11 +227,11 @@ Checkout the rest of cool images at docs/images with the suffix strange.
 * Point lights with omnidirectional shadows (using cubemaps) and attenuation
 * Alpha blending
 * Sky boxes
-* .OBJ files model loading
+* Model loading using .OBJ files
 * Render to a window using some external library to achieve real time rendering (SFML)
 
 # References
 
 Fletcher Dunn, Ian Parberry: “3D Math Primer for Graphics and Game Development"
 Scratchapixel, Rasterization: [Practical implementation](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/overview-rasterization-algorithm)
-
+Brent Owens, [Forward Rendering vs. Deferred Rendering](https://gamedevelopment.tutsplus.com/articles/forward-rendering-vs-deferred-rendering--gamedev-12342)
