@@ -23,7 +23,7 @@ Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspo
 
 I've implemented the most basic transformations: rotations and translations. To do so, I've used 4x4 homogeneous matrices. Homogeneous matrices are very useful to perform affine transformations because they can represent a linear transformation (rotation, scale, skew...) and a translation in a single matrix.
 
-To implement rotations and translation, I've added to each object a _Model matrix_ that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformation can be concatenated.
+To implement rotations and translation, I've added to each object a __Model matrix__ that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformation can be concatenated.
 
 The model transform is applied to each of the vertices when the rasterizer asks for the Geometry. It is performed only once and is the first transformation performed that converts the vertices from Object Local Space to World Space.
 
@@ -62,11 +62,11 @@ object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 5
 
 I implemented the two most common camera modes:
 
-* _Ortographic camera_: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
+* __Ortographic camera__: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_orthograpic.bmp"> </p>
 
-* _Perspectice camera_: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
+* __Perspectice camera__: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_perspective.bmp"> </p>
 
@@ -75,17 +75,17 @@ I implemented the two most common camera modes:
 I'm not going to talk about how Phong or Blinn-Phong works because you can find it in [blog](https://gamesandgraphicsdev.blogspot.com.es/2017/01/the-phong-lighting-model.html).
 
 In the next image:
-* The Red cube is using _Flat shading_. This is the simple flat color of the object without taking into account lights.
-* The Green cube is using _Phong shading_.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
-* The Blue cube is using _Blinn-Phong shading_. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
+* The Red cube is using __Flat shading__. This is the simple flat color of the object without taking into account lights.
+* The Green cube is using __Phong shading__.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
+* The Blue cube is using __Blinn-Phong shading__. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp"> </p>
 
 ## Phong and Blinn-Phong shading using textures
 
-Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using _Texture Coordinates_. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
+Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using __Texture Coordinates__. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
 
-In my code I've used textures for the _diffuse and specular shading_. In the next image:
+In my code I've used textures for the __diffuse and specular shading__. In the next image:
 * The red cube uses flat shading
 * The Box in the middle uses only a diffuse texture.
 * The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
@@ -94,7 +94,7 @@ In my code I've used textures for the _diffuse and specular shading_. In the nex
 
 ## Normal mapping
 
-The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called _Tangent Space_ before getting the normal vector in World Space.
+The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called __Tangent Space__ before getting the normal vector in World Space.
 
 In the following image we can see:
 * The Box on the left uses Blinn-Phong shading with diffuse and specular textures (as before). Quite good uh?
@@ -105,26 +105,26 @@ In the following image we can see:
 ## Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
-* _Affine mapping_. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
+* __Affine mapping__. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp"> </p>
 
-* _Perspective corrected mapping_. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producing better results:
+* __Perspective corrected mapping__. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producing better results:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp"> </p>
 
 ## Simple optimizations
 
 I've implemented some very common and simple optimizations to speed up the rendering process: 
-* _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
+* __Bounding box__ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.PNG"> </p>
 
-* _View frustrum culling_ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
+* __View frustrum culling__ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
 ## Depth-buffering
 
-When in a scene we have multiple objects overlapping in one single pixel, in order to calculate the color of the pixel, we must find which object is closer to the camera. The best way to do it is using a _depth buffer_. Very briefly, a depth-buffer is just a buffer that has the same size of the image and stores the distance between the camera and the object that has been redered last. This way, everytime we render we can compare the distance of the current object with the previous one and only render if the distance is smaller.
+When in a scene we have multiple objects overlapping in one single pixel, in order to calculate the color of the pixel, we must find which object is closer to the camera. The best way to do it is using a __depth buffer__. Very briefly, a depth-buffer is just a buffer that has the same size of the image and stores the distance between the camera and the object that has been redered last. This way, everytime we render we can compare the distance of the current object with the previous one and only render if the distance is smaller.
 
 The next image is a render without depth-buffering. As you can see, there is an area where the two triangles overlap. Here, the decision of which triangle is shown is arbitrary. In this case, the blue triangle is further but it is displayed first.
 
@@ -142,9 +142,9 @@ The next image is a render without depth-buffering. As you can see, there is an 
 
 ## Rendering paths
 
-To render an image  we can use [RayTracing](https://github.com/mtrebi/Raytracer) or Rasterization. In the latter, depending on the order of how operations are performed we can talk about _Forward Rendering_ or _Deferred Rendering_. The result is always the same, the only thing that changes is the order of the operations.
+To render an image  we can use [RayTracing](https://github.com/mtrebi/Raytracer) or Rasterization. In the latter, depending on the order of how operations are performed we can talk about __Forward Rendering__ or __Deferred Rendering__. The result is always the same, the only thing that changes is the order of the operations.
 
-* To read more about this, checkout the references, there is a very good article about forward and defered rendering *
+*To read more about this, checkout the references, there is a very good article about forward and defered rendering*
 
 ### Forward rendering
 
@@ -162,7 +162,7 @@ And this is the resulting depth buffer
 
 As opposed to forward rendering it exists deferred rendering. First of all, let's analyze what's the problem with Forward Rendering. The problem is that a pixel that has been shaded previously can be shaded again if an object that is closer to the camera is found. Shading is usually an expensive process because it may take into account multiple lights, indirect lighting, direct lighting, shadows and so on. For this reason, this is a waste of resources because we're shading each pixel many times since the order of how the geometry is evaluated is arbitrary. 
 
-Deferred rendering solves this problem. The idea is that shading/lighting calculations are _deferred_ until the end. First of all, the visible surface is determined and only when this process has finished, the lighting calculations are being performed. This is very smart because shading is performed only when we know the geometry and this allows to do pixel shading is exactly once. This produces notably speed up in time execution but also increases the memory needed to render a scene. This happens because, along with the visible surface, we have to store also the other the properties used for lighting calculations: colors, specularity, normals and so on. Storing this may be quite expensive but it is usually worth.
+Deferred rendering solves this problem. The idea is that shading/lighting calculations are __deferred__ until the end. First of all, the visible surface is determined and only when this process has finished, the lighting calculations are being performed. This is very smart because shading is performed only when we know the geometry and this allows to do pixel shading is exactly once. This produces notably speed up in time execution but also increases the memory needed to render a scene. This happens because, along with the visible surface, we have to store also the other the properties used for lighting calculations: colors, specularity, normals and so on. Storing this may be quite expensive but it is usually worth.
 
 To generate the same scene as before but using a deferred render we had to use additional buffers along with the depth buffer:
 
