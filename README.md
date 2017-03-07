@@ -55,9 +55,6 @@ object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 5
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp"> </p>
 
-![Rotations in all axis]( "Rotations in all axis")
-
-
 ## Orthographic and Perspective camera
 
 I implemented the two most common camera modes:
