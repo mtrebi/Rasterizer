@@ -41,8 +41,7 @@ blueCube->rotate(0, 0, 45);					// 45º in yaw
 blueCube->translate(Vector3D(250, 0, 0));	// Slightly to the right
 ```
 
-![Rotations in each axis](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_each_axis.bmp "Rotations in each axis")
-
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_each_axis.bmp"> </p>
 
 On the other hand, in the next image, the cube is rotated in all three euler angles: roll, pitch and yaw; and also translated:
 
@@ -54,7 +53,9 @@ object->rotate(roll, pitch, yaw);		// Rotate using euler angles 45º roll, 15º 
 object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 50 in Y and 20 in Z
 ```
 
-![Rotations in all axis](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp "Rotations in all axis")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp"> </p>
+
+![Rotations in all axis]( "Rotations in all axis")
 
 
 ## Orthographic and Perspective camera
@@ -63,12 +64,11 @@ I implemented the two most common camera modes:
 
 * _Ortographic camera_: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
 
-![Render using an orthograpic camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_orthograpic.bmp "Render using an orthograpic camera")
-
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_orthograpic.bmp"> </p>
 
 * _Perspectice camera_: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
 
-![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_perspective.bmp "Render using a perspective camera")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_perspective.bmp"> </p>
 
 ## Phong and Blinn-Phong shading
 
@@ -79,7 +79,7 @@ In the next image:
 * The Green cube is using _Phong shading_.  We can see a huge difference with the flat shading because now we are able to see edges and this gives us this 3D feeling
 * The Blue cube is using _Blinn-Phong shading_. The difference between Phong and Blinn-Phong is very subtle and is only really noticeable when the angle between the View direction and the Reflected vector is greater than 90º
 
-![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp "Cubes with different shading")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp"> </p>
 
 ## Phong and Blinn-Phong shading using textures
 
@@ -90,8 +90,7 @@ In my code I've used textures for the _diffuse and specular shading_. In the nex
 * The Box in the middle uses only a diffuse texture.
 * The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
 
-![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
-
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp"> </p>
 
 ## Normal mapping
 
@@ -101,26 +100,25 @@ In the following image we can see:
 * The Box on the left uses Blinn-Phong shading with diffuse and specular textures (as before). Quite good uh?
 * The Box on the right uses Blinn-Phong shading with diffuse and specular textures BUT it also uses normal maps. It is very easy to see the differences. This box is more realistic, gives a sense of depth in the cracks and has some roughness. It doesn't look like a completely flat texture.
 
-![Blinn-Phong shading and normal mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp "Blinn-Phong shading and normal mapping")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp"> </p>
 
 ## Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
 * _Affine mapping_. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
 
-![Affine texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp "Affine texture mapping")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp"> </p>
 
 * _Perspective corrected mapping_. Solves the previous problem taking into account the distance of the triangle to the camera into the mapping formula producing better results:
 
-![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
-
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp"> </p>
 
 ## Simple optimizations
 
 I've implemented some very common and simple optimizations to speed up the rendering process: 
 * _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
 
-![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.PNG "Bounding Box optimization")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.PNG"> </p>
 
 * _View frustrum culling_ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
@@ -130,15 +128,15 @@ When in a scene we have multiple objects overlapping in one single pixel, in ord
 
 The next image is a render without depth-buffering. As you can see, there is an area where the two triangles overlap. Here, the decision of which triangle is shown is arbitrary. In this case, the blue triangle is further but it is displayed first.
 
-![Render without depth-buffering](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_no_depth_buffer.bmp "Render without depth-buffering")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_no_depth_buffer.bmp"> </p>
 
 On the other hand, the next image uses depth-buffering and thus, the red triangle is displayed first because it is closer to the camera.
 
-![Render with depth-buffering](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer.bmp "Render with depth-buffering")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer.bmp"> </p>
 
 If we take the depth buffer and we export it as a texture, it looks like in the next image. Black means that the object is close to the camera and white means that it is far. As we can see, the depth-color of the red triangle is darker than the blue triangle and thus it is closer and should be displayed first.
 
-![Depth-buffer into a texture](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer_depth_buffer.bmp "Depth-buffer into a texture")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer_depth_buffer.bmp"> </p>
 
 The next image is a render without depth-buffering. As you can see, there is an area where the two triangles overlap. Here, the decision of which triangle is shown is arbitrary. In this case, the blue triangle is further but it is displayed first.
 
@@ -154,11 +152,11 @@ This is the most common way of rendering and when we simply talk about rendering
 
 This is the a complete scene rendered using forward rendering
 
-![Textured scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp "Textured scene render")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp"> </p>
 
 And this is the resulting depth buffer
 
-![Textured scene render depth buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene_depth.bmp "Textured scene render depth buffer")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene_depth.bmp"> </p>
 
 ### Deferred rendering
 
@@ -170,19 +168,19 @@ To generate the same scene as before but using a deferred render we had to use a
 
 * Depth buffer: Same as before
 
-![Textured scene render depth buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_depth.bmp "Textured scene render depth buffer")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_depth.bmp"> </p>
 
 * Diffuse buffer: Store diffuse colors of the geometry
 
-![Textured scene render diffuse buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_diffuse.bmp "Textured scene render diffuse buffer")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_diffuse.bmp"> </p>
 
 * Specular buffer: Store specular colors of the geometry
 
-![Textured scene render specular buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_specular.bmp "Textured scene render specular buffer")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_specular.bmp"> </p>
 
 * Normal buffer: Store normals vectors of the geometry
 
-![Textured scene render normal buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_normals.bmp "Textured scene render normal buffer")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_normals.bmp"> </p>
 
 Then, to calculate shading we just have to combine all these different buffers and perform the calculation.
 
@@ -192,21 +190,21 @@ Then, to calculate shading we just have to combine all these different buffers a
 
 These are just some samples. 
 
-It all began here. First render:
+It all began here with the first renderr:
 
-![First render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/first_render.PNG "First render")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/first_render.PNG"> </p>
 
 And it end up here:
 
-![Flat scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp "Flat scene render")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp"> </p>
 
 Triangle render with RGB color interpolation using barycentric coordinates
 
-![Triangle color interpolation](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/triangle_color_interpolation.PNG "Triangle color interpolation")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/triangle_color_interpolation.PNG"> </p>
 
 Cube render with RGB color interpolation using barycentric coordinates
 
-![Cube color interpolation](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cube_color_interpolation.PNG "Cube color interpolation")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cube_color_interpolation.PNG"> </p>
 
 Checkout the rest of the images in the repository at [docs/images/gallery](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery).
 
@@ -216,7 +214,7 @@ I've found interesting to take pictures when things go *terribly wrong* for two 
 
 This is my favorite one: I was trying to draw a square (two triangles) with a texture of black and white squares. However, the indices of the triangles were not corrected and I ended up with something like this:
 
-![Cool square with wrong indices](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cool_but_wrong/strange_things_6.bmp "Cool square with wrong indices")
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cool_but_wrong/strange_things_6.bmp"> </p>
 
 Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery/cool_but_wrong).
 
