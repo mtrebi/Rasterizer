@@ -65,12 +65,12 @@ I implemented the two most common camera modes:
 
 * _Ortographic camera_: produces an orthograpic projection using parallel projectors. This means that all projection lines are orthogonal to the projection plane and parallel lines remains (there is no foreshortening). As we can see in the next image, all cubes have the same size (even that some of them are further than others) and parallel lines remains:
 
-![Render using an orthograpic camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_orthograpic.bmp "Render using an orthograpic camera")
+![Render using an orthograpic camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_orthograpic.bmp "Render using an orthograpic camera")
 
 
 * _Perspectice camera_: produces a perspective projections using projectors to a center of projection or focal point. There's also a scaling factor that produces the foreshortening: closer objects seem bigger and further ones seem smaller. Parallel lines intersect.
 
-![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_perspective.bmp "Render using a perspective camera")
+![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/camera_perspective.bmp "Render using a perspective camera")
 
 ## Phong and Blinn-Phong shading
 
@@ -122,7 +122,7 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 I've implemented some very common and simple optimizations to speed up the rendering process: 
 * _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
 
-![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.png "Bounding Box optimization")
+![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.PNG "Bounding Box optimization")
 
 * _View frustrum culling_ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
@@ -170,6 +170,10 @@ Deferred rendering solves this problem. The idea is that shading/lighting calcul
 
 To generate the same scene as before but using a deferred render we had to use additional buffers along with the depth buffer:
 
+* Depth buffer: Same as before
+
+![Textured scene render depth buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_depth.bmp "Textured scene render depth buffer")
+
 * Diffuse buffer: Store diffuse colors of the geometry
 
 ![Textured scene render diffuse buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_diffuse.bmp "Textured scene render diffuse buffer")
@@ -180,31 +184,33 @@ To generate the same scene as before but using a deferred render we had to use a
 
 * Normal buffer: Store normals vectors of the geometry
 
-![Textured scene render normal buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_normal.bmp "Textured scene render normal buffer")
+![Textured scene render normal buffer](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/deferred_textured_scene_normals.bmp "Textured scene render normal buffer")
 
+Then, to calculate shading we just have to combine all these different buffers and perform the calculation.
 
-* There is another interesting rendering algorithm usually used in hand-held devices called TBDF that uses deferred rendering but, in order to reduce the memory needed, it splits up the screen in smaller tiles having the benefits of deferred rendering without the excessive memory usage *
+*As a side note, there is another interesting rendering algorithm usually used in hand-held devices called TBDF (Tile Based Deferred Rendering) that uses deferred rendering but, in order to reduce the memory needed, it splits up the screen in smaller tiles having the benefits of deferred rendering without the excessive memory usage*
 
 # Gallery
 
-These are only some images generated with this renderer.
+These are just some samples. 
 
-This is the first image that I generated. Just a flat triangle. It may seem super simple but it was the start of this renderer. When it worked, I was really really happy.
+It all began here. First render:
 
+![First render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/first_render.PNG "First render")
 
-![First triangle render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/first_render.bmp "First triangle render")
+And it end up here:
 
+![Flat scene render](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp "Flat scene render")
 
-This is the final render of a flat scene using Blinn-Phong shading:
+Triangle render with RGB color interpolation using barycentric coordinates
 
-![Flat scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_flat_scene_blinn_phong.bmp "Flat scene render using blinn phong")
+![Triangle color interpolation](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/triangle_color_interpolation.PNG "Triangle color interpolation")
 
+Cube render with RGB color interpolation using barycentric coordinates
 
-And this is the final render of a textured scene also using Blinn-Phong:
+![Cube color interpolation](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cube_color_interpolation.PNG "Cube color interpolation")
 
-![Textured scene render using blinn phong](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_textured_scene_blinn_phong.bmp "Textured scene render using blinn phong")
-
-Checkout the rest of the images at docs/images/gallery.
+Checkout the rest of the images in the repository at [docs/images/gallery](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery).
 
 ## Cool images
 
@@ -214,12 +220,7 @@ This is my favorite one: I was trying to draw a square (two triangles) with a te
 
 ![Cool square with wrong indices](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/strange_things_6.bmp "Cool square with wrong indices")
 
-In the following case, all pixels of the screen were shaded using some wrong calculation and the result was really cool:
-
-![Cool image with wrong shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/strange_things_2.bmp "Cool image with wrong shading")
-
-Checkout the rest of cool images at docs/images with the suffix strange.
-
+Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery/cool_but_wrong).
 
 # Future work
 
