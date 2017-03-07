@@ -190,7 +190,7 @@ Then, to calculate shading we just have to combine all these different buffers a
 
 These are just some samples. 
 
-It all began here with the first renderr:
+It all began here with the first render:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/first_render.PNG"> </p>
 
