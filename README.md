@@ -1,5 +1,3 @@
-# IN PROGRESS
-
 # Introduction
 
 In order to be able to understand how rendering work I decided to implement a forward/deferred renderer (based on my experience with OpenGL) in the CPU. The goal of this project is not to create a next generation renderer or an efficient CPU renderer. This project aims to understand how the rendering algorithms transforms a set of vertices that make up a 3D World into a 2D image of that World. I tried to be clear in my code to make it readable and easy to understand.
@@ -218,7 +216,7 @@ I've found interesting to take pictures when things go *terribly wrong* for two 
 
 This is my favorite one: I was trying to draw a square (two triangles) with a texture of black and white squares. However, the indices of the triangles were not corrected and I ended up with something like this:
 
-![Cool square with wrong indices](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/strange_things_6.bmp "Cool square with wrong indices")
+![Cool square with wrong indices](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cool_but_wrong/strange_things_6.bmp "Cool square with wrong indices")
 
 Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery/cool_but_wrong).
 
