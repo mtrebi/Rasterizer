@@ -202,9 +202,9 @@ Triangle render with RGB color interpolation using barycentric coordinates
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/triangle_color_interpolation.PNG"> </p>
 
-Cube render with RGB color interpolation using barycentric coordinates
+The same principle as before but applied to a Cube to create a color palette
 
-<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cube_color_interpolation.PNG"> </p>
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/cube_color_palette.PNG"> </p>
 
 Checkout the rest of the images in the repository at [docs/images/gallery](https://github.com/mtrebi/Rasterizer/tree/master/docs/images/gallery).
 
