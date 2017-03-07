@@ -2,7 +2,7 @@
 
 # Introduction
 
-In order to be able to understand how rendering work I decided to implement a forward/deferred renderer (based on my experience with OpenGL) in the CPU. The goal of this project is not to create a next generation renderer or a super efficient CPU renderer. This project is just to understand how the rendering algorithms transforms a set of vertices that make up a 3D World into a 2D image of that World. I tried to be clear in my code to make it readable and easy to understand.
+In order to be able to understand how rendering work I decided to implement a forward/deferred renderer (based on my experience with OpenGL) in the CPU. The goal of this project is not to create a next generation renderer or an efficient CPU renderer. This project aims to understand how the rendering algorithms transforms a set of vertices that make up a 3D World into a 2D image of that World. I tried to be clear in my code to make it readable and easy to understand.
 
 I've implement some basic features that I consider relevant for any graphics programmer to understand:
 * Camera and Object transformations using 4x4 homogeneous matrices
@@ -12,17 +12,16 @@ I've implement some basic features that I consider relevant for any graphics pro
 * Phong and Blinn-Phong shading given material diffuse and specular textures
 * Normal mapping
 * Simple optimizations
-
-
 * A depth-buffer to solve the visibility surface problem
+* Two rendering paths: Forward and deferred
 
-* A forward and a deferred version of the renderer
+# Rasterization
 
+Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspot.com.es/2017/02/rasterization-i-overview.html) to understand step by step how it works.
 
+# Features (in detail)
 
-## Features
-
-### Camera and Object transformations
+## Camera and Object transformations
 
 I've implemented the most basic transformations: rotations and translations. To do so, I've used 4x4 homogeneous matrices. Homogeneous matrices are very useful to perform affine transformations because they can represent a linear transformation (rotation, scale, skew...) and a translation in a single matrix.
 
@@ -30,7 +29,7 @@ To implement rotations and translation, I've added to each object a _Model matri
 
 The model transform is applied to each of the vertices when the rasterizer asks for the Geometry. It is performed only once and is the first transformation performed that converts the vertices from Object Local Space to World Space.
 
-###  Object translations using 4x4 homogeneous matrices
+##  Object translations using 4x4 homogeneous matrices
 
 In the following image each cube is rotated 45º in roll, pitch or yaw; and translated a small amount in the X axis:
 
@@ -60,7 +59,7 @@ object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 5
 ![Rotations in all axis](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp "Rotations in all axis")
 
 
-### Orthographic and Perspective camera
+## Orthographic and Perspective camera
 
 I implemented the two most common camera modes:
 
@@ -73,7 +72,7 @@ I implemented the two most common camera modes:
 
 ![Render using a perspective camera](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/render_camera_perspective.bmp "Render using a perspective camera")
 
-### Phong and Blinn-Phong shading
+## Phong and Blinn-Phong shading
 
 I'm not going to talk about how Phong or Blinn-Phong works because you can find it in [blog](https://gamesandgraphicsdev.blogspot.com.es/2017/01/the-phong-lighting-model.html).
 
@@ -84,7 +83,7 @@ In the next image:
 
 ![Cubes with different shading](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn.bmp "Cubes with different shading")
 
-### Phong and Blinn-Phong shading using textures
+## Phong and Blinn-Phong shading using textures
 
 Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using _Texture Coordinates_. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
 
@@ -96,7 +95,7 @@ In my code I've used textures for the _diffuse and specular shading_. In the nex
 ![Cubes with Blinn-Phong shading and textures](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp "Cubes with Blinn-Phong shading and textures")
 
 
-### Normal mapping
+## Normal mapping
 
 The idea behind normal mapping is very similar to texture mapping but with a few differences. In texture mapping we used the texture to retrieve a color. In normal mapping, we use a texture to specify the direction of the normal vector instead. This provides a fine grained detail that produces realistic materials. The implementation is a little bit more complicated than diffuse/specular mapping because operations must be performed in something called _Tangent Space_ before getting the normal vector in World Space.
 
@@ -106,7 +105,7 @@ In the following image we can see:
 
 ![Blinn-Phong shading and normal mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/blinn_phong_textured_normal_map.bmp "Blinn-Phong shading and normal mapping")
 
-### Affine and Perspective corrected mapping for textures
+## Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
 * _Affine mapping_. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
@@ -118,36 +117,45 @@ As I said before, when mapping textures we have to calculate an interpolation fr
 ![Perspective corrected texture mapping](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_perspective.bmp "Perspective corrected texture mapping")
 
 
-### Simple optimizations
+## Simple optimizations
 
 I've implemented some very common and simple optimizations to speed up the rendering process: 
 * _Bounding box_ allow us to narrow the amount of pixels of the viewport that we have to iterate in order to color them. It is as simple as calculating the Bounding Box of the triangle in raster space and iterate that instead the whole screen. In the following image, in order to color the red triangle we iterated all the pixels inside the grey bounding box:
 
 ![Bounding Box optimization](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/bbox_optimization.bmp "Bounding Box optimization")
 
+* _View frustrum culling_ allows us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
 
-* _View frustrum culling_ allow us to avoid rendering some parts of the scene that we know for sure that are not inside the view frustrum so we can discard them beforehand.
+## Depth-buffering
+
+When in a scene we have multiple objects overlapping in one single pixel, in order to calculate the color of the pixel, we must find which object is closer to the camera. The best way to do it is using a _depth buffer_. Very briefly, a depth-buffer is just a buffer that has the same size of the image and stores the distance between the camera and the object that has been redered last. This way, everytime we render we can compare the distance of the current object with the previous one and only render if the distance is smaller.
+
+The next image is a render without depth-buffering. As you can see, there is an area where the two triangles overlap. Here, the decision of which triangle is shown is arbitrary. In this case, the blue triangle is further but it is displayed first.
+
+![Render without depth-buffering](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_no_depth_buffer.bmp "Render without depth-buffering")
+
+On the other hand, the next image uses depth-buffering and thus, the red triangle is displayed first because it is closer to the camera.
+
+![Render with depth-buffering](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer.bmp "Render with depth-buffering")
+
+If we take the depth buffer and we export it as a texture, it looks like in the next image. Black means that the object is close to the camera and white means that it is far. As we can see, the depth-color of the red triangle is darker than the blue triangle and thus it is closer and should be displayed first.
+
+![Depth-buffer into a texture](https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/render_depth_buffer_depth_buffer.bmp "Depth-buffer into a texture")
+
+The next image is a render without depth-buffering. As you can see, there is an area where the two triangles overlap. Here, the decision of which triangle is shown is arbitrary. In this case, the blue triangle is further but it is displayed first.
+
+## Rendering paths
+
+### Forward rendering
+
+### Deferred rendering
 
 
 
 
 
 
-### Depth-buffering
 
-Render to depth buffer image
-
-# Forward and deferred
-
-
-
-
-
-
-
-# Rasterization
-
-Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspot.com.es/2017/02/rasterization-i-overview.html) to understand step by step how it works.
 
 # Gallery
 
@@ -186,6 +194,7 @@ Checkout the rest of cool images at docs/images with the suffix strange.
 
 
 # Future work
+
 * Shadow maps
 * Point lights with omnidirectional shadows (using cubemaps) and attenuation
 * Alpha blending
