@@ -232,5 +232,7 @@ Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https:/
 # References
 
 Fletcher Dunn, Ian Parberry: “3D Math Primer for Graphics and Game Development"
+
 Scratchapixel, Rasterization: [Practical implementation](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/overview-rasterization-algorithm)
+
 Brent Owens, [Forward Rendering vs. Deferred Rendering](https://gamedevelopment.tutsplus.com/articles/forward-rendering-vs-deferred-rendering--gamedev-12342)
