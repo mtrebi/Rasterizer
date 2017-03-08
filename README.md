@@ -102,7 +102,7 @@ In the following image we can see:
 ## Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
-* __Affine mapping__. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no perspective distorsion. However, the second texture is notably mapped incorrectly.
+* __Affine mapping__. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no perspective distorsion. However, the second texture is mapped incorrectly:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp"> </p>
 
