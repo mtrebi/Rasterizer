@@ -82,10 +82,10 @@ In the next image:
 
 Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using __Texture Coordinates__. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
 
-In my code I've used textures for the __diffuse and specular shading__. In the next image:
-* The red cube uses flat shading
-* The Box in the middle uses only a diffuse texture.
-* The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
+In my code I've used textures for the __diffuse and specular shading__ in the Phong and Blinn-Phong shading models. In the next image, all cubes use Blinn-Phong but:
+* The red cube uses a flat color.
+* The Box in the middle uses a diffuse texture for the color calculation.
+* The Box on the right uses a diffuse and a specular texture for the color calculation. That makes the metalic borders of the box shinier. This looks much more realistic that the previous one.
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp"> </p>
 
