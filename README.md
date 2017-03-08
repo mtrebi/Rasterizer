@@ -195,6 +195,10 @@ And it end up here:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp"> </p>
 
+And here using textures:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp"> </p>
+
 Triangle render with RGB color interpolation using barycentric coordinates
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/triangle_color_interpolation.PNG"> </p>
