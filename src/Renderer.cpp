@@ -77,7 +77,3 @@ void Renderer::exportImage(const std::vector<RGBColor> pixels, const std::string
   }
   fclose(file);
 }
-
-void Renderer::set_camera(Camera * camera) {
-  m_camera = camera; 
-}
