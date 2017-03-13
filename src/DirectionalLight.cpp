@@ -14,61 +14,38 @@ DirectionalLight::DirectionalLight(const RGBColor & color, const Vector3D & dire
 
   Vector3D direction_norm = direction;
   direction_norm.normalize();
-  m_direction = direction;
+  m_direction = direction_norm;
 }
 
 DirectionalLight::~DirectionalLight(){
 
 }
 
+const Point3D DirectionalLight::getPosition() const {
+  Point3D light_pos(
+    m_direction.x * DIRECTIONAL_LIGHT_DISTANCE,
+    m_direction.y * DIRECTIONAL_LIGHT_DISTANCE,
+    m_direction.z * DIRECTIONAL_LIGHT_DISTANCE
+  );
+
+  return light_pos;
+}
+
 const Vector3D DirectionalLight::getDirectionToPoint(const Point3D & point) const {
   return m_direction;
 }
 
+// Render depths from Light POV
 const std::vector<double> DirectionalLight::getShadowMap(const World* world, const int image_height, const int image_width, Rasterizer * rasterizer_camera) const  {
-  Camera * camera;
-  Rasterizer * rasterizer;
-  Point3D light_pos(
-    -m_direction.x * 1000,
-    -m_direction.y * 1000,
-    -m_direction.z * 1000
-  );
-  //Point3D light_pos = (Point3D) (-m_direction * 1000);
-  Point3D light_target = Point3D(0, 0, 0);
+  Rasterizer * rasterizer_light = new ForwardRasterizer(world);
+  Camera * camera_light = new OrthographicCamera(this->getPosition() , Point3D(0, 0, 0), SHADOW_MAP_HEIGHT, SHADOW_MAP_WIDTH, rasterizer_light, 2, DIRECTIONAL_LIGHT_DISTANCE * 2);
 
-  rasterizer = new ForwardRasterizer(world);
-  camera = new OrthographicCamera(light_pos, light_target, image_height, image_width, rasterizer);
+  // Render without shadow maps and shading: only depth
+  rasterizer_light->render(false, false);
 
-  // Render withouth shadow maps and shading: only depth
-  rasterizer->render(false, false);
-  rasterizer->export_output("shadows_light.bmp");
-
-  // Shadow map from light perspective
-  const std::vector<double> shadow_map_light = rasterizer->get_depth_buffer();
-  std::vector<double> shadow_map_camera = std::vector<double>(image_height * image_width, 2000);
-
-  // Build shadow map from camera (apply transform)
+  // Shadow map from light's POV
+  std::vector<double> shadow_map_light = rasterizer_light->get_depth_buffer();
+  rasterizer_light->exportDepthBuffer(shadow_map_light, "shadow_map.bmp", image_width, image_height);
   
-  for (int i = 0; i < shadow_map_light.size(); ++i) {
-    const int y = i / image_width;
-    const int x = i - (y *  image_width);
-
-    const double depth_light = shadow_map_light[i];
-    if (depth_light < 2000) {
-
-      const Point2D pixel_raster_light(x, y);
-      const Point3D pixel_world = rasterizer->unrasterize(pixel_raster_light, depth_light);
-      const Point2D pixel_raster_camera = rasterizer_camera->rasterize(pixel_world);
-      const uint32_t index = pixel_raster_camera.y * image_width + pixel_raster_camera.x;
-      if (index < shadow_map_camera.size()) {
-        shadow_map_camera[index] = depth_light;
-      }
-    }
-  }
-  // Pensar que es shadow_map_camera
-    // Vista desde la camara de las sombras?
-    // VIsta desde la camara de la depth de light?
-  // Light position --> Depth normalizada?
-  rasterizer->exportDepthBuffer(shadow_map_camera, "shadows_camera.bmp", image_width, image_height);
-  return shadow_map_camera;
+  return shadow_map_light;
 }
