@@ -41,7 +41,7 @@ const std::vector<double> DirectionalLight::getShadowMap(const World* world, con
   Camera * camera_light = new OrthographicCamera(this->getPosition() , Point3D(0, 0, 0), SHADOW_MAP_HEIGHT, SHADOW_MAP_WIDTH, rasterizer_light, 2, DIRECTIONAL_LIGHT_DISTANCE * 2);
 
   // Render without shadow maps and shading: only depth
-  rasterizer_light->render(false, false);
+  rasterizer_light->render(false, false); 
 
   // Shadow map from light's POV
   std::vector<double> shadow_map_light = rasterizer_light->get_depth_buffer();
