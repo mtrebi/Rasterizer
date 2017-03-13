@@ -5,9 +5,12 @@ Camera::Camera() {
 
 }
 
-Camera::Camera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer)
+Camera::Camera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer, const uint32_t near, const uint32_t far)
   : m_position(position), m_image_height(image_height), m_image_width(image_width), m_renderer(renderer) {
   m_renderer->set_camera(this);
+
+  m_near = near;
+  m_far = far;
 
   m_direction = (target - position);
   m_direction.normalize();

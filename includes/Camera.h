@@ -29,9 +29,8 @@ protected:
     m_project,
     m_project_inv;
 
-  const uint32_t 
-    m_near = 2, 
-    m_far = 5000;
+  uint32_t m_near, 
+    m_far;
 
   Point3D m_position;
   uint32_t m_image_height,
@@ -40,7 +39,7 @@ protected:
   Renderer * m_renderer;
 public:
     Camera();
-    Camera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer);
+    Camera(const Point3D& position, const Point3D& target, const uint32_t image_height, const uint32_t image_width, Renderer * renderer, const uint32_t near = 2, const uint32_t far = 5000);
     ~Camera();
 
     inline const uint32_t get_near_plane() const { return m_near; }
