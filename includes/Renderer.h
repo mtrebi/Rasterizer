@@ -22,7 +22,8 @@ public:
   Renderer(const World* world);
   ~Renderer();
    
-  void set_camera(Camera * camera);
+  void set_camera(Camera * camera) { m_camera = camera;  }
+  Camera * get_camera() { return m_camera;  }
   virtual void render(const bool use_shade = true, const bool use_shadow_maps = true) = 0;
   virtual void export_output(const std::string output_path) const = 0;
 protected:
