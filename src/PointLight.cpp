@@ -23,6 +23,6 @@ const Vector3D PointLight::getDirectionToPoint(const Point3D& point) const {
   return light_direction;
 }
 // TODO
-const std::vector<double> PointLight::getShadowMap(const World* world, const int image_height, const int image_width, Rasterizer * rasterizer_camera) const {
+const std::vector<double> PointLight::getShadowMap(const World* world) const {
   return std::vector<double>();
 }

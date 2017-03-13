@@ -25,7 +25,7 @@ public:
 
   virtual const Point3D getPosition() const = 0;
   virtual const Vector3D getDirectionToPoint(const Point3D& position) const = 0;
-  virtual const std::vector<double> getShadowMap(const World* world, const int image_height, const int image_width, Rasterizer * rasterizer_camera) const = 0;
+  virtual const std::vector<double> getShadowMap(const World* world) const = 0;
 
   const RGBColor& getColor();
 };
