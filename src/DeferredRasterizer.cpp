@@ -23,6 +23,9 @@ void DeferredRasterizer::render(const bool use_shade, const bool use_shadow_maps
   m_diffuse_buffer = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
   m_specular_buffer = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
 
+  if (use_shadow_maps) {
+    this->createShadowMaps();
+  }
 
   // Render color, depth and normals
   for (auto& object : m_world->m_objects) {
@@ -71,7 +74,9 @@ void DeferredRasterizer::render(const bool use_shade, const bool use_shadow_maps
           m_specular_buffer[i],
           (Vector3D)m_normal_buffer[i]
         };
-        m_pixels[i] = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
+        const RGBColor object_color = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
+        const RGBColor shadow_factor = shadowFactor(fragment.position);
+        m_pixels[i] = object_color * shadow_factor;
       }
       else {
         m_pixels[i] = BACKGROUND_COLOR;
