@@ -222,7 +222,7 @@ It all began here with the first render:
 
 And it end up here:
 
-<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/shadows_flat_scene_PCF.bmp"> </p>
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_PCF.bmp"> </p>
 
 And here using textures:
 
@@ -250,7 +250,7 @@ Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https:/
 
 # Future work
 
-* Shadow maps
+* Solve Peter Panning effect due to shadow bias in shadow mapping
 * Use Quaternions for rotations to avoid gimbal lock
 * Point lights with omnidirectional shadows (using cubemaps) and attenuation
 * Alpha blending
