@@ -76,7 +76,7 @@ void DeferredRasterizer::render(const bool use_shade, const bool use_shadow_maps
         };
         const RGBColor object_color = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
         const RGBColor shadow_factor = shadowFactor(fragment.position);
-        m_pixels[i] = object_color * shadow_factor;
+        m_pixels[i] = object_color - shadow_factor;
       }
       else {
         m_pixels[i] = BACKGROUND_COLOR;
