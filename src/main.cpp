@@ -30,13 +30,13 @@ Camera * camera;
 Renderer * renderer;
 int main (){
   std::vector<Light*> lights = {
-    new DirectionalLight(Colors::WHITE, Vector3D(1, 0.5, -1))
+    new DirectionalLight(Colors::WHITE, Vector3D(1, 0.4, -1))
   };
   const std::vector<GeometryObject*> objects_flat = setupFlatScene();
   const std::vector<GeometryObject*> objects_textured = setupTexturedScene();
 
 
-  World * world = new World(objects_textured, lights, camera);
+  World * world = new World(objects_flat, lights, camera);
 #ifdef _FORWARD
   renderer = new ForwardRasterizer(world);
 #endif 
@@ -63,6 +63,7 @@ const std::vector<GeometryObject*> setupFlatScene() {
   std::vector<GeometryObject*> objects;
 
   // Objects
+  
   GeometryObject* ground = buildPlainPlane(Materials::FLAT_PLASTIC, Colors::GREY, Point3D(0, 0, 0), 500);
   objects.push_back(ground);
 
@@ -77,12 +78,12 @@ const std::vector<GeometryObject*> setupFlatScene() {
   GeometryObject* flying_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(-100, 120, 75), 75);
   flying_box->rotate(45, -45, 45);
   objects.push_back(flying_box);
-
+  
   GeometryObject* multicolor_box = buildMultiColorBox(Materials::FLAT_PLASTIC, Point3D(-100, 50, -90), 100);
   multicolor_box->rotate(0, -45, 0);
   objects.push_back(multicolor_box);
-
-  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::PURPLE, Point3D(150, 75, -220), 75);
+  
+  GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::PURPLE, Point3D(150, 37.5, -220), 75);
   objects.push_back(small_box2);
   return objects;
 }
@@ -110,8 +111,8 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   small_box1->rotate(0, -45, 0);
   objects.push_back(small_box1);
   
-  GeometryObject* small_box2 = buildTexturedBox(Materials::DEFAULT, Point3D(150, 75, -220), 75);
-  objects.push_back(small_box2);
+  GeometryObject* default_box = buildTexturedBox(Materials::DEFAULT, Point3D(150, 37.5, -220), 75);
+  objects.push_back(default_box);
   
   return objects;
 }
@@ -227,34 +228,34 @@ GeometryObject* buildPlainBox(Material* material, const RGBColor& color, const P
 
 GeometryObject* buildMultiColorBox(Material* material, const Point3D& center, const float side) {
   const std::vector<RGBColor> colors = {
-    Colors::RED,
     Colors::GREEN,
-    Colors::RED,
-    Colors::BLUE,
+    Colors::YELLOW,
+    Colors::WHITE,
+    Colors::CYAN,
 
-    Colors::RED,
-    Colors::GREEN,
-    Colors::RED,
-    Colors::BLUE,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
 
+    Colors::YELLOW,
     Colors::RED,
-    Colors::GREEN,
-    Colors::RED,
-    Colors::BLUE,
+    Colors::PURPLE,
+    Colors::WHITE,
 
-    Colors::RED,
-    Colors::GREEN,
-    Colors::RED,
-    Colors::BLUE,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
 
-    Colors::RED,
-    Colors::GREEN,
-    Colors::RED,
-    Colors::BLUE,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
+    Colors::BLACK,
 
-    Colors::RED,
-    Colors::GREEN,
-    Colors::RED,
+    Colors::CYAN,
+    Colors::WHITE,
+    Colors::PURPLE,
     Colors::BLUE,
   };
 
