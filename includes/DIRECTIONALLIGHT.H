@@ -2,7 +2,7 @@
 #include "LIGHT.H"
 
 class DirectionalLight : public Light {
-protected:
+public:
   const double DIRECTIONAL_LIGHT_DISTANCE = 1000000.0;
 private:
   Vector3D m_direction;
@@ -13,6 +13,5 @@ public:
 
   const Point3D getPosition() const override;
   const Vector3D getDirectionToPoint(const Point3D& point) const override;
-  const std::vector<double> getShadowMap(const World* world) const override;
 };
 

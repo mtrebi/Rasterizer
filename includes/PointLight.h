@@ -11,6 +11,5 @@ public:
 
   const Point3D getPosition() const override;
   const Vector3D getDirectionToPoint(const Point3D& point) const override;
-  const std::vector<double> getShadowMap(const World* world) const override;
 };
 

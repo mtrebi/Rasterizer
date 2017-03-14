@@ -6,7 +6,6 @@ Light::Light() {
 
 Light::Light(const RGBColor& color)
   : m_color(color) {
-
 }
 
 Light::~Light() {

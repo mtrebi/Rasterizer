@@ -34,18 +34,3 @@ const Point3D DirectionalLight::getPosition() const {
 const Vector3D DirectionalLight::getDirectionToPoint(const Point3D & point) const {
   return m_direction;
 }
-
-// Render depths from Light POV
-const std::vector<double> DirectionalLight::getShadowMap(const World* world) const  {
-  Rasterizer * rasterizer_light = new ForwardRasterizer(world);
-  Camera * camera_light = new OrthographicCamera(this->getPosition() , Point3D(0, 0, 0), SHADOW_MAP_HEIGHT, SHADOW_MAP_WIDTH, rasterizer_light, 2, DIRECTIONAL_LIGHT_DISTANCE * 2);
-
-  // Render without shadow maps and shading: only depth
-  rasterizer_light->render(false, false); 
-
-  // Shadow map from light's POV
-  std::vector<double> shadow_map_light = rasterizer_light->get_depth_buffer();
-  rasterizer_light->exportDepthBuffer(shadow_map_light, "shadow_map.bmp", SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
-  
-  return shadow_map_light;
-}
