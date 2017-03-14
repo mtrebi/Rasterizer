@@ -3,11 +3,12 @@
 
 #include <string>
 #include "Renderer.h"
+#include "ShadowMap.h"
 
 class Rasterizer : public Renderer {
 protected:
   std::vector<double> m_depth_buffer;
-  std::vector<double> m_shadow_maps;
+  std::vector<ShadowMap*> m_shadow_maps;
 public:
   Rasterizer();
   Rasterizer(const World* world);
@@ -20,8 +21,8 @@ public:
 
 public:
   // Shadows
-  const bool is_shadowed(const uint32_t index) const;
-  const double shadowFactor(const uint32_t index) const;
+  const void createShadowMaps();
+  const double shadowFactor(const uint32_t index, const Point3D& pixel_world);
   // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   //const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
