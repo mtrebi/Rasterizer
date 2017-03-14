@@ -20,17 +20,25 @@ void ShadowMap::render() {
   m_rasterizer->exportDepthBuffer(m_shadow_map, "shadow_map.bmp", SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT);
 }
 
-//TODO: PCF
-const bool ShadowMap::pointInShadow(const Point3D& point_world) const {
+// PCF Shadows
+const double ShadowMap::pointInShadow(const Point3D& point_world) const {
+  double shadow = 0;
   // Find coordinates of point in light space
   Point2D point_light_space = m_rasterizer->rasterize(point_world);
-  const uint32_t index = round(point_light_space.y) * SHADOW_MAP_WIDTH + point_light_space.x + 1;
+  for (int x = point_light_space.x - 1; x < point_light_space.x + 1; ++x) {
+    for (int y = point_light_space.y - 1; y < point_light_space.y + 1; ++y) {
+      const uint32_t index = round(y) * SHADOW_MAP_WIDTH + x + 1;
+      // Get depths
+      const double closest_depth = m_shadow_map[index];
+      const double current_depth = (m_light->getPosition() - point_world).length();
+      // Test light shadow map against real distance
+      //shadow += (current_depth > closest_depth + SHADOW_MAP_BIAS) ? 0.20 : 0.0;
+      shadow += (current_depth > closest_depth + SHADOW_MAP_BIAS) ? 0.045 : 0.0;
 
-  // Get depths
-  const double closest_depth = m_shadow_map[index];
-  const double current_depth = (m_light->getPosition() - point_world).length();
-  // Test light shadow map against real distance
-  return (current_depth > closest_depth + SHADOW_MAP_BIAS);
+    }
+  }
+  
+  return shadow / 9.0;
 }
 
 ShadowMap::~ShadowMap() {
