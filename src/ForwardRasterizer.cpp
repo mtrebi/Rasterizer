@@ -19,9 +19,9 @@ void ForwardRasterizer::render(const bool use_shade, const bool use_shadow_maps)
   m_pixels = std::vector<RGBColor>(image_height * image_width, BACKGROUND_COLOR);
   m_depth_buffer = std::vector<double>(image_height * image_width, m_camera->get_far_plane());
 
-  //if (use_shadow_maps) {
-  //  m_shadow_maps = m_world->m_lights[0]->getShadowMap(m_world, image_height, image_width,  this);
-  //}
+  if (use_shadow_maps) {
+    this->createShadowMaps();
+  }
 
   for (auto& object : m_world->m_objects) {
     const std::vector<Triangle3D> triangles = object->triangles();
@@ -40,8 +40,10 @@ void ForwardRasterizer::render(const bool use_shade, const bool use_shadow_maps)
                 const Fragment fragment = calculateFragmentAttributes(triangle_world, pixel_world, triangle_raster, pixel_raster, *object->material());
                 m_depth_buffer[i] = depth;
                 if (use_shade) {
-                  m_pixels[i] = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
-                    //* shadowFactor(i);
+                  const RGBColor object_color = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
+                  const RGBColor shadow_factor = shadowFactor(i, pixel_world);
+                  // const double shadow = shadowFactor(m_lights, pixel_world);
+                  m_pixels[i] = object_color * shadow_factor;
                 }
               }
             }
