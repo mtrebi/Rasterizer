@@ -1,4 +1,6 @@
 #include "Rasterizer.h"
+#include "ORTHOGRAPHICCAMERA.H"
+#include "ForwardRasterizer.H"
 
 Rasterizer::Rasterizer()
   : Renderer() {
@@ -147,23 +149,28 @@ void Rasterizer::exportDepthBuffer(const std::vector<double>& depth_buffer, cons
       const double depth_normalized = slope * (depth - m_camera->get_near_plane());
       depth_buffer_grey[i] = RGBColor(depth_normalized);
     }
+
   }
   exportImage(depth_buffer_grey, output_path, image_width, image_height);
 }
 
-// Calculate shadows using shadow maps
-const double Rasterizer::shadowFactor(const uint32_t index) const {
-  double shadow_modifier = 1.0;
-  if (is_shadowed(index)) {
-    shadow_modifier = 0.4;
+// Build a shadow map for each light
+const void Rasterizer::createShadowMaps() {
+  for (auto& light : m_world->m_lights) {
+    ShadowMap * shadow_map = new ShadowMap(m_world, light);
+    shadow_map->render();
+    m_shadow_maps.push_back(shadow_map);
   }
-
-  return shadow_modifier;
 }
 
-const bool Rasterizer::is_shadowed(const uint32_t index) const {
-  const double depth_camera = m_depth_buffer[index];
-  const double depth_lights = m_shadow_maps[index];
-
-  return (depth_lights < depth_camera) ? true : false;
+// Calculate shadows using shadow maps
+const double Rasterizer::shadowFactor(const uint32_t index, const Point3D& point_world) {
+  double shadow_modifier = 1.0;       // No shadow
+  for (auto& shadow_map : m_shadow_maps) {
+    if (shadow_map->pointInShadow(point_world)) {
+      shadow_modifier = 0.4;
+      break;
+    }
+  }
+  return shadow_modifier;
 }
