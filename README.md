@@ -205,7 +205,7 @@ And moving the camera a behind to have a different point of view:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_behind.bmp"> </p>
 
-_If you want to know more, this is the by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
+_If you want to know more, this is by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
 
 ## PCF
 
