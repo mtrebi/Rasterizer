@@ -82,10 +82,10 @@ In the next image:
 
 Using textures is a simple modification in the program but it produces a huge quality increasement. The idea is to replace is basic color that we got previously by a color that we retrieve from a texture using __Texture Coordinates__. Texture coordinates are specifider per vertex (exaclty as colors are) and then, to get the color of a specific point in the triangle, an interpolation is performed across the vertices.
 
-In my code I've used textures for the __diffuse and specular shading__. In the next image:
-* The red cube uses flat shading
-* The Box in the middle uses only a diffuse texture.
-* The Box on the right uses a diffuse and a specular texture that makes the metalic borders of the box shinier. This looks much more realistic that the previous one
+In my code I've used textures for the __diffuse and specular shading__ in the Phong and Blinn-Phong shading models. In the next image, all cubes use Blinn-Phong but:
+* The red cube uses a flat color.
+* The Box in the middle uses a diffuse texture for the color calculation.
+* The Box on the right uses a diffuse and a specular texture for the color calculation. That makes the metalic borders of the box shinier. This looks much more realistic that the previous one.
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/flat_phong_blinn_textured.bmp"> </p>
 
@@ -102,7 +102,7 @@ In the following image we can see:
 ## Affine and Perspective corrected mapping for textures
 
 As I said before, when mapping textures we have to calculate an interpolation from the values of the vertices of the triangle. There are different ways to do it. I've implemented two:
-* __Affine mapping__. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no persective distorsion. However, the second texture is notably mapped incorrectly.
+* __Affine mapping__. Is the cheapest way to perform texture mapping. However, it can produce wrong results if there is perspective distorsion (due to foreshortening). In the next image, the first texture is mapped correctly because is flat: the distance to the camera is constant in all points of the plane so there is no perspective distorsion. However, the second texture is mapped incorrectly:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/texture_mapping_affine.bmp"> </p>
 
@@ -194,6 +194,10 @@ It all began here with the first render:
 And it end up here:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp"> </p>
+
+And here using textures:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp"> </p>
 
 Triangle render with RGB color interpolation using barycentric coordinates
 
