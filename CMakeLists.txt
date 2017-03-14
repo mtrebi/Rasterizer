@@ -31,6 +31,7 @@ set(SOURCES src/RGBColor.cpp
 						src/Rasterizer.cpp
             src/ForwardRasterizer.cpp
             src/DeferredRasterizer.cpp
+            src/ShadowMap.cpp
 						src/World.cpp
 						src/main.cpp)
 
@@ -46,6 +47,9 @@ add_definitions(-D_FORWARD=1)
 #add_definitions(-D_FLAT=1)
 add_definitions(-D_BLINN_PHONG=1)
 #add_definitions(-D_PHONG=1)
+
+# shadows
+add_definitions(-D_PCF_SHADOWS=1)
 
 # camera
 #add_definitions(-D_ORTHOGRAPHIC=1)
