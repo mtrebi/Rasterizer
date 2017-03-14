@@ -167,10 +167,7 @@ const void Rasterizer::createShadowMaps() {
 const double Rasterizer::shadowFactor(const Point3D& point_world) {
   double shadow = 0.0;         // No shadow     
   for (auto& shadow_map : m_shadow_maps) {
-    shadow = shadow_map->pointInShadow(point_world);
-    if (shadow > 0) {
-      return shadow;
-    }
+    shadow += shadow_map->pointInShadow(point_world);
   }
   return shadow;
 }
