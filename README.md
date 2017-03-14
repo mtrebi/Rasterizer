@@ -12,6 +12,7 @@ I've implement some basic features that I consider relevant for any graphics pro
 * Simple optimizations
 * A depth-buffer to solve the visibility surface problem
 * Two rendering paths: Forward and deferred
+* Shadow mapping for directional lights
 
 # Rasterization
 
