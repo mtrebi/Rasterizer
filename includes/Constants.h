@@ -12,8 +12,8 @@
 const Point3D   CAMERA_POS = Point3D(0, 200, -400);
 const Point3D   CAMERA_TARGET = Point3D(0, 0, 0);
 
-const int IMAGE_WIDTH = 1280;
-const int IMAGE_HEIGHT = 720;
+const int IMAGE_WIDTH = 800;
+const int IMAGE_HEIGHT = 600;
 const std::string IMAGE_NAME = "output.bmp";
 
 namespace Colors {

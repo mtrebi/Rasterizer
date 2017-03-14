@@ -17,7 +17,7 @@ protected:
   // Constants
   const int SHADOW_MAP_WIDTH = 800;
   const int SHADOW_MAP_HEIGHT = 600;
-  const double SHADOW_MAP_BIAS = 1.0;
+  const double SHADOW_MAP_BIAS = 3.0;
 public:
   ShadowMap();
   ShadowMap(const World * world, const Light* light);
