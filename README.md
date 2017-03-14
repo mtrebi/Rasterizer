@@ -183,6 +183,35 @@ Then, to calculate shading we just have to combine all these different buffers a
 
 *As a side note, there is another interesting rendering algorithm usually used in hand-held devices called TBDF (Tile Based Deferred Rendering) that uses deferred rendering but, in order to reduce the memory needed, it splits up the screen in smaller tiles having the benefits of deferred rendering without the excessive memory usage*
 
+# Shadow mapping
+
+In order to add shadows to my scene I've implemented a technique called *Shadow Mapping*. It consists of three parts:
+
+1. *Render the depth of the scene from the Light point of view*. We store in each pixel the distance from the light to the closest object that it sees. This is called a Shadow Map.
+2. We render the image from the camera as always but now we have to check if a pixel is in shadow. To do so, we*convert this pixel into World Space and then into Light Space*.
+3. Finally, because the pixel is in Light Space we can retrieve it's depth from the Light's POV. Then, we compare this depth with the distance from that point (in world space) to the light. If it is smaller, it means that there is some object in between and thus, the pixel is in shadow.
+
+
+The following image is the Shadow Map of the previous scene:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadow_map.bmp"> </p>
+
+Testing the depth of this shadow map and the distance from each point to the light sources we can create shadows:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene.bmp"> </p>
+
+And moving the camera a behind to have a different point of view:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_behind.bmp"> </p>
+
+_If you want to know more, this is the by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
+
+## PCF
+
+PCF (Percentage Closer Filtering) help us to create soft shadows and making them less "blocky". The idea is, instead of taking only one sample from the shadow map, we take many of them and we calculate the average. In my case I took nine samples: the center point and neighbors. The result has a much better quality:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_jaggy_pcf.PNG"> </p>
+
 # Gallery
 
 These are just some samples. 
@@ -193,11 +222,11 @@ It all began here with the first render:
 
 And it end up here:
 
-<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/render_flat_scene_blinn_phong.bmp"> </p>
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/gallery/shadows_flat_scene_PCF.bmp"> </p>
 
 And here using textures:
 
-<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/forward_textured_scene.bmp"> </p>
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_textured_scene_PCF.bmp"> </p>
 
 Triangle render with RGB color interpolation using barycentric coordinates
 
