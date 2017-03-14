@@ -41,7 +41,7 @@ void ForwardRasterizer::render(const bool use_shade, const bool use_shadow_maps)
                 m_depth_buffer[i] = depth;
                 if (use_shade) {
                   const RGBColor object_color = Material::shade(m_world->m_lights, *m_world->m_camera, fragment);
-                  const RGBColor shadow_factor = shadowFactor(i, pixel_world);
+                  const RGBColor shadow_factor = shadowFactor(pixel_world);
                   m_pixels[i] = object_color * shadow_factor;
                 }
               }

@@ -22,7 +22,7 @@ public:
 public:
   // Shadows
   const void createShadowMaps();
-  const double shadowFactor(const uint32_t index, const Point3D& pixel_world);
+  const double shadowFactor(const Point3D& pixel_world);
   // Interpolations
   const double calculateDepth(const Triangle3D& triangle_world, const Triangle2D& triangle_camera, const Point2D& pixel_camera) const;
   //const Vector2D calculateTextureCoords(const Triangle3D& triangle_world, const Point3D& point_world) const;
