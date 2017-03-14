@@ -26,6 +26,15 @@ public:
     return new_color;
   }
 
+  RGBColor operator-(const RGBColor& color) const {
+    RGBColor new_color;
+    new_color.r = std::max(this->r - color.r, .0f);
+    new_color.g = std::max(this->g - color.g, .0f);
+    new_color.b = std::max(this->b - color.b, .0f);
+
+    return new_color;
+  }
+
   RGBColor operator*(const RGBColor& color) const {
     RGBColor new_color;
     new_color.r = this->r * color.r;
