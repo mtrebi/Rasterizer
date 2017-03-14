@@ -224,6 +224,10 @@ And it end up here:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_PCF.bmp"> </p>
 
+Moving the camera behind and the slighlty light upwards:
+
+<p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_PCF_behind.bmp"> </p>
+
 And here using textures:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_textured_scene_PCF.bmp"> </p>
