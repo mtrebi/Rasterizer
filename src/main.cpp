@@ -69,7 +69,8 @@ const std::vector<GeometryObject*> setupFlatScene() {
 
   GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(0, 0, 0), 100);
   flat_box->translate(Vector3D(150, 50, 100));
-  flat_box->rotate(0, 45, 0);
+  flat_box->rotate(45, Vector3D(0, 1, 0));
+  //flat_box->rotate(0, 45, 0);
   objects.push_back(flat_box);
 
   GeometryObject* flat_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::CYAN, Point3D(150, 125, 100), 50);
