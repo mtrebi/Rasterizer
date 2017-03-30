@@ -29,7 +29,7 @@ To implement rotations and translation, I've added to each object a __Model matr
 
 The model transform is applied to each of the vertices when the rasterizer asks for the Geometry. It is performed only once and is the first transformation performed that converts the vertices from Object Local Space to World Space.
 
-##  Object transformarions using 4x4 homogeneous matrices
+##  Object transformations using 4x4 homogeneous matrices
 
 ### Translations
 
@@ -76,7 +76,7 @@ Nevertheless, when the angle of rotation is near +- 90 degrees, Euler angles suf
 Quaternions are less intuitive than Euler angles. To make it easier to work with them, I implemented a rotate method that takes an Axis-Angle representation of a rotation. This representation can be later converted to the Quaternion form easily.
 
 ```c
-redCube->rotate_quaternion(45, Vector3D(0, 1, 0));					// Equivalent to 45º in pitch rotation
+redCube->rotate_quaternion(45, Vector3D(0, 1, 0));	// Equivalent to 45º in pitch rotation
 ```
 
 ## Orthographic and Perspective camera
