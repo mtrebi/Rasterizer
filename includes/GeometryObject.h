@@ -27,7 +27,11 @@ public:
 	GeometryObject(Material* material, const std::vector<Point3D>& vertices, const std::vector<RGBColor>& colors, const std::vector<Vector2D>& texture_coords, const std::vector<uint32_t>& indices, const Point3D& center = Point3D(0,0,0));
 	~GeometryObject();
 
+  // Rotation using Euler angles
   void rotate(const float roll, const float pitch, const float yaw);
+  // Rotation using Quaternions (Axis-angle representation)
+  void rotate(const float angle_degrees, const Vector3D& axis);
+
   void translate(const Vector3D translation);
 
   const std::vector<Triangle3D> triangles() ;

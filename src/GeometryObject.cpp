@@ -27,7 +27,17 @@ const Vertex3D GeometryObject::build_vertex(const std::vector<Point3D>& vertices
 
   return v;
 }
+// Rotation using Quaternions (Axis-angle representation)
+void GeometryObject::rotate(const float angle_degrees, const Vector3D& axis) {
+  glm::vec3 axis_ = glm::vec3(axis.x, axis.y, axis.z);
+  const float w = cos(glm::radians(angle_degrees) / 2);
+  const glm::vec3 v = normalize(axis_) * glm::vec3(sin(glm::radians(angle_degrees) / 2));
+  const glm::quat quaternion = glm::quat(w, v);
 
+  m_rotation *= glm::mat4_cast(quaternion);
+}
+
+// Rotation using Euler angles
 void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees, const float yaw_degrees) {
   const float roll_r = ((roll_degrees / 180.0) * M_PI);
   const float pitch_r = ((pitch_degrees / 180.0) * M_PI);
@@ -39,7 +49,7 @@ void GeometryObject::rotate(const float roll_degrees, const float pitch_degrees,
   mat_pitch = glm::transpose(glm::rotate(glm::mat4(1.0f), pitch_r, glm::vec3(0.0f, 1.0f, 0.0f)));
   mat_yaw = glm::transpose(glm::rotate(glm::mat4(1.0f), yaw_r, glm::vec3(0.0f, 0.0f, 1.0f)));
 
-  m_rotation = mat_yaw * mat_pitch * mat_roll;
+  m_rotation *= mat_yaw * mat_pitch * mat_roll;
 }
 
 void GeometryObject::translate(const Vector3D translation) {
