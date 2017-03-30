@@ -4,6 +4,7 @@ In order to be able to understand how rendering work I decided to implement a fo
 
 I've implement some basic features that I consider relevant for any graphics programmer to understand:
 * Camera and Object transformations using 4x4 homogeneous matrices
+* Rotations using Euler angles and Quaternions
 * Affine and Perspective corrected mapping for textures
 * Orthographic and Perspective camera
 * Phong and Blinn-Phong shading given material phong coefficients
@@ -23,21 +24,33 @@ Checkout my blog posts about [rasterization](https://gamesandgraphicsdev.blogspo
 
 I've implemented the most basic transformations: rotations and translations. To do so, I've used 4x4 homogeneous matrices. Homogeneous matrices are very useful to perform affine transformations because they can represent a linear transformation (rotation, scale, skew...) and a translation in a single matrix.
 
-To implement rotations and translation, I've added to each object a __Model matrix__ that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformation can be concatenated.
+To implement rotations and translation, I've added to each object a __Model matrix__ that stores the local transformations for each object. Due to the multiplication properties of this matrices, multiple transformations can be concatenated.
 
 The model transform is applied to each of the vertices when the rasterizer asks for the Geometry. It is performed only once and is the first transformation performed that converts the vertices from Object Local Space to World Space.
 
-##  Object translations using 4x4 homogeneous matrices
+##  Object transformarions using 4x4 homogeneous matrices
 
-In the following image each cube is rotated 45º in roll, pitch or yaw; and translated a small amount in the X axis:
+### Translations
+
+Translation can be performed easily by modifying only the translation part of the 4x4 matrix
 
 ```c
-redCube->rotate(45, 0, 0);					// 45º in roll
+blueCube->translate(Vector3D(250, 0, 0));	// Move 250 units in the positive X direction
+```
+
+## Rotations
+
+### Euler angles
+
+I've implemented rotations using Euler angles because it's the most intuitive form of rotation. In the following image each cube is rotated 45º in roll, pitch or yaw; and translated a small amount in the X axis:
+
+```c
+redCube->rotate_euler(45, 0, 0);					// 45º in roll
 redCube->translate(Vector3D(-250, 0, 0));	// Slighlty to the left
 
-greenCube->rotate(0, 45, 0);				// 45º in pitch
+greenCube->rotate_euler(0, 45, 0);				// 45º in pitch
 
-blueCube->rotate(0, 0, 45);					// 45º in yaw
+blueCube->rotate_euler(0, 0, 45);					// 45º in yaw
 blueCube->translate(Vector3D(250, 0, 0));	// Slightly to the right
 ```
 
@@ -49,11 +62,21 @@ On the other hand, in the next image, the cube is rotated in all three euler ang
 float roll = 45;
 float pitch = 15;
 float yaw = 30;
-object->rotate(roll, pitch, yaw);		// Rotate using euler angles 45º roll, 15º pitch, 30º yaw
+object->rotate_euler(roll, pitch, yaw);		// Rotate using euler angles 45º roll, 15º pitch, 30º yaw
 object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 50 in Y and 20 in Z
 ```
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/rotations_all_axis.bmp"> </p>
+
+Nevertheless, when the angle of rotation is near +- 90 degrees, Euler angles suffer of something called Gimbal Lock. To avoid this I've implemented quaternion-based rotations.
+
+## Quaternions
+
+Quaternions are less intuitive than Euler angles. To make it easier to work with them, I implemented a rotate method that takes an Axis-Angle representation of a rotation. This representation can be later converted to the Quaternion form easily.
+
+```c
+redCube->rotate_quaternion(45, Vector3D(0, 1, 0));					// Equivalent to 45º in pitch rotation
+```
 
 ## Orthographic and Perspective camera
 
