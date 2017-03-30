@@ -13,6 +13,7 @@ I've implement some basic features that I consider relevant for any graphics pro
 * Simple optimizations
 * A depth-buffer to solve the visibility surface problem
 * Two rendering paths: Forward and deferred
+* Shadow mapping for directional lights with PCF
 
 # Rasterization
 
@@ -227,7 +228,7 @@ And moving the camera a behind to have a different point of view:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_behind.bmp"> </p>
 
-_If you want to know more, this is the by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
+_If you want to know more, this is by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
 
 ## PCF
 
@@ -247,7 +248,7 @@ And it end up here:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_PCF.bmp"> </p>
 
-Moving the camera behind and the slighlty light upwards:
+Moving the camera behind and the light slighlty upwards:
 
 <p align="center">  <img src="https://github.com/mtrebi/Rasterizer/blob/master/docs/images/readme/shadows_flat_scene_PCF_behind.bmp"> </p>
 
