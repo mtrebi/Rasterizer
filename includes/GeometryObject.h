@@ -28,9 +28,9 @@ public:
 	~GeometryObject();
 
   // Rotation using Euler angles
-  void rotate(const float roll, const float pitch, const float yaw);
+  void rotate_euler(const float roll, const float pitch, const float yaw);
   // Rotation using Quaternions (Axis-angle representation)
-  void rotate(const float angle_degrees, const Vector3D& axis);
+  void rotate_quat(const float angle_degrees, const Vector3D& axis);
 
   void translate(const Vector3D translation);
 

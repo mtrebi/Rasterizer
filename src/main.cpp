@@ -69,7 +69,7 @@ const std::vector<GeometryObject*> setupFlatScene() {
 
   GeometryObject* flat_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::RED, Point3D(0, 0, 0), 100);
   flat_box->translate(Vector3D(150, 50, 100));
-  flat_box->rotate(45, Vector3D(0, 1, 0));
+  flat_box->rotate_quat(45, Vector3D(0, 1, 0));
   //flat_box->rotate(0, 45, 0);
   objects.push_back(flat_box);
 
@@ -77,11 +77,11 @@ const std::vector<GeometryObject*> setupFlatScene() {
   objects.push_back(flat_box2);
 
   GeometryObject* flying_box = buildPlainBox(Materials::FLAT_PLASTIC, Colors::YELLOW, Point3D(-100, 120, 75), 75);
-  flying_box->rotate(45, -45, 45);
+  flying_box->rotate_euler(45, -45, 45);
   objects.push_back(flying_box);
   
   GeometryObject* multicolor_box = buildMultiColorBox(Materials::FLAT_PLASTIC, Point3D(-100, 50, -90), 100);
-  multicolor_box->rotate(0, -45, 0);
+  multicolor_box->rotate_euler(0, -45, 0);
   objects.push_back(multicolor_box);
   
   GeometryObject* small_box2 = buildPlainBox(Materials::FLAT_PLASTIC, Colors::PURPLE, Point3D(150, 37.5, -220), 75);
@@ -98,18 +98,18 @@ const std::vector<GeometryObject*> setupTexturedScene() {
   
   GeometryObject* flat_box = buildTexturedBox(Materials::BOX, Point3D(0, 0, 0), 100);
   flat_box->translate(Vector3D(150, 50, 100));
-  flat_box->rotate(0, 45, 0);
+  flat_box->rotate_euler(0, 45, 0);
   objects.push_back(flat_box);
 
   GeometryObject* flat_box2 = buildTexturedBox(Materials::BOX, Point3D(150, 125, 100), 50);
   objects.push_back(flat_box2);
 
   GeometryObject* flying_box = buildTexturedBox(Materials::BOX, Point3D(-100, 120, 75), 75);
-  flying_box->rotate(45, -45, 45);
+  flying_box->rotate_euler(45, -45, 45);
   objects.push_back(flying_box);
 
   GeometryObject* small_box1 = buildTexturedBox(Materials::BOX, Point3D(-100, 50, -90), 100);
-  small_box1->rotate(0, -45, 0);
+  small_box1->rotate_euler(0, -45, 0);
   objects.push_back(small_box1);
   
   GeometryObject* default_box = buildTexturedBox(Materials::DEFAULT, Point3D(150, 37.5, -220), 75);
