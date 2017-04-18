@@ -279,7 +279,6 @@ Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https:/
 # Future work
 
 * Solve Peter Panning effect due to shadow bias in shadow mapping
-* Use Quaternions for rotations to avoid gimbal lock
 * Point lights with omnidirectional shadows (using cubemaps) and attenuation
 * Alpha blending
 * Sky boxes
