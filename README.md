@@ -1,22 +1,22 @@
 # Table of Contents
-&nbsp;[Introduction](https://github.com/mtrebi/rasterizer/blob/master/README.md#Introduction)  <br/> 
-&nbsp;[Rasterization](https://github.com/mtrebi/rasterizer/blob/master/README.md#Rasterization)  <br/> 
-&nbsp;[Features](https://github.com/mtrebi/rasterizer/blob/master/README.md#Features)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Camera and Object transformations](https://github.com/mtrebi/rasterizer/blob/master/README.md#camera-and-Object-transformations)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Object transformations using 4x4 homogeneous matrices](https://github.com/mtrebi/rasterizer/blob/master/README.md#Object-transformations-using-4x4-homogeneous-matrices)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Orthographic and Perspective camera](https://github.com/mtrebi/rasterizer/blob/master/README.md#Orthographic-and-Perspective-camera)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading](https://github.com/mtrebi/rasterizer/blob/master/README.md#Phong-and-Blinn-Phong-shading)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading with textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#Phong-and-Blinn-Phong-shading-with-textures)  <br/> 
+&nbsp;[Introduction](https://github.com/mtrebi/rasterizer/blob/master/README.md#introduction)  <br/> 
+&nbsp;[Rasterization](https://github.com/mtrebi/rasterizer/blob/master/README.md#rasterization)  <br/> 
+&nbsp;[Features](https://github.com/mtrebi/rasterizer/blob/master/README.md#features-in-detail)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Camera and Object transformations](https://github.com/mtrebi/rasterizer/blob/master/README.md#camera-and-object-transformations)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Object transformations using 4x4 homogeneous matrices](https://github.com/mtrebi/rasterizer/blob/master/README.md#object-transformations-using-4x4-homogeneous-matrices)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Orthographic and Perspective camera](https://github.com/mtrebi/rasterizer/blob/master/README.md#orthographic-and-perspective-camera)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading](https://github.com/mtrebi/rasterizer/blob/master/README.md#phong-and-blinn-phong-shading)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading with textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#phong-and-blinn-phong-shading-using-textures)  <br/> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Normal mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#normal-mapping)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Affine and Perspective corrected mapping for textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#Affine-and-Perspective-corrected-mapping-for-textures)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Simple optimizations](https://github.com/mtrebi/rasterizer/blob/master/README.md#Simple-optimizations)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Depth buffering](https://github.com/mtrebi/rasterizer/blob/master/README.md#Depth-buffering)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Rendering paths](https://github.com/mtrebi/rasterizer/blob/master/README.md#Rendering-paths)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Shadow mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#Shadow-mapping)  <br/> 
-&nbsp;[Gallery](https://github.com/mtrebi/rasterizer/blob/master/README.md#Gallery)  <br/> 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Cool images](https://github.com/mtrebi/rasterizer/blob/master/README.md#Cool-images)  <br/> 
-&nbsp;[Future work](https://github.com/mtrebi/rasterizer/blob/master/README.md#Future-work)  <br/> 
-&nbsp;[References](https://github.com/mtrebi/rasterizer/blob/master/README.md#References)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Affine and Perspective corrected mapping for textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#affine-and-perspective-corrected-mapping-for-textures)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Simple optimizations](https://github.com/mtrebi/rasterizer/blob/master/README.md#simple-optimizations)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Depth buffering](https://github.com/mtrebi/rasterizer/blob/master/README.md#depth-buffering)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Rendering paths](https://github.com/mtrebi/rasterizer/blob/master/README.md#rendering-paths)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Shadow mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#shadow-mapping)  <br/> 
+&nbsp;[Gallery](https://github.com/mtrebi/rasterizer/blob/master/README.md#gallery)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Cool images](https://github.com/mtrebi/rasterizer/blob/master/README.md#cool-images)  <br/> 
+&nbsp;[Future work](https://github.com/mtrebi/rasterizer/blob/master/README.md#future-work)  <br/> 
+&nbsp;[References](https://github.com/mtrebi/rasterizer/blob/master/README.md#references)  <br/> 
 
 # Introduction
 
