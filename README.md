@@ -1,3 +1,23 @@
+# Table of Contents
+&nbsp;[Introduction](https://github.com/mtrebi/rasterizer/blob/master/README.md#Introduction)  <br/> 
+&nbsp;[Rasterization](https://github.com/mtrebi/rasterizer/blob/master/README.md#Rasterization)  <br/> 
+&nbsp;[Features](https://github.com/mtrebi/rasterizer/blob/master/README.md#Features)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Camera and Object transformations](https://github.com/mtrebi/rasterizer/blob/master/README.md#camera-and-Object-transformations)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Object transformations using 4x4 homogeneous matrices](https://github.com/mtrebi/rasterizer/blob/master/README.md#Object-transformations-using-4x4-homogeneous-matrices)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Orthographic and Perspective camera](https://github.com/mtrebi/rasterizer/blob/master/README.md#Orthographic-and-Perspective-camera)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading](https://github.com/mtrebi/rasterizer/blob/master/README.md#Phong-and-Blinn-Phong-shading)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Phong and Blinn-Phong shading with textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#Phong-and-Blinn-Phong-shading-with-textures)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Normal mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#normal-mapping)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Affine and Perspective corrected mapping for textures](https://github.com/mtrebi/rasterizer/blob/master/README.md#Affine-and-Perspective-corrected-mapping-for-textures)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Simple optimizations](https://github.com/mtrebi/rasterizer/blob/master/README.md#Simple-optimizations)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Depth buffering](https://github.com/mtrebi/rasterizer/blob/master/README.md#Depth-buffering)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Rendering paths](https://github.com/mtrebi/rasterizer/blob/master/README.md#Rendering-paths)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Shadow mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#Shadow-mapping)  <br/> 
+&nbsp;[Gallery](https://github.com/mtrebi/rasterizer/blob/master/README.md#Gallery)  <br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Cool images](https://github.com/mtrebi/rasterizer/blob/master/README.md#Cool-images)  <br/> 
+&nbsp;[Future work](https://github.com/mtrebi/rasterizer/blob/master/README.md#Future-work)  <br/> 
+&nbsp;[References](https://github.com/mtrebi/rasterizer/blob/master/README.md#References)  <br/> 
+
 # Introduction
 
 In order to be able to understand how rendering work I decided to implement a forward/deferred renderer (based on my experience with OpenGL) in the CPU. The goal of this project is not to create a next generation renderer or an efficient CPU renderer. This project aims to understand how the rendering algorithms transforms a set of vertices that make up a 3D World into a 2D image of that World. I tried to be clear in my code to make it readable and easy to understand.
@@ -39,9 +59,9 @@ Translation can be performed easily by modifying only the translation part of th
 blueCube->translate(Vector3D(250, 0, 0));	// Move 250 units in the positive X direction
 ```
 
-## Rotations
+### Rotations
 
-### Euler angles
+#### Euler angles
 
 I've implemented rotations using Euler angles because it's the most intuitive form of rotation. In the following image each cube is rotated 45º in roll, pitch or yaw; and translated a small amount in the X axis:
 
@@ -71,7 +91,7 @@ object->translate(Vector3D(10, 50, 20));	// Translate 10 units in X direction, 5
 
 Nevertheless, when the angle of rotation is near +- 90 degrees, Euler angles suffer of something called Gimbal Lock. To avoid this I've implemented quaternion-based rotations.
 
-## Quaternions
+#### Quaternions
 
 Quaternions are less intuitive than Euler angles. To make it easier to work with them, I implemented a rotate method that takes an Axis-Angle representation of a rotation. This representation can be later converted to the Quaternion form easily.
 
@@ -207,7 +227,7 @@ Then, to calculate shading we just have to combine all these different buffers a
 
 *As a side note, there is another interesting rendering algorithm usually used in hand-held devices called TBDF (Tile Based Deferred Rendering) that uses deferred rendering but, in order to reduce the memory needed, it splits up the screen in smaller tiles having the benefits of deferred rendering without the excessive memory usage*
 
-# Shadow mapping
+## Shadow mapping
 
 In order to add shadows to my scene I've implemented a technique called *Shadow Mapping*. It consists of three parts:
 
@@ -230,7 +250,7 @@ And moving the camera a behind to have a different point of view:
 
 _If you want to know more, this is by far [best tutorial](https://www.youtube.com/watch?v=EsccgeUpdsM) that I've found about shadow mapping_
 
-## PCF
+### PCF
 
 PCF (Percentage Closer Filtering) help us to create soft shadows and making them less "blocky". The idea is, instead of taking only one sample from the shadow map, we take many of them and we calculate the average. In my case I took nine samples: the center point and neighbors. The result has a much better quality:
 
