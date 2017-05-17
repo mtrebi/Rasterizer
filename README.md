@@ -81,7 +81,7 @@ The CMake configuration file __CMakeLists.txt__ contains the definition of multi
   - __D_SCENE_FLAT__: Renders a scene using flat objects (without textures, only base color)
   - __D_SCENE_TEXTURED__: Renders a scene using textured objects (diffuse, specular and normal textures)
 
-*Note: The CMake build also builds a needed library called EasyBMP to work with images*
+*Note: The CMake build also builds all external dependencies listed in the section [External dependencies](https://github.com/mtrebi/rasterizer/blob/master/README.md#external-dependencies)
 
 # Rasterization
 
@@ -355,7 +355,11 @@ Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https:/
 
 # External dependencies
 
-This project uses a external library called [EasyBMP](http://easybmp.sourceforge.net/) to read/write textures (diffuse, specular, normals...).
+This project uses only two external dependencies:
+- [EasyBMP](http://easybmp.sourceforge.net/) to work with images (read/write diffuse, specular, normal textures...)
+- [GLM](http://glm.g-truc.net/0.9.8/index.html) to easily work with matrices
+
+All this libraries are included under the lib/ directory and are build with CMake.
 
 # References
 
