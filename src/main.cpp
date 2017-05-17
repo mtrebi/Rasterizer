@@ -35,8 +35,15 @@ int main (){
   const std::vector<GeometryObject*> objects_flat = setupFlatScene();
   const std::vector<GeometryObject*> objects_textured = setupTexturedScene();
 
-
+  World * world;
+#ifdef _SCENE_FLAT
   World * world = new World(objects_flat, lights, camera);
+#endif 
+
+#ifdef _SCENE_TEXTURED
+  World * world = new World(objects_textured, lights, camera);
+#endif 
+
 #ifdef _FORWARD
   renderer = new ForwardRasterizer(world);
 #endif 

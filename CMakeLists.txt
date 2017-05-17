@@ -59,6 +59,10 @@ add_definitions(-D_PERSPECTIVE=1)
 #add_definitions(-D_AFFINE_TEXTURES=1)
 add_definitions(-D_PERSPECTIVE_TEXTURES=1)
 
+# scene
+#add_definitions(-D_SCENE_FLAT=1)
+add_definitions(-D_SCENE_TEXTURED=1)
+
 # main.cpp
 add_executable(main ${SOURCES})
 target_link_libraries(main EASY_BMP)
