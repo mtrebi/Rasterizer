@@ -60,6 +60,27 @@ cmake ..
 make
 ```
 
+The CMake configuration file __CMakeLists.txt__ contains the definition of multiple preprocessor directives:
+
+- Renderer: 
+  - __D_FORWARD__: Enables forward rendering
+  - __D_DEFERRED__: Enables deferred rendering
+- Shading: 
+  - __D_FLAT__: Enables Flat Shading (using base colors). Note that scene must be set to _SCENE_FLAT.
+  - __D_PHONG__: Enable Phong Shading
+  - __D_BLINN_PHONG__: Enables Blinn-Phong Shading
+- Shadows:
+  - __D_PCF_SHADOWS__: Enables Percentage Closer Filtering on shadows
+- Camera:
+  - __D_ORTHOGRAPHIC__: Uses a Orthographic camera as main camera
+  - __D_PERSPECTIVE__: Uses a Perspective camera as main camera
+- Texture mapping:
+  - __D_AFFINE_TEXTURES__: Uses affine texture mapping (fast but low quality)
+  - __D_PERSPECTIVE_TEXTURES__: Uses perspective texture mapping
+- Scene:
+  - __D_SCENE_FLAT__: Renders a scene using flat objects (without textures, only base color)
+  - __D_SCENE_TEXTURED__: Renders a scene using textured objects (diffuse, specular and normal textures)
+
 *Note: The CMake build also builds a needed library called EasyBMP to work with images*
 
 # Rasterization
