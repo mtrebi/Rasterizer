@@ -361,7 +361,7 @@ This project uses only two external dependencies:
 - [EasyBMP](http://easybmp.sourceforge.net/) to work with images (read/write diffuse, specular, normal textures...)
 - [GLM](http://glm.g-truc.net/0.9.8/index.html) to easily work with matrices
 
-All this libraries are included under the lib/ directory and are build with CMake.
+All these libraries are included under the lib/ directory and are build with CMake.
 
 # References
 
