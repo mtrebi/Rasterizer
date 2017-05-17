@@ -1,5 +1,6 @@
 # Table of Contents
 &nbsp;[Introduction](https://github.com/mtrebi/rasterizer/blob/master/README.md#introduction)  <br/> 
+&nbsp;[Build instructions](https://github.com/mtrebi/rasterizer/blob/master/README.md#build-instructions)  <br/> 
 &nbsp;[Rasterization](https://github.com/mtrebi/rasterizer/blob/master/README.md#rasterization)  <br/> 
 &nbsp;[Features](https://github.com/mtrebi/rasterizer/blob/master/README.md#features-in-detail)  <br/> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Camera and Object transformations](https://github.com/mtrebi/rasterizer/blob/master/README.md#camera-and-object-transformations)  <br/> 
@@ -34,6 +35,29 @@ I've implement some basic features that I consider relevant for any graphics pro
 * A depth-buffer to solve the visibility surface problem
 * Two rendering paths: Forward and deferred
 * Shadow mapping for directional lights with PCF
+
+# Build instructions
+
+This project has been developed using VS 2017 but it should work on Windows, MAC OS and Linux. It can be easily build using CMake and different generators. The following code can be used to generate the VS 2017 project files:
+
+```c
+// VS 2017
+cd <project-folder>
+mkdir build
+cd build/
+cmake .. "Visual Studio 15 2017 Win64"
+```
+
+Then, from VS you can edit and execute the project. If you are using Linux, you need to change the generator (use the default) and execute an extra operation to actually make the executable:
+
+```c
+// Linux
+cd <project-folder>
+mkdir build
+cd build/
+cmake ..
+make
+```
 
 # Rasterization
 
