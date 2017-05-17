@@ -16,6 +16,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Shadow mapping](https://github.com/mtrebi/rasterizer/blob/master/README.md#shadow-mapping)  <br/> 
 &nbsp;[Gallery](https://github.com/mtrebi/rasterizer/blob/master/README.md#gallery)  <br/> 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Cool images](https://github.com/mtrebi/rasterizer/blob/master/README.md#cool-images)  <br/> 
+&nbsp;[External dependencies](https://github.com/mtrebi/rasterizer/blob/master/README.md#external-dependencies)  <br/> 
 &nbsp;[Future work](https://github.com/mtrebi/rasterizer/blob/master/README.md#future-work)  <br/> 
 &nbsp;[References](https://github.com/mtrebi/rasterizer/blob/master/README.md#references)  <br/> 
 
@@ -58,6 +59,8 @@ cd build/
 cmake ..
 make
 ```
+
+*Note: The CMake build also builds a needed library called EasyBMP to work with images*
 
 # Rasterization
 
@@ -328,6 +331,10 @@ Checkout the rest of cool images at [docs/images/gallery/cool_but_wrong](https:/
 * Sky boxes
 * Model loading using .OBJ files
 * Render to a window using some external library to achieve real time rendering (SFML)
+
+# External dependencies
+
+This project uses a external library called [EasyBMP](http://easybmp.sourceforge.net/) to read/write textures (diffuse, specular, normals...).
 
 # References
 
